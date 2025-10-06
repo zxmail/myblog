@@ -443,24 +443,49 @@
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-content">
-            <div class="header-logo">
-                <a href="/">
-                    <img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}">
-                    <span>{{ &OPT.siteName }}</span>
-                </a>
+<header class="site-header">
+    <div class="header-container">
+        <div class="header-left">
+            <div class="logo-area">
+                <img src="/files/logo.png" alt="博客Logo" class="logo-image">
+                <a href="/" class="blog-name">我的博客</a>
             </div>
-            <nav class="header-nav">
+            <nav class="main-nav">
                 <ul>
-                    <li><a href="/">首页</a></li>
-                    {{#widgetMenuList}}
-                    <li><a href="{{url}}">{{name}}</a></li>
-                    {{/widgetMenuList}}
+                    <li><a href="#">首页</a></li>
+                    <li>
+                        <a href="#">分类 ▾</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">技术</a></li>
+                            <li>
+                                <a href="#">生活 ▾</a>
+                                <ul class="sub-menu">
+                                    <li><a href="#">美食</a></li>
+                                    <li><a href="#">旅行</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">随笔</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">关于</a></li>
+                    <li><a href="#">归档</a></li>
                 </ul>
             </nav>
         </div>
-    </header>
+
+        <div class="header-right">
+            <div class="search-icon" id="search-toggle">
+                <i class="fas fa-search"></i> </div>
+            <a href="/admin" class="login-link">
+                <i class="fas fa-user-circle"></i> </a>
+        </div>
+    </div>
+
+    <div class="search-box-container" id="search-box">
+        <input type="text" placeholder="输入关键词搜索..." class="search-input">
+        <button class="search-button">搜索</button>
+    </div>
+</header>
 
     <div id="wrap" class="container">
         <div class="main-layout">
