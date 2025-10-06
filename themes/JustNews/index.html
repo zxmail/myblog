@@ -9,7 +9,9 @@
     <meta name="keywords" content="{{ &keyWords }}" />
     <meta name="description" content="{{ &OPT.siteDescription }}" />
 
-    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css">
+    <link rel="stylesheet" href="">
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
 
     <style>
@@ -592,5 +594,33 @@
             }
         });
     </script>
+    <script>
+    // --- Header 搜索框控制脚本 ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchToggle = document.getElementById('search-toggle');
+        const searchBox = document.getElementById('search-box');
+
+        if (searchToggle && searchBox) {
+            searchToggle.addEventListener('click', function(event) {
+                // 阻止事件冒泡，以防点击图标时，下面的 document 点击事件立即关闭它
+                event.stopPropagation();
+                // 切换 .visible 类来显示或隐藏搜索框
+                searchBox.classList.toggle('visible');
+            });
+            
+            // 点击搜索框内部不关闭
+            searchBox.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        }
+
+        // 点击页面其他任何地方，隐藏搜索框
+        document.addEventListener('click', function() {
+            if (searchBox && searchBox.classList.contains('visible')) {
+                searchBox.classList.remove('visible');
+            }
+        });
+    });
+</script>
 </body>
 </html>
