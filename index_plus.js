@@ -79,7 +79,7 @@ async function handleRequest({ request, env, ctx }) {
 			if (pathname === "/admin" || pathname === "/admin/" || pathname.endsWith("/admin/index.html")) {
 				let data = {};
 				
-				let rawCategories = await env.CONFIG.get("WidgetCategory");
+				let rawCategories = await env.XYRJ_CONFIG.get("WidgetCategory");
 				let categories = [];
 				if (rawCategories) {
 					try {
@@ -95,8 +95,8 @@ async function handleRequest({ request, env, ctx }) {
 				}
 
 				data["widgetCategoryList"] = JSON.stringify(categories);
-				data["widgetMenuList"] = await env.CONFIG.get("WidgetMenu") || '[]';
-				data["widgetLinkList"] = await env.CONFIG.get("WidgetLink") || '[]';
+				data["widgetMenuList"] = await env.XYRJ_CONFIG.get("WidgetMenu") || '[]';
+				data["widgetLinkList"] = await env.XYRJ_CONFIG.get("WidgetLink") || '[]';
 				return await renderHTML(request, data, theme + "/admin/index.html", 200, env, ctx);
 			}
 			else if (checkPass(request)) {
@@ -106,26 +106,26 @@ async function handleRequest({ request, env, ctx }) {
 					jsonA.forEach(function (item) { article[item.name] = item.value; });
 					let id = Date.now().toString();
 					article.id = id;
-                    article.contentHtml = await aesEncrypt(article.content, await env.CONFIG.get("AES_KEY"), await env.CONFIG.get("AES_IV"));
+                    article.contentHtml = await aesEncrypt(article.content, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
                     delete article.content;
-					let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					articleList.unshift(article);
-					await env.BLOG.put("articleList", JSON.stringify(articleList));
+					await env.XYRJ_BLOG.put("articleList", JSON.stringify(articleList));
 					return new Response(JSON.stringify({ "id": id, "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/saveEdit/")) {
 					let jsonA = await request.json();
 					let article = {};
 					jsonA.forEach(function (item) { article[item.name] = item.value; });
-                    article.contentHtml = await aesEncrypt(article.content, await env.CONFIG.get("AES_KEY"), await env.CONFIG.get("AES_IV"));
+                    article.contentHtml = await aesEncrypt(article.content, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
                     delete article.content;
-					let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					let id = article.id;
 					const index = articleList.findIndex(item => item.id === id)
 					if (index > -1) {
 						articleList[index] = article;
 					}
-					await env.BLOG.put("articleList", JSON.stringify(articleList));
+					await env.XYRJ_BLOG.put("articleList", JSON.stringify(articleList));
 					return new Response(JSON.stringify({ "id": id, "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/get/")) {
@@ -136,11 +136,11 @@ async function handleRequest({ request, env, ctx }) {
 						return new Response(JSON.stringify({ msg: "Article ID is missing." }), { status: 400, headers: { 'Content-Type': 'application/json' }});
 					}
 				
-					const articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+					const articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					const articleSingle = articleList.find(item => item.id === id);
 				
 					if (articleSingle) {
-                        articleSingle.content = await aesDecrypt(articleSingle.contentHtml, await env.CONFIG.get("AES_KEY"), await env.CONFIG.get("AES_IV"));
+                        articleSingle.content = await aesDecrypt(articleSingle.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
                         delete articleSingle.contentHtml;
 						return new Response(JSON.stringify(articleSingle), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					} else {
@@ -149,7 +149,7 @@ async function handleRequest({ request, env, ctx }) {
 				}
 				else if (pathname.startsWith("/admin/getList/")) {
 					let page = pathname.substring(15, pathname.lastIndexOf('/'));
-					let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					let pageSize = 10;
 					let result = articleList.slice((page - 1) * pageSize, page * pageSize)
 					return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' }});
@@ -157,11 +157,11 @@ async function handleRequest({ request, env, ctx }) {
 				else if (pathname.startsWith("/admin/delete/")) {
 					const parts = pathname.split('/');
     				const id = parts[3];
-					let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					const index = articleList.findIndex(item => item.id === id);
 					if (index > -1) {
 						articleList.splice(index, 1);
-						await env.BLOG.put("articleList", JSON.stringify(articleList));
+						await env.XYRJ_BLOG.put("articleList", JSON.stringify(articleList));
 						return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					}
 					return new Response(JSON.stringify({ "msg": "Article not found" }), { status: 404, headers: { 'Content-Type': 'application/json' }});
@@ -170,18 +170,18 @@ async function handleRequest({ request, env, ctx }) {
 					let jsonA = await request.json();
 					let config = {};
 					jsonA.forEach(function (item) { config[item.name] = item.value; });
-					await env.CONFIG.put("WidgetCategory", config.WidgetCategory);
-					await env.CONFIG.put("WidgetMenu", config.WidgetMenu);
-					await env.CONFIG.put("WidgetLink", config.WidgetLink);
+					await env.XYRJ_CONFIG.put("WidgetCategory", config.WidgetCategory);
+					await env.XYRJ_CONFIG.put("WidgetMenu", config.WidgetMenu);
+					await env.XYRJ_CONFIG.put("WidgetLink", config.WidgetLink);
 					return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/export/")) {
-					const CONFIG_keys = await env.CONFIG.list();
+					const CONFIG_keys = await env.XYRJ_CONFIG.list();
 					let CONFIG_json = {};
-					for (const key of CONFIG_keys.keys) { CONFIG_json[key.name] = await env.CONFIG.get(key.name); }
-					const BLOG_keys = await env.BLOG.list();
+					for (const key of CONFIG_keys.keys) { CONFIG_json[key.name] = await env.XYRJ_CONFIG.get(key.name); }
+					const BLOG_keys = await env.XYRJ_BLOG.list();
 					let BLOG_json = {};
-					for (const key of BLOG_keys.keys) { BLOG_json[key.name] = await env.BLOG.get(key.name); }
+					for (const key of BLOG_keys.keys) { BLOG_json[key.name] = await env.XYRJ_BLOG.get(key.name); }
 					return new Response(JSON.stringify({ "CONFIG": CONFIG_json, "BLOG": BLOG_json, }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/import/")) {
@@ -189,8 +189,8 @@ async function handleRequest({ request, env, ctx }) {
 					let config = {};
 					jsonA.forEach(function (item) { config[item.name] = item.value; });
 					let data = JSON.parse(config.importJson);
-					for (var key in data.CONFIG) { await env.CONFIG.put(key, data.CONFIG[key]); }
-					for (var key in data.BLOG) { await env.BLOG.put(key, data.BLOG[key]); }
+					for (var key in data.CONFIG) { await env.XYRJ_CONFIG.put(key, data.CONFIG[key]); }
+					for (var key in data.BLOG) { await env.XYRJ_BLOG.put(key, data.BLOG[key]); }
 					return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/publish/")) {
@@ -204,7 +204,7 @@ async function handleRequest({ request, env, ctx }) {
 			}
 		}
 		else if (pathname.startsWith("/sitemap.xml")) {
-			let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+			let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 			let xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 			for (const item of articleList) {
 				xml += `<url><loc>${url.origin}/article/${item.id}/${item.link}</loc><lastmod>${new Date(item.createDate).toISOString()}</lastmod></url>`;
@@ -215,24 +215,24 @@ async function handleRequest({ request, env, ctx }) {
 		else if (pathname.startsWith('/api/comments/') && request.method === 'POST') {
 			const articleSlug = pathname.split('/')[3];
 			let newComment = await request.json();
-			const comments = await env.COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
+			const comments = await env.XYRJ_COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
 			newComment.id = crypto.randomUUID();
 			comments.push(newComment);
-			await env.COMMENTS_KV.put(articleSlug, JSON.stringify(comments));
+			await env.XYRJ_COMMENTS_KV.put(articleSlug, JSON.stringify(comments));
 			return new Response(JSON.stringify(newComment), { status: 201, headers: { 'Content-Type': 'application/json' } });
 		}
 		else if (pathname.startsWith('/api/comments/') && request.method === 'DELETE') {
 			const [_a, _b, _c, articleSlug, commentId] = pathname.split('/');
-			let comments = await env.COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
+			let comments = await env.XYRJ_COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
 			const updatedComments = comments.filter(c => c.id !== commentId);
-			await env.COMMENTS_KV.put(articleSlug, JSON.stringify(updatedComments));
+			await env.XYRJ_COMMENTS_KV.put(articleSlug, JSON.stringify(updatedComments));
 			return new Response('Comment deleted', { status: 200 });
 		}
 		else if (pathname === '/api/comments_all' && request.method === 'GET') {
-			const allKeys = await env.COMMENTS_KV.list();
+			const allKeys = await env.XYRJ_COMMENTS_KV.list();
 			let allComments = [];
 			for (const key of allKeys.keys) {
-				const comments = await env.COMMENTS_KV.get(key.name, { type: 'json' });
+				const comments = await env.XYRJ_COMMENTS_KV.get(key.name, { type: 'json' });
 				if (comments) {
 					comments.forEach(c => allComments.push({ ...c, articleSlug: key.name }));
 				}
@@ -241,22 +241,22 @@ async function handleRequest({ request, env, ctx }) {
 			return new Response(JSON.stringify(allComments), { headers: { 'Content-Type': 'application/json' } });
 		}
 		else if (pathname === '/api/carousel' && request.method === 'GET') {
-			const slides = await env.CAROUSEL_KV.get('slides', { type: 'json' }) || [];
+			const slides = await env.XYRJ_CAROUSEL_KV.get('slides', { type: 'json' }) || [];
 			return new Response(JSON.stringify(slides), { headers: { 'Content-Type': 'application/json' } });
 		}
 		else if (pathname === '/api/carousel' && request.method === 'POST') {
-			let slides = await env.CAROUSEL_KV.get('slides', { type: 'json' }) || [];
+			let slides = await env.XYRJ_CAROUSEL_KV.get('slides', { type: 'json' }) || [];
 			let newSlide = await request.json();
 			newSlide.id = crypto.randomUUID();
 			slides.push(newSlide);
-			await env.CAROUSEL_KV.put('slides', JSON.stringify(slides));
+			await env.XYRJ_CAROUSEL_KV.put('slides', JSON.stringify(slides));
 			return new Response(JSON.stringify(newSlide), { status: 201, headers: { 'Content-Type': 'application/json' } });
 		}
 		else if (pathname.startsWith('/api/carousel/') && request.method === 'DELETE') {
 			const slideId = pathname.split('/').pop();
-			let slides = await env.CAROUSEL_KV.get('slides', { type: 'json' }) || [];
+			let slides = await env.XYRJ_CAROUSEL_KV.get('slides', { type: 'json' }) || [];
 			const updatedSlides = slides.filter(s => s.id !== slideId);
-			await env.CAROUSEL_KV.put('slides', JSON.stringify(updatedSlides));
+			await env.XYRJ_CAROUSEL_KV.put('slides', JSON.stringify(updatedSlides));
 			return new Response('Carousel slide deleted', { status: 200 });
 		}
 		else {
@@ -333,21 +333,21 @@ async function getIndexData(request, env) {
 	if (url.pathname.startsWith("/page/")) {
 		page = parseInt(url.pathname.substring(6, url.pathname.lastIndexOf('/')));
 	}
-	let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+	let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 	let pageSize = 10;
 	let result = articleList.slice((page - 1) * pageSize, page * pageSize)
 	for (const item of result) {
 		item.url = `/article/${item.id}/${item.link}/`;
 		item.createDate10 = item.createDate.substring(0, 10);
-        const decryptedContent = await aesDecrypt(item.contentHtml, await env.CONFIG.get("AES_KEY"), await env.CONFIG.get("AES_IV"));
+        const decryptedContent = await aesDecrypt(item.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
 		item.contentText = decryptedContent.replace(/<[^>]+>/g, "").substring(0, 100);
 	}
 	let data = {};
 	data["articleList"] = result;
 	if (page > 1) data["pageNewer"] = { "url": `/page/${page - 1}/`};
 	if (articleList.length > page * pageSize) data["pageOlder"] = { "url": `/page/${page + 1}/`};
-	data["widgetCategoryList"] = JSON.parse(await env.CONFIG.get("WidgetCategory") || "[]");
-	data["widgetLinkList"] = JSON.parse(await env.CONFIG.get("WidgetLink") || "[]");
+	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
+	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
@@ -358,14 +358,14 @@ async function getIndexData(request, env) {
 
 async function getArticleData(request, id, env) {
 	let data = {};
-	let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+	let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 	let articleSingle = articleList.find(item => item.id === id);
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
-	articleSingle.content = await aesDecrypt(articleSingle.contentHtml, await env.CONFIG.get("AES_KEY"), await env.CONFIG.get("AES_IV"));
+	articleSingle.content = await aesDecrypt(articleSingle.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
 
-    const allCategoriesText = await env.CONFIG.get("WidgetCategory") || "[]";
+    const allCategoriesText = await env.XYRJ_CONFIG.get("WidgetCategory") || "[]";
     const allCategories = JSON.parse(allCategoriesText);
     const articleCategories = (articleSingle['category[]'] || []).map(catName => {
         const foundCat = allCategories.find(c => c.name === catName);
@@ -384,7 +384,7 @@ async function getArticleData(request, id, env) {
 	}
 
 	data["widgetCategoryList"] = allCategories;
-	data["widgetLinkList"] = JSON.parse(await env.CONFIG.get("WidgetLink") || "[]");
+	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
@@ -394,7 +394,7 @@ async function getArticleData(request, id, env) {
 }
 
 async function getCategoryOrTagsData(request, type, key, page, env) {
-	let articleList = JSON.parse(await env.BLOG.get("articleList") || "[]");
+	let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 	let result = [];
 	const decodedKey = decodeURI(key);
 	for (const item of articleList) {
@@ -412,7 +412,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        const decryptedContent = await aesDecrypt(item.contentHtml, await env.CONFIG.get("AES_KEY"), await env.CONFIG.get("AES_IV"));
+        const decryptedContent = await aesDecrypt(item.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
 		item.contentText = decryptedContent.replace(/<[^>]+>/g, "").substring(0, 100);
 	}
 	let data = {};
@@ -420,8 +420,8 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	if (page > 1) data["pageNewer"] = { "url": `/${type}/${key}/page/${page - 1}/`};
 	if (result.length > page * pageSize) data["pageOlder"] = { "url": `/${type}/${key}/page/${page + 1}/`};
 
-	data["widgetCategoryList"] = JSON.parse(await env.CONFIG.get("WidgetCategory") || "[]");
-	data["widgetLinkList"] = JSON.parse(await env.CONFIG.get("WidgetLink") || "[]");
+	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
+	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
