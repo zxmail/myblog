@@ -106,7 +106,7 @@ async function handleRequest({ request, env, ctx }) {
 					jsonA.forEach(function (item) { article[item.name] = item.value; });
 					let id = Date.now().toString();
 					article.id = id;
-                    article.contentHtml = await aesEncrypt(article.content, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
+                    article.contentHtml = article.content; // Directly save content without encryption
                     delete article.content;
 					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					articleList.unshift(article);
@@ -117,7 +117,7 @@ async function handleRequest({ request, env, ctx }) {
 					let jsonA = await request.json();
 					let article = {};
 					jsonA.forEach(function (item) { article[item.name] = item.value; });
-                    article.contentHtml = await aesEncrypt(article.content, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
+                    article.contentHtml = article.content; // Directly save content without encryption
                     delete article.content;
 					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					let id = article.id;
@@ -140,7 +140,7 @@ async function handleRequest({ request, env, ctx }) {
 					const articleSingle = articleList.find(item => item.id === id);
 				
 					if (articleSingle) {
-                        articleSingle.content = await aesDecrypt(articleSingle.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
+                        articleSingle.content = articleSingle.contentHtml || ""; // Directly read content without decryption
                         delete articleSingle.contentHtml;
 						return new Response(JSON.stringify(articleSingle), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					} else {
@@ -307,26 +307,6 @@ async function render(data, template_path, env) {
 	return Mustache.render(template, renderData);
 }
 
-async function aesEncrypt(data, key, iv) {
-	const encodedData = new TextEncoder().encode(data);
-	const encodedKey = new TextEncoder().encode(key);
-	const encodedIv = new TextEncoder().encode(iv);
-	const cryptoKey = await crypto.subtle.importKey('raw', encodedKey, { name: 'AES-CBC' }, false, ['encrypt']);
-	const encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv: encodedIv }, cryptoKey, encodedData);
-	const buffer = new Uint8Array(encrypted);
-	return btoa(String.fromCharCode.apply(null, buffer));
-}
-
-async function aesDecrypt(data, key, iv) {
-    if (!data) return "";
-	const buffer = Uint8Array.from(atob(data), c => c.charCodeAt(0));
-	const encodedKey = new TextEncoder().encode(key);
-	const encodedIv = new TextEncoder().encode(iv);
-	const cryptoKey = await crypto.subtle.importKey('raw', encodedKey, { name: 'AES-CBC' }, false, ['decrypt']);
-	const decrypted = await crypto.subtle.decrypt({ name: 'AES-CBC', iv: encodedIv }, cryptoKey, buffer);
-	return new TextDecoder().decode(decrypted);
-}
-
 async function getIndexData(request, env) {
 	let url = new URL(request.url);
 	let page = 1;
@@ -339,8 +319,8 @@ async function getIndexData(request, env) {
 	for (const item of result) {
 		item.url = `/article/${item.id}/${item.link}/`;
 		item.createDate10 = item.createDate.substring(0, 10);
-        const decryptedContent = await aesDecrypt(item.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
-		item.contentText = decryptedContent.replace(/<[^>]+>/g, "").substring(0, 100);
+        const content = item.contentHtml || ""; // Directly read content
+		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 100);
 	}
 	let data = {};
 	data["articleList"] = result;
@@ -363,7 +343,7 @@ async function getArticleData(request, id, env) {
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
-	articleSingle.content = await aesDecrypt(articleSingle.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
+	articleSingle.content = articleSingle.contentHtml || ""; // Directly read content
 
     const allCategoriesText = await env.XYRJ_CONFIG.get("WidgetCategory") || "[]";
     const allCategories = JSON.parse(allCategoriesText);
@@ -412,8 +392,8 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        const decryptedContent = await aesDecrypt(item.contentHtml, await env.XYRJ_CONFIG.get("AES_KEY"), await env.XYRJ_CONFIG.get("AES_IV"));
-		item.contentText = decryptedContent.replace(/<[^>]+>/g, "").substring(0, 100);
+        const content = item.contentHtml || ""; // Directly read content
+		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 100);
 	}
 	let data = {};
 	data["articleList"] = resultPage;
