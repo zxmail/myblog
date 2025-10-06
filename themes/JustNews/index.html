@@ -317,13 +317,11 @@
             flex-direction: column;
         }
 
-        /* ============== 本次修改点 1 ============== */
         .article-item-content h3 {
             margin: 0 0 10px;
             font-size: 17px;
             font-weight: bold;
         }
-        /* ============== 修改点 1 结束 ============== */
 
         .article-item-content h3 a {
             text-decoration: none;
@@ -334,7 +332,7 @@
             color: var(--theme-hover);
         }
         
-        /* ============== 本次修改点 2 & 3 ============== */
+        /* ============== 本次修改点 ============== */
         .article-item-content p {
             margin: 0 0 10px;
             color: #666;
@@ -342,11 +340,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* 限制为两行 */
+            -webkit-line-clamp: 2; /* 确保最多显示两行 */
             -webkit-box-orient: vertical;
-            font-size: 16px; /* 设置字体大小 */
+            font-size: 15px; /* 修改字体大小 */
         }
-        /* ============== 修改点 2 & 3 结束 ============== */
+        /* ============== 修改点结束 ============== */
 
         .article-meta {
             font-size: 0.85rem;
