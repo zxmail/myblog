@@ -336,7 +336,7 @@
         .article-item-content p {
             margin: 0 0 10px;
             color: #666;
-            flex-grow: 1;
+            /* flex-grow: 1; */ /* <-- 移除此行 */
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -344,14 +344,16 @@
             -webkit-box-orient: vertical;
             font-size: 15px; /* 修改字体大小 */
         }
-        /* ============== 修改点结束 ============== */
 
         .article-meta {
             font-size: 0.85rem;
             color: #999;
             display: flex;
             align-items: center;
+            margin-top: auto; /* <-- 新增此行，将元信息推到底部 */
         }
+        /* ============== 修改点结束 ============== */
+        
         .article-meta span {
             margin-right: 15px;
         }
