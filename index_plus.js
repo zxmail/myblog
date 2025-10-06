@@ -27,6 +27,13 @@ const Mustache = (function () {
 }());
 // --- END: Mustache.js v4.1.0 ---
 
+// 新增的辅助函数：从HTML内容中提取第一张图片的URL
+function getFirstImageUrl(htmlContent) {
+    if (!htmlContent) return '';
+    const match = htmlContent.match(/<img.*?src=["'](.*?)["']/);
+    return match ? match[1] : '';
+}
+
 // ======================= CONFIGURATION START =======================
 const password = "123456"; 
 const theme = "JustNews";
@@ -320,7 +327,13 @@ async function getIndexData(request, env) {
 		item.url = `/article/${item.id}/${item.link}/`;
 		item.createDate10 = item.createDate.substring(0, 10);
         const content = item.contentHtml || ""; // Directly read content
-		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 100);
+		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 150);
+        item.firstImageUrl = getFirstImageUrl(content); // 获取第一张图片URL
+        // 提取第一个分类
+        if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
+            item.firstCategory = item['category[]'][0];
+        }
+        item.views = Math.floor(Math.random() * 1000) + 50; // 添加随机阅读量
 	}
 	let data = {};
 	data["articleList"] = result;
@@ -331,6 +344,7 @@ async function getIndexData(request, env) {
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+        item.firstImageUrl = getFirstImageUrl(item.contentHtml); // 为最近文章也获取图片
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	return data;
@@ -368,6 +382,7 @@ async function getArticleData(request, id, env) {
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+        item.firstImageUrl = getFirstImageUrl(item.contentHtml); // 为最近文章也获取图片
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	return data;
@@ -393,7 +408,13 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}/`;
         const content = item.contentHtml || ""; // Directly read content
-		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 100);
+		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 150);
+        item.firstImageUrl = getFirstImageUrl(content); // 获取第一张图片URL
+        // 提取第一个分类
+        if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
+            item.firstCategory = item['category[]'][0];
+        }
+        item.views = Math.floor(Math.random() * 1000) + 50; // 添加随机阅读量
 	}
 	let data = {};
 	data["articleList"] = resultPage;
@@ -405,6 +426,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+        item.firstImageUrl = getFirstImageUrl(item.contentHtml); // 为最近文章也获取图片
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	return data;
