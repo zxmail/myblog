@@ -56,6 +56,10 @@
             height: auto;
         }
 
+        ul, li {
+            list-style: none;
+        }
+
         /* 整体布局容器 */
         .container {
             max-width: 1200px;
@@ -136,42 +140,13 @@
             justify-content: center;
             margin-bottom: 20px;
         }
-
-        /* 文章列表 */
-        .article-list .article-item {
+        
+        .article-list {
             background-color: var(--widget-bg);
             border: 1px solid var(--border-color);
             border-radius: 5px;
-            margin-bottom: 20px;
             padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-        .article-item h2.title {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        .article-item .meta {
-            font-size: 13px;
-            color: var(--text-color-light);
-            margin-bottom: 15px;
-        }
-        .article-item .meta span {
-            margin-right: 15px;
-        }
-        .article-item .summary {
-            color: #555;
-            margin-bottom: 15px;
-        }
-        .article-item .read-more {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: var(--theme-color);
-            color: #fff;
-            border-radius: 3px;
-        }
-        .article-item .read-more:hover {
-            background-color: var(--theme-hover);
-            color: #fff;
         }
 
         /* 分页导航 */
@@ -267,6 +242,113 @@
         .action-item.gotop:hover {
             background-color: rgba(0,0,0,0.7);
         }
+        
+        /* ============== 新增的左图右文CSS样式 ============== */
+        /* 主要文章列表的样式 */
+        .article-item-box {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+        }
+        .article-item-box:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .article-item-image {
+            flex: 0 0 220px; /* 图片容器固定宽度 */
+            margin-right: 20px;
+            overflow: hidden;
+        }
+
+        .article-item-image a {
+            display: block;
+            width: 100%;
+            height: 140px; /* 固定高度 */
+        }
+
+        .article-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 保证图片不变形地填满容器 */
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .article-item-image img:hover {
+            transform: scale(1.05); /* 鼠标悬停时轻微放大 */
+        }
+
+        .article-item-content {
+            flex: 1; /* 文本内容占据剩余空间 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-item-content h3 {
+            margin: 0 0 10px;
+            font-size: 1.5rem; /* 调整标题大小 */
+        }
+
+        .article-item-content h3 a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .article-item-content h3 a:hover {
+            color: var(--theme-hover);
+        }
+
+        .article-item-content p {
+            margin: 0 0 10px;
+            color: #666;
+            flex-grow: 1; /* 让摘要部分占据多余空间，将元信息推到底部 */
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .article-meta span {
+            margin-right: 15px;
+        }
+
+
+        /* 右侧最新文章列表的样式 */
+        .recent-article-item-box {
+            display: flex;
+            align-items: center; /* 垂直居中对齐 */
+            margin-bottom: 15px;
+        }
+
+        .recent-article-item-image {
+            flex: 0 0 60px; /* 图片容器固定宽度 */
+            height: 60px;
+            margin-right: 10px;
+        }
+
+        .recent-article-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .recent-article-item-content {
+            flex: 1;
+            line-height: 1.4;
+        }
+        .recent-article-item-content a {
+            color: #555;
+            text-decoration: none;
+        }
+
+        .recent-article-item-content a:hover {
+             color: var(--theme-hover);
+        }
+        /* ============== 新增样式结束 ============== */
 
         /* 响应式媒体查询 */
         @media (max-width: 1200px) {
@@ -293,12 +375,23 @@
             .header-nav li {
                 margin: 5px 10px;
             }
-            .article-item h2.title {
-                font-size: 18px;
-            }
+            
              .left-column, .right-column {
                 max-width: 100%; /* 在手机上占满宽度 */
              }
+            .article-item-box {
+                flex-direction: column;
+            }
+            .article-item-image {
+                flex-basis: auto;
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 100%;
+                height: 200px;
+            }
+            .article-item-image a {
+                height: 100%;
+            }
         }
     </style>
 </head>
@@ -328,22 +421,31 @@
             <div class="left-column">
                 <div class="carousel-placeholder">
                     <p>海报轮播区</p>
-                    </div>
+                </div>
 
                 <div class="article-list">
-                    {{#articleList}}
-                    <article class="article-item">
-                        <h2 class="title"><a href="{{url}}">{{title}}</a></h2>
-                        <div class="meta">
-                            <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                            {{#category[]}}
-                            <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-                            {{/category[]}}
-                        </div>
-                        <p class="summary">{{contentText}}...</p>
-                        <a href="{{url}}" class="read-more">阅读全文</a>
-                    </article>
+                    <ul> {{#articleList}}
+                        <li class="article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="article-item-image">
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="article-item-content">
+                                <h3><a href="{{url}}">{{title}}</a></h3>
+                                <p>{{contentText}}...</p>
+                                <div class="article-meta">
+                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+                                    {{#category[]}}
+                                    <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                                    {{/category[]}}
+                                </div>
+                            </div>
+                        </li>
                     {{/articleList}}
+                    </ul>
                 </div>
 
                 <nav class="pagination">
@@ -361,7 +463,18 @@
                     <h3 class="widget-title">最近文章</h3>
                     <ul>
                         {{#widgetRecentlyList}}
-                        <li><a href="{{url}}">{{title}}</a></li>
+                        <li class="recent-article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="recent-article-item-image">
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="recent-article-item-content">
+                                <a href="{{url}}">{{title}}</a>
+                            </div>
+                        </li>
                         {{/widgetRecentlyList}}
                     </ul>
                 </div>
