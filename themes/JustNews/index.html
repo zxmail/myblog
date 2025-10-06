@@ -60,175 +60,87 @@
             list-style: none;
         }
 
+        /* 整体布局容器 */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
 
-        /* ============== 页头 HEADER START ============== */
+        /* 头部样式 */
         .header {
             background-color: #fff;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 10px 0;
+            border-bottom: 1px solid #e9e9e9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            height: 62px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
         .header-logo a {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             color: var(--text-color);
         }
         .header-logo img {
-            height: 45px;
-            margin-right: 12px;
-        }
-
-        /* 导航栏 */
-        .header-nav-wrapper {
-            background-color: #2c3e50; /* 导航栏背景色 */
-            width: 100%;
-            height: 50px;
-        }
-        .header-nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
+            height: 40px;
+            margin-right: 10px;
         }
         .header-nav ul {
+            list-style: none;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            font-size: 14px; /* 导航菜单字体大小 */
         }
         .header-nav li {
-            position: relative;
+            margin-left: 20px;
         }
-        .header-nav li a {
-            display: block;
-            padding: 0 20px;
-            line-height: 50px;
-            color: #ecf0f1;
-            font-size: 15px;
-            transition: background-color 0.3s;
-        }
-        .header-nav li a:hover, .header-nav li:hover > a {
-            background-color: var(--theme-color);
-            color: #fff;
-        }
-
-        /* 下拉菜单基础样式 */
-        .header-nav .sub-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #34495e;
-            min-width: 200px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        .header-nav .sub-menu li {
-            width: 100%;
-        }
-        .header-nav .sub-menu a {
-            line-height: 45px;
-            white-space: nowrap;
-        }
-        /* 第三级菜单 */
-        .header-nav .sub-menu .sub-menu {
-            top: 0;
-            left: 100%;
-        }
-
-        /* 鼠标悬停显示下拉菜单 (桌面端) */
-        @media (min-width: 992px) {
-            .header-nav li:hover > .sub-menu {
-                display: block;
-            }
-        }
-        
-        /* 菜单项箭头 */
-        .header-nav .menu-item-has-children > a::after {
-            content: '\f078'; /* FontAwesome 向下箭头 */
-            font-family: "Font Awesome 5 Pro";
-            font-weight: 300;
-            margin-left: 8px;
-            font-size: 0.8em;
-        }
-        .header-nav .sub-menu .menu-item-has-children > a::after {
-            content: '\f054'; /* FontAwesome 向右箭头 */
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        
-        /* 移动端菜单按钮 */
-        .menu-toggle {
-            display: none;
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            background: none;
-            border: 1px solid #ecf0f1;
-            color: #ecf0f1;
-            padding: 8px 10px;
-            cursor: pointer;
-        }
-
-        /* 移动端样式 */
-        @media (max-width: 991px) {
-            .menu-toggle {
-                display: block;
-            }
-            .header-nav ul.nav-menu {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: #2c3e50;
-            }
-            .header-nav ul.nav-menu.toggled-on {
-                display: flex;
-            }
-            .header-nav .sub-menu {
-                position: static;
-                width: 100%;
-                box-shadow: none;
-                background-color: rgba(0,0,0,0.2);
-                padding-left: 15px;
-            }
-            .header-nav .sub-menu .sub-menu {
-                padding-left: 30px;
-            }
-            .header-nav li a, .header-nav .sub-menu a {
-                width: 100%;
-                text-align: left;
-            }
-        }
-        /* ============== 页头 HEADER END ============== */
 
         /* 主体内容区 */
         #wrap {
             padding: 20px 0;
         }
+
         .main-layout {
             display: flex;
             gap: 20px;
-            justify-content: center;
+            justify-content: center; /* 居中对齐左右栏 */
         }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
         .left-column {
             width: 100%;
-            max-width: 870px;
+            max-width: 870px; /* 左边宽度 */
         }
+
         .right-column {
             width: 100%;
-            max-width: 310px;
+            max-width: 310px; /* 右侧宽度 */
         }
+
+        /* 海报轮播 */
+        .carousel-placeholder {
+            background-color: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
         .article-list {
             background-color: var(--widget-bg);
             border: 1px solid var(--border-color);
@@ -236,6 +148,8 @@
             padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
+
+        /* 分页导航 */
         .pagination {
             display: flex;
             justify-content: space-between;
@@ -246,6 +160,8 @@
             border: 1px solid var(--theme-bd);
             border-radius: 5px;
         }
+        
+        /* 右侧栏小工具 */
         .widget {
             background-color: var(--widget-bg);
             border: 1px solid var(--border-color);
@@ -253,6 +169,7 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+        
         .widget-title {
             font-size: 16px;
             margin-bottom: 15px;
@@ -262,6 +179,7 @@
             display: flex;
             align-items: center;
         }
+
         .widget-title::before {
             content: "";
             width: 4px;
@@ -270,6 +188,25 @@
             margin-right: 8px;
             border-radius: 2px;
         }
+
+        .widget ul {
+            list-style: none;
+        }
+        .widget ul li {
+            margin-bottom: 10px;
+        }
+        .widget ul li a {
+            color: var(--text-color);
+        }
+        .widget .tag-cloud a {
+            display: inline-block;
+            margin: 3px;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        /* 友情链接 */
         .friend-links {
             background-color: #fff;
             padding: 20px;
@@ -281,6 +218,8 @@
              flex-wrap: wrap;
              gap: 15px;
         }
+
+        /* 页脚 */
         .footer {
             text-align: center;
             padding: 30px 0;
@@ -294,6 +233,8 @@
         .footer a:hover {
             color: var(--theme-hover);
         }
+
+        /* 返回顶部按钮 */
         .action {
             position: fixed;
             right: 20px;
@@ -309,7 +250,13 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
+        .action-item.gotop:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        /* 左图右文CSS样式 */
         .article-item-box {
             display: flex;
             margin-bottom: 25px;
@@ -321,23 +268,32 @@
             margin-bottom: 0;
             padding-bottom: 0;
         }
+
         .article-item-image {
             flex: 0 0 220px;
             margin-right: 20px;
             overflow: hidden;
             position: relative;
         }
+
         .article-item-image a {
             display: block;
             width: 100%;
             height: 140px;
         }
+
         .article-item-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 5px;
+            transition: transform 0.3s ease;
         }
+
+        .article-item-image img:hover {
+            transform: scale(1.05);
+        }
+
         .image-category {
             position: absolute;
             top: 10px;
@@ -354,59 +310,77 @@
             color: #fff;
             text-decoration: none;
         }
+
         .article-item-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
+
         .article-item-content h3 {
             margin: 0 0 10px;
             font-size: 17px;
             font-weight: bold;
         }
+
         .article-item-content h3 a {
             text-decoration: none;
             color: #333;
         }
+
+        .article-item-content h3 a:hover {
+            color: var(--theme-hover);
+        }
+        
+        /* ============== 本次修改点 ============== */
         .article-item-content p {
             margin: 0 0 10px;
             color: #666;
+            /* flex-grow: 1; */ /* <-- 移除此行 */
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 2; /* 确保最多显示两行 */
             -webkit-box-orient: vertical;
-            font-size: 15px;
+            font-size: 15px; /* 修改字体大小 */
         }
+
         .article-meta {
             font-size: 0.85rem;
             color: #999;
             display: flex;
             align-items: center;
-            margin-top: auto;
+            margin-top: auto; /* <-- 新增此行，将元信息推到底部 */
         }
+        /* ============== 修改点结束 ============== */
+        
         .article-meta span {
             margin-right: 15px;
         }
         .article-meta .views {
             margin-left: auto;
         }
+
+        /* 右侧最新文章列表的样式 */
         .recent-article-item-box {
             display: flex;
             align-items: center;
             margin-bottom: 15px;
         }
+
         .recent-article-item-image {
             flex: 0 0 60px;
             height: 60px;
             margin-right: 10px;
         }
+
         .recent-article-item-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 4px;
         }
+
         .recent-article-item-content {
             flex: 1;
             line-height: 1.4;
@@ -415,13 +389,43 @@
             color: #555;
             text-decoration: none;
         }
-        @media (max-width: 991px) {
-            .main-layout { flex-direction: column; align-items: center; }
-            .left-column, .right-column { max-width: 870px; }
+
+        .recent-article-item-content a:hover {
+             color: var(--theme-hover);
         }
+
+        /* 响应式媒体查询 */
+        @media (max-width: 1200px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+             .left-column, .right-column {
+                max-width: 870px;
+             }
+        }
+
         @media (max-width: 768px) {
-             .left-column, .right-column { max-width: 100%; }
-            .article-item-box { flex-direction: column; }
+            .header-content {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            .header-nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .header-nav li {
+                margin: 5px 10px;
+            }
+            
+             .left-column, .right-column {
+                max-width: 100%;
+             }
+            .article-item-box {
+                flex-direction: column;
+            }
             .article-item-image {
                 flex-basis: auto;
                 margin-right: 0;
@@ -429,56 +433,40 @@
                 width: 100%;
                 height: 200px;
             }
-            .article-item-image a { height: 100%; }
+            .article-item-image a {
+                height: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="header-logo">
-            <a href="/">
-                <img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}">
-                <span>{{ &OPT.siteName }}</span>
-            </a>
+        <div class="header-content">
+            <div class="header-logo">
+                <a href="/">
+                    <img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}">
+                    <span>{{ &OPT.siteName }}</span>
+                </a>
+            </div>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="/">首页</a></li>
+                    {{#widgetMenuList}}
+                    <li><a href="{{url}}">{{name}}</a></li>
+                    {{/widgetMenuList}}
+                </ul>
+            </nav>
         </div>
     </header>
-
-    <div class="header-nav-wrapper">
-        <nav class="header-nav">
-            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                <i class="fal fa-bars"></i>
-            </button>
-            <ul id="primary-menu" class="nav-menu">
-                {{#widgetMenuList}}
-                <li class="{{#children}}menu-item-has-children{{/children}}">
-                    <a href="{{url}}">{{name}}</a>
-                    {{#children}}
-                    <ul class="sub-menu">
-                        {{#.}}
-                        <li class="{{#children}}menu-item-has-children{{/children}}">
-                            <a href="{{url}}">{{name}}</a>
-                            {{#children}}
-                            <ul class="sub-menu">
-                                {{#.}}
-                                <li><a href="{{url}}">{{name}}</a></li>
-                                {{/.}}
-                            </ul>
-                            {{/children}}
-                        </li>
-                        {{/.}}
-                    </ul>
-                    {{/children}}
-                </li>
-                {{/widgetMenuList}}
-            </ul>
-        </nav>
-    </div>
-
 
     <div id="wrap" class="container">
         <div class="main-layout">
             <div class="left-column">
+                <div class="carousel-placeholder">
+                    <p>海报轮播区</p>
+                </div>
+
                 <div class="article-list">
                     <ul>
                     {{#articleList}}
@@ -560,6 +548,13 @@
                         <a href="#">Blog</a>
                     </div>
                 </div>
+
+                <div class="widget">
+                    <h3 class="widget-title">最近评论</h3>
+                    <ul>
+                        <li>暂无评论</li>
+                    </ul>
+                </div>
             </aside>
         </div>
 
@@ -595,44 +590,6 @@
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
-
-            // 新增的移动菜单处理脚本
-            const menuToggle = document.querySelector('.menu-toggle');
-            const primaryMenu = document.querySelector('#primary-menu');
-            if (menuToggle && primaryMenu) {
-                menuToggle.addEventListener('click', function() {
-                    primaryMenu.classList.toggle('toggled-on');
-                    const isExpanded = primaryMenu.classList.contains('toggled-on');
-                    menuToggle.setAttribute('aria-expanded', isExpanded);
-                });
-            }
-            
-            // 处理移动端子菜单点击展开
-            const menuItemsWithChildren = document.querySelectorAll('.header-nav .menu-item-has-children');
-            menuItemsWithChildren.forEach(function(menuItem) {
-                const link = menuItem.querySelector('a');
-                // 仅在移动端视图下（menu-toggle可见时）为点击添加特殊处理
-                link.addEventListener('click', function(e) {
-                    if (window.getComputedStyle(menuToggle).display !== 'none') {
-                        const subMenu = menuItem.querySelector('.sub-menu');
-                        if (subMenu) {
-                             // 如果链接是'#'，则阻止跳转并切换子菜单
-                            if (link.getAttribute('href') === '#') {
-                                e.preventDefault();
-                                // 关闭其他已打开的同级子菜单
-                                const parent = menuItem.parentElement;
-                                parent.querySelectorAll('.sub-menu').forEach(function(otherSubMenu) {
-                                    if(otherSubMenu !== subMenu) {
-                                       otherSubMenu.style.display = 'none';
-                                    }
-                                });
-                                // 切换当前点击的子菜单
-                                subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
-                            }
-                        }
-                    }
-                });
-            });
         });
     </script>
 </body>
