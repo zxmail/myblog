@@ -30,7 +30,7 @@ const Mustache = (function () {
 // ======================= CONFIGURATION START =======================
 const password = "123456"; 
 const theme = "JustNews";
-const cdn = "https://cfblog-9cc.pages.dev/themes";
+const cdn = "https://myblog-1dt.pages.dev/themes";
 // ======================= CONFIGURATION END =========================
 
 let site = {
@@ -283,7 +283,7 @@ async function getStaticFile(request, env, ctx) {
 	const cache = caches.default;
 	let response = await cache.match(request);
 	if (!response) {
-		const pagesUrl = url.toString().replace(url.origin, "https://cfblog-9cc.pages.dev");
+		const pagesUrl = url.toString().replace(url.origin, "https://myblog-1dt.pages.dev");
 		response = await fetch(pagesUrl);
 		if (response.ok) {
 			ctx.waitUntil(cache.put(request, response.clone()));
