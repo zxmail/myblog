@@ -11,47 +11,250 @@
 		
 		<link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css">
 		<link rel='stylesheet'  href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
-		
+		<style>
+			:root {
+				--theme-bd: #617eaf;             /* 主题边框颜色 */
+				--theme-color: #206be7;          /* 主题主色 */
+				--theme-hover: #1162e8;          /* 主题悬停（hover）状态颜色 */
+				--theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
+			}
+
+			body {
+				font-family: var(--theme-font-family);
+				font-size: 14px;
+				margin: 0;
+			}
+
+			a {
+				text-decoration: none;
+				color: var(--theme-color);
+			}
+
+			a:hover {
+				color: var(--theme-hover);
+			}
+
+			.header {
+				border-bottom: 1px solid var(--theme-bd);
+			}
+			
+			.pc {
+				max-width: 1300px;
+				height: 62px;
+				margin: 0 auto;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.logo img {
+				height: 40px;
+			}
+
+			.nav ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+			}
+
+			.nav li {
+				margin-left: 20px;
+			}
+			
+			#wrap {
+				width: 100%;
+				max-width: 1200px;
+				margin: 20px auto;
+				display: flex;
+				flex-wrap: wrap;
+			}
+
+			.main {
+				width: 100%;
+				display: flex;
+			}
+
+			.left-side {
+				width: 870px;
+				padding-right: 20px;
+			}
+
+			.right-side {
+				width: 310px;
+			}
+
+			.poster-carousel {
+				margin-bottom: 20px;
+			}
+
+			.article-list .article-item {
+				margin-bottom: 20px;
+				border-bottom: 1px solid #eee;
+				padding-bottom: 20px;
+			}
+
+			.article-list .article-item:last-child {
+				border-bottom: none;
+			}
+			
+			.article-item h2 {
+				font-size: 16px;
+				margin-top: 0;
+			}
+			
+			.article-meta {
+				color: #888;
+				font-size: 12px;
+				margin-bottom: 10px;
+			}
+
+			.widget {
+				margin-bottom: 20px;
+				border: 1px solid var(--theme-bd);
+				padding: 15px;
+			}
+			
+			.widget .widget-title {
+				font-size: 16px;
+				border-bottom: 1px solid var(--theme-bd);
+				padding-bottom: 10px;
+				margin-bottom: 10px;
+				margin-top: 0;
+			}
+			
+			.widget ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			.widget ul li {
+				margin-bottom: 10px;
+			}
+			
+			.friend-links {
+				width: 1200px;
+				margin: 0 auto;
+				padding: 20px 0;
+				border-top: 1px solid var(--theme-bd);
+			}
+			
+			.footer {
+				width: 100%;
+				background-color: #000;
+				color: #fff;
+				padding: 20px 0;
+				text-align: center;
+			}
+
+			.footer .container {
+				max-width: 1200px;
+				margin: 0 auto;
+			}
+			
+			.action {
+				position: fixed;
+				bottom: 20%;
+				right: 20px;
+			}
+			
+			.gotop {
+				cursor: pointer;
+				background: var(--theme-color);
+				color: #fff;
+				padding: 10px;
+				border-radius: 5px;
+			}
+
+			/* 响应式设计 */
+			@media (max-width: 1200px) {
+				.main {
+					flex-direction: column;
+				}
+				.left-side, .right-side {
+					width: 100%;
+					padding-right: 0;
+				}
+			}
+		</style>
 	</head>
 	<body class="">
 		<header class="header">
-			<div class="pc宽:1300px,高:62px">
-
+			<div class="pc">
+				<div class="logo">
+					<a href="/"><img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}"></a>
+				</div>
+				<nav class="nav">
+					<ul>
+						{{#widgetMenuList}}
+						<li><a href="{{ url }}">{{ name }}</a></li>
+						{{/widgetMenuList}}
+					</ul>
+				</nav>
 			</div>
 		</header>
 		
 		<div id="wrap">
-			<div class="main"宽:1200px>
-					<div class="左边"宽:870px>
-							<div class="海报轮播">	
-		
-							</div>
-							<div class="文章列表">	
-		
+			<div class="main">
+					<div class="left-side">
+							<div class="poster-carousel">	
+								</div>
+							<div class="article-list">	
+								{{#articleList}}
+								<div class="article-item">
+									<h2><a href="{{url}}">{{title}}</a></h2>
+									<div class="article-meta">
+										<span>{{createDate10}}</span> - 
+										<span>{{author}}</span>
+									</div>
+									<p>{{contentText}}...</p>
+								</div>
+								{{/articleList}}
 							</div>					
 					</div>
-					<div class="右侧"宽:310px>
-							<div class="热门文章">	
-		
+					<div class="right-side">
+							<div class="widget popular-articles">	
+								<h3 class="widget-title">热门文章</h3>
+								<ul>
+									{{#widgetRecentlyList}}
+									<li><a href="{{url}}">{{title}}</a></li>
+									{{/widgetRecentlyList}}
+								</ul>
 							</div>
-							<div class="分类目录">	
-							<div class="标签">	
-		
+							<div class="widget categories">	
+								<h3 class="widget-title">分类目录</h3>
+								<ul>
+								{{#widgetCategoryList}}
+									<li><a href="/category/{{name}}/">{{name}}</a></li>
+								{{/widgetCategoryList}}
+								</ul>
 							</div>
-							<div class="最近评论">	
+							<div class="widget tags">	
+								<h3 class="widget-title">标签</h3>
+								</div>
+							<div class="widget recent-comments">	
+								<h3 class="widget-title">最近评论</h3>
+								</div>
 					</div>
 				</div>
 			</div>
-			</div>
-			<div class="友情链接 宽:1200px">
-	
+			<div class="friend-links">
+				<h3 class="widget-title">友情链接</h3>
+				<ul>
+				{{#widgetLinkList}}
+					<li><a href="{{url}}" target="_blank">{{name}}</a></li>
+				{{/widgetLinkList}}
+				</ul>
 			</div>
 
 		</div>
 		
-		<footer class="footer"宽:100%>
-			<div class="container"宽:1200px>
+		<footer class="footer">
+			<div class="container">
 				<div class="clearfix">
+					<p>{{ &OPT.copyRight }}</p>
+					<p>Powered by <a href="https://github.com/-A-RA/cf-blog-plus" target="_blank">cf-blog-plus</a></p>
 				</div>
 			</div>
 		</footer>
@@ -60,5 +263,11 @@
 				<i class="fal fa-arrow-up action-item-icon"></i>
 			</div>
 		</div>
+		<script>
+			// 返回顶部
+			document.querySelector('.j-top').addEventListener('click', function() {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+		</script>
 	</body>
 </html>
