@@ -23,7 +23,7 @@
             --text-color-light: #777;
             --bg-color: #f5f5f5;
             --widget-bg: #fff;
-            --border-color: #fff; /* 修改点2 */
+            --border-color: #fff;
         }
 
         /* 基础样式重置 */
@@ -173,7 +173,7 @@
         .widget-title {
             font-size: 16px;
             margin-bottom: 15px;
-            border-bottom: 1px solid #eee; /* 修改点1 */
+            border-bottom: 1px solid #eee;
             padding-bottom: 8px;
             font-weight: bold;
             display: flex;
@@ -317,11 +317,13 @@
             flex-direction: column;
         }
 
+        /* ============== 本次修改点 1 ============== */
         .article-item-content h3 {
             margin: 0 0 10px;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
         }
+        /* ============== 修改点 1 结束 ============== */
 
         .article-item-content h3 a {
             text-decoration: none;
@@ -332,7 +334,7 @@
             color: var(--theme-hover);
         }
         
-        /* 修改点3：内容简介最多显示两行 */
+        /* ============== 本次修改点 2 & 3 ============== */
         .article-item-content p {
             margin: 0 0 10px;
             color: #666;
@@ -340,23 +342,24 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* 设置行数 */
+            -webkit-line-clamp: 2; /* 限制为两行 */
             -webkit-box-orient: vertical;
+            font-size: 16px; /* 设置字体大小 */
         }
+        /* ============== 修改点 2 & 3 结束 ============== */
 
         .article-meta {
             font-size: 0.85rem;
             color: #999;
-            display: flex; /* 使用flex布局方便对齐 */
+            display: flex;
             align-items: center;
         }
         .article-meta span {
             margin-right: 15px;
         }
         .article-meta .views {
-            margin-left: auto; /* 将阅读量推到最右边 */
+            margin-left: auto;
         }
-
 
         /* 右侧最新文章列表的样式 */
         .recent-article-item-box {
