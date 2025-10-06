@@ -50,59 +50,64 @@
         .main-layout { display: flex; gap: 20px; justify-content: center; }
         .left-column { width: 100%; max-width: 870px; }
         .right-column { width: 100%; max-width: 310px; }
-
-        /* --- 1. 轮播海报 (Featured Posts Grid) START --- */
-        .featured-posts-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 10px;
-            height: 400px;
-            margin-bottom: 20px;
-        }
-        .featured-item {
+        
+        /* --- 1. 英雄式海报 (Hero Section) START --- */
+        .hero-section {
             position: relative;
-            overflow: hidden;
+            height: 400px;
             border-radius: 8px;
-        }
-        .featured-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-        .featured-item:hover img {
-            transform: scale(1.05);
-        }
-        .featured-item .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 15px;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-            color: #fff;
-            z-index: 2;
-        }
-        .featured-item .overlay-title {
-            font-size: 16px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-        .featured-item.large {
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-        .featured-item .overlay-title.large-title {
-            font-size: 24px;
-        }
-        /* --- 轮播海报 END --- */
-
-        /* --- 2. 文章列表 (Article List) START --- */
-        .article-list .article-item {
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #333;
             display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-section .hero-bg-image {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+        }
+        .hero-section .hero-content {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero-section .hero-category a {
+            display: inline-block;
+            background-color: var(--theme-color);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .hero-section .hero-category a:hover {
+             background-color: var(--theme-hover);
+        }
+        .hero-section .hero-title {
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+         .hero-section .hero-title a {
+            color: #fff;
+        }
+        .hero-section .hero-meta {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        /* --- 英雄式海报 END --- */
+        
+        /* --- 2. 新的文章列表 (Article List) START --- */
+        .article-list .article-item {
             background-color: var(--widget-bg);
-            border-radius: 5px;
+            border-radius: 8px;
             margin-bottom: 20px;
             box-shadow: 0 1px 5px rgba(0,0,0,0.05);
             overflow: hidden;
@@ -111,26 +116,41 @@
         .article-item:hover {
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .article-item .thumbnail {
-            flex: 0 0 250px; /* 固定宽度 */
+        .article-item .thumbnail-container {
+            position: relative;
+            width: 100%;
+            padding-top: 52%; /* 控制图片高宽比 16:9 */
             overflow: hidden;
         }
-        .article-item .thumbnail img {
+        .article-item .thumbnail-container img {
+            position: absolute;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.4s ease;
         }
-        .article-item:hover .thumbnail img {
+        .article-item:hover .thumbnail-container img {
             transform: scale(1.05);
         }
+        .article-item .category-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+        }
+        .article-item .category-tag a {
+            background-color: var(--theme-color);
+            color: #fff;
+            padding: 3px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
         .article-item .content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
+            padding: 25px;
         }
         .article-item h2.title {
-            font-size: 20px;
+            font-size: 22px;
             margin-bottom: 10px;
         }
         .article-item h2.title a {
@@ -140,7 +160,7 @@
             color: var(--theme-color);
         }
         .article-item .meta {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-color-light);
             margin-bottom: 15px;
         }
@@ -149,59 +169,41 @@
         }
         .article-item .summary {
             color: #555;
-            flex-grow: 1; /* 占据剩余空间 */
-        }
-        .article-item .read-more-wrapper {
-            margin-top: 15px;
+            margin-bottom: 20px;
         }
         .article-item .read-more {
-            color: var(--text-color-light);
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 5px;
             font-weight: bold;
         }
-         /* --- 文章列表 END --- */
+        .article-item .read-more:hover {
+            background-color: var(--theme-color);
+            border-color: var(--theme-color);
+            color: #fff;
+        }
+        /* --- 新的文章列表 END --- */
 
         /* 分页导航 */
         .pagination { display: flex; justify-content: space-between; padding: 20px 0; }
         .pagination a { padding: 10px 20px; border: 1px solid var(--theme-bd); border-radius: 5px; }
 
         /* 右侧栏小工具 */
-        .widget { background-color: var(--widget-bg); border-radius: 5px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+        .widget { background-color: var(--widget-bg); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
         .widget-title { font-size: 16px; margin-bottom: 15px; border-bottom: 2px solid var(--theme-color); padding-bottom: 8px; font-weight: bold; }
         .widget .tag-cloud a { display: inline-block; margin: 3px; padding: 5px 10px; background: #f0f0f0; border-radius: 3px; }
 
-        /* --- 3. 近期文章 (Recent Posts Widget) START --- */
-        .widget-recent-posts ul li {
-            display: flex;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .widget-recent-posts .post-thumbnail {
-            flex: 0 0 60px;
-            height: 60px;
-            margin-right: 10px;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .widget-recent-posts .post-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .widget-recent-posts .post-content .post-title {
-            font-weight: normal;
-            line-height: 1.4;
-            display: block;
-            margin-bottom: 5px;
-            color: var(--text-color);
-        }
-        .widget-recent-posts .post-content .post-date {
-            font-size: 12px;
-            color: var(--text-color-light);
-        }
-        /* --- 近期文章 END --- */
+        /* 近期文章 (Recent Posts Widget) */
+        .widget-recent-posts ul li { display: flex; margin-bottom: 15px; align-items: center; }
+        .widget-recent-posts .post-thumbnail { flex: 0 0 60px; height: 60px; margin-right: 10px; border-radius: 4px; overflow: hidden; }
+        .widget-recent-posts .post-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .widget-recent-posts .post-content .post-title { font-weight: normal; line-height: 1.4; display: block; margin-bottom: 5px; color: var(--text-color); }
+        .widget-recent-posts .post-content .post-date { font-size: 12px; color: var(--text-color-light); }
 
         /* 友情链接 */
-        .friend-links { background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+        .friend-links { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
         .friend-links .links-container { display: flex; flex-wrap: wrap; gap: 15px; }
 
         /* 页脚 */
@@ -219,18 +221,12 @@
             .main-layout { flex-direction: column; align-items: center; }
             .left-column, .right-column { max-width: 870px; }
         }
-        @media (max-width: 992px) {
-            .featured-posts-grid { height: 300px; }
-            .article-item .thumbnail { flex-basis: 200px; }
-        }
         @media (max-width: 768px) {
             .header-content { flex-direction: column; height: auto; padding: 15px; }
             .header-nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
             .header-nav li { margin: 5px 10px; }
-            .featured-posts-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); height: auto; aspect-ratio: 1 / 1; }
-            .featured-item.large { grid-column: span 2; grid-row: span 1; }
-            .article-list .article-item { flex-direction: column; }
-            .article-item .thumbnail { width: 100%; height: 200px; flex-basis: auto; }
+            .hero-section { height: 300px; }
+            .hero-section .hero-title { font-size: 24px; }
             .left-column, .right-column { max-width: 100%; }
         }
     </style>
@@ -254,47 +250,43 @@
     </header>
 
     <div id="wrap" class="container">
+        {{#articleList.[0]}}
+        <section class="hero-section">
+            <img src="{{thumbnail_url}}" alt="{{title}}" class="hero-bg-image">
+            <div class="hero-content">
+                <div class="hero-category">
+                    <a href="/category/{{category[0]}}/">{{category[0]}}</a>
+                </div>
+                <h1 class="hero-title">
+                    <a href="{{url}}">{{title}}</a>
+                </h1>
+                <div class="hero-meta">
+                    <span>By Admin</span> • <span>{{createDate10}}</span>
+                </div>
+            </div>
+        </section>
+        {{/articleList.[0]}}
+
         <div class="main-layout">
             <div class="left-column">
-                <div class="featured-posts-grid">
-                    <div class="featured-item large" id="featured-large">
-                        <a href="#">
-                            <img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/1.jpg" alt="Featured Image">
-                            <div class="overlay"><h3 class="overlay-title large-title">这是特色文章标题1</h3></div>
-                        </a>
-                    </div>
-                    <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/1.jpg" data-title="这是特色文章标题1" data-url="#">
-                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/1.jpg" alt="Thumbnail 1"><div class="overlay"><h3 class="overlay-title">文章1</h3></div></a>
-                    </div>
-                    <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/2.jpg" data-title="这是特色文章标题2" data-url="#">
-                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/2.jpg" alt="Thumbnail 2"><div class="overlay"><h3 class="overlay-title">文章2</h3></div></a>
-                    </div>
-                    <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/3.jpg" data-title="这是特色文章标题3" data-url="#">
-                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/3.jpg" alt="Thumbnail 3"><div class="overlay"><h3 class="overlay-title">文章3</h3></div></a>
-                    </div>
-                     <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/4.jpg" data-title="这是特色文章标题4" data-url="#">
-                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/4.jpg" alt="Thumbnail 4"><div class="overlay"><h3 class="overlay-title">文章4</h3></div></a>
-                    </div>
-                </div>
-
                 <div class="article-list">
                     {{#articleList}}
                     <article class="article-item">
-                        <a href="{{url}}" class="thumbnail">
-                            <img src="{{thumbnail_url}}" alt="{{title}}">
-                        </a>
+                        <div class="thumbnail-container">
+                            <div class="category-tag"><a href="/category/{{category[0]}}/">{{category[0]}}</a></div>
+                            <a href="{{url}}">
+                                <img src="{{thumbnail_url}}" alt="{{title}}">
+                            </a>
+                        </div>
                         <div class="content">
                             <h2 class="title"><a href="{{url}}">{{title}}</a></h2>
                             <div class="meta">
+                                <span><i class="fal fa-user"></i> By Admin</span>
                                 <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                                {{#category[]}}
-                                <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-                                {{/category[]}}
+                                <span><i class="fal fa-comments"></i> 0 Comments</span>
                             </div>
                             <p class="summary">{{contentText}}...</p>
-                            <div class="read-more-wrapper">
-                               <a href="{{url}}" class="read-more">继续阅读 →</a>
-                            </div>
+                            <a href="{{url}}" class="read-more">Continue Reading</a>
                         </div>
                     </article>
                     {{/articleList}}
@@ -365,28 +357,6 @@
             const topButton = document.querySelector('.j-top');
             if(topButton) {
                 topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-            }
-
-            // 轮播海报交互
-            const featuredLarge = document.getElementById('featured-large');
-            const featuredItems = document.querySelectorAll('.featured-posts-grid .featured-item:not(.large)');
-            
-            if(featuredLarge && featuredItems.length > 0) {
-                featuredItems.forEach(item => {
-                    item.addEventListener('mouseenter', function() {
-                        const newImg = this.dataset.img;
-                        const newTitle = this.dataset.title;
-                        const newUrl = this.dataset.url;
-
-                        const largeLink = featuredLarge.querySelector('a');
-                        const largeImg = featuredLarge.querySelector('img');
-                        const largeTitle = featuredLarge.querySelector('.overlay-title');
-
-                        largeLink.href = newUrl;
-                        largeImg.src = newImg;
-                        largeTitle.textContent = newTitle;
-                    });
-                });
             }
         });
     </script>
