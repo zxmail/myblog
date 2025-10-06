@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>评论管理</title>
+    <link rel="stylesheet" href="files/bootstrap.min.css">
+    <link rel="stylesheet" href="files/style.css">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            文章管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="comments.html">
+                            评论管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="edit.html?id=new">
+                            写文章
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">评论管理</h1>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>文章 Slug</th>
+                            <th>评论内容</th>
+                            <th>评论时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comments-list">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    // 页面加载时获取所有评论
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/comments_all')
+            .then(response => response.json())
+            .then(comments => {
+                const tbody = document.getElementById('comments-list');
+                tbody.innerHTML = ''; // 清空
+                comments.forEach(comment => {
+                    const row = `
+                        <tr id="comment-${comment.id}">
+                            <td>${comment.articleSlug}</td>
+                            <td>${comment.content}</td>
+                            <td>${new Date(comment.timestamp).toLocaleString()}</td>
+                            <td><button class="btn btn-danger btn-sm" onclick="deleteComment('${comment.articleSlug}', '${comment.id}')">删除</button></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            });
+    });
+
+    // 删除评论的函数
+    function deleteComment(articleSlug, commentId) {
+        if (confirm('确定要删除这条评论吗？')) {
+            fetch(`/api/comments/${articleSlug}/${commentId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        // 从表格中移除对应的行
+                        const row = document.getElementById(`comment-${commentId}`);
+                        if(row) row.remove();
+                    } else {
+                        alert('删除失败');
+                    }
+                });
+        }
+    }
+</script>
+
+</body>
+</html>
