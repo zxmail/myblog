@@ -174,6 +174,9 @@
 							</button>
 						</div>
 					</div>
+					<a tabindex="0" role="button" type="button" class="btn btn-primary" onclick="saveCategoryMenuSettings()">
+						<i class="fas fa-save"></i> 保存分类与菜单
+					</a>
 				</div>
 			</div>
 			
@@ -194,6 +197,9 @@
 							<label for="WidgetLink">友情链接 (JSON格式)</label>
 							<textarea class="form-control" id="WidgetLink" name="WidgetLink" rows="5"></textarea>
 						</div>
+						<a tabindex="0" role="button" type="button" class="btn btn-primary" onclick="saveSiteSettings()">
+							<i class="fas fa-save"></i> 保存网站设置
+						</a>
 					</form>
 					<hr/>
 					<h3>导入/导出</h3>
@@ -274,9 +280,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="admin-footer">
-				<button type="button" class="btn btn-primary btn-lg" onclick="saveConfig()"><i class="fas fa-save"></i> 保存所有设置</button>
-			</div>
 		</div>
 	</div>
 </div>
@@ -335,7 +338,6 @@
 
 			$('#createDate').val(new Date().toISOString().slice(0, 16));
 			
-			// 将从后台获取的数据填充到表单
 			$('#siteName').val(`{{& siteName }}`);
 			$('#logo').val(`{{& logo }}`);
 			var initialCategories = JSON.parse(`{{& widgetCategoryList }}`);
@@ -583,8 +585,7 @@
 		return menus;
 	}
 
-
-	function saveConfig(){
+	function saveCategoryMenuSettings() {
 		var categories = [];
 		$('#category-list .category-item').each(function() {
 			var name = $(this).find('input').eq(0).val();
@@ -595,14 +596,29 @@
 		var menus = getMenuItemsFromDom($('#menu-list'));
 
 		var configData = [
-			{ name: 'siteName', value: $('#siteName').val() },
-			{ name: 'logo', value: $('#logo').val() },
 			{ name: 'WidgetCategory', value: JSON.stringify(categories) },
 			{ name: 'WidgetMenu', value: JSON.stringify(menus) },
+		];
+
+		$.ajax({
+			type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+			url: "/admin/saveConfig/", data: JSON.stringify(configData),
+			success: function (result) {
+				alert("保存成功！");
+				updateCategoryDropdown(categories);
+			},
+			error: function() { alert('保存失败，请检查网络或登录状态。'); }
+		});
+	}
+
+	function saveSiteSettings(){
+		var configData = [
+			{ name: 'siteName', value: $('#siteName').val() },
+			{ name: 'logo', value: $('#logo').val() },
 			{ name: 'WidgetLink', value: $('#WidgetLink').val() }
 		];
 		
-		if (!isJSON(configData[4].value) && configData[4].value.trim() !== "") {
+		if (!isJSON(configData[2].value) && configData[2].value.trim() !== "") {
 			alert("“友情链接”的JSON格式错误！"); return false;
 		}
 
@@ -611,7 +627,6 @@
 			url: "/admin/saveConfig/", data: JSON.stringify(configData),
 			success: function (result) {
 				alert("保存成功！");
-				updateCategoryDropdown(categories);
 			},
 			error: function() { alert('保存失败，请检查网络或登录状态。'); }
 		});
