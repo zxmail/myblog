@@ -15,9 +15,9 @@
     <style>
         /* CSS 变量定义 */
         :root {
-            --theme-bd: #617eaf;
-            --theme-color: #206be7;
-            --theme-hover: #1162e8;
+            --theme-bd: #617eaf;          /* 主题边框颜色 */
+            --theme-color: #206be7;        /* 主题主色 */
+            --theme-hover: #1162e8;        /* 主题悬停状态颜色 */
             --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
             --text-color: #333;
             --text-color-light: #777;
@@ -27,137 +27,128 @@
         }
 
         /* 基础样式重置 */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--theme-font-family); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; font-size: 14px; }
-        a { text-decoration: none; color: var(--theme-color); transition: color 0.3s; }
-        a:hover { color: var(--theme-hover); }
-        img { max-width: 100%; height: auto; border: none; vertical-align: middle; }
-        ul, ol { list-style: none; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--theme-font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 14px; /* 正文字体大小 */
+        }
+
+        a {
+            text-decoration: none; /* 去掉所有超链接的下划线 */
+            color: var(--theme-color);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--theme-hover);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
 
         /* 整体布局容器 */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
         /* 头部样式 */
-        .header { background-color: #fff; padding: 10px 0; border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; height: 62px; margin: 0 auto; padding: 0 15px; }
-        .header-logo a { display: flex; align-items: center; font-size: 24px; font-weight: bold; color: var(--text-color); }
-        .header-logo img { height: 40px; margin-right: 10px; }
-        .header-nav ul { display: flex; font-size: 14px; }
-        .header-nav li { margin-left: 20px; }
+        .header {
+            background-color: #fff;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            height: 62px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .header-logo a {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .header-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .header-nav ul {
+            list-style: none;
+            display: flex;
+            font-size: 14px; /* 导航菜单字体大小 */
+        }
+        .header-nav li {
+            margin-left: 20px;
+        }
 
         /* 主体内容区 */
-        #wrap { padding: 20px 0; }
-        .main-layout { display: flex; gap: 20px; justify-content: center; }
-        .left-column { width: 100%; max-width: 870px; }
-        .right-column { width: 100%; max-width: 310px; }
+        #wrap {
+            padding: 20px 0;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            justify-content: center; /* 居中对齐左右栏 */
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
         
-        /* --- 1. 英雄式海报 (Hero Section) START --- */
-        .hero-section {
-            position: relative;
-            height: 400px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            background-color: #333;
+        .left-column {
+            width: 100%;
+            max-width: 870px; /* 左边宽度 */
+        }
+
+        .right-column {
+            width: 100%;
+            max-width: 310px; /* 右侧宽度 */
+        }
+
+        /* 海报轮播 */
+        .carousel-placeholder {
+            background-color: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 20px;
         }
-        .hero-section .hero-bg-image {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            filter: brightness(0.6);
-        }
-        .hero-section .hero-content {
-            position: relative;
-            z-index: 2;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-        .hero-section .hero-category a {
-            display: inline-block;
-            background-color: var(--theme-color);
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        .hero-section .hero-category a:hover {
-             background-color: var(--theme-hover);
-        }
-        .hero-section .hero-title {
-            font-size: 36px;
-            font-weight: bold;
-            line-height: 1.2;
-            margin-bottom: 15px;
-        }
-         .hero-section .hero-title a {
-            color: #fff;
-        }
-        .hero-section .hero-meta {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        /* --- 英雄式海报 END --- */
-        
-        /* --- 2. 新的文章列表 (Article List) START --- */
+
+        /* 文章列表 */
         .article-list .article-item {
             background-color: var(--widget-bg);
-            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
-            overflow: hidden;
-            transition: box-shadow 0.3s;
-        }
-        .article-item:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .article-item .thumbnail-container {
-            position: relative;
-            width: 100%;
-            padding-top: 52%; /* 控制图片高宽比 16:9 */
-            overflow: hidden;
-        }
-        .article-item .thumbnail-container img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-        .article-item:hover .thumbnail-container img {
-            transform: scale(1.05);
-        }
-        .article-item .category-tag {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            z-index: 2;
-        }
-        .article-item .category-tag a {
-            background-color: var(--theme-color);
-            color: #fff;
-            padding: 3px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        .article-item .content {
-            padding: 25px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
         .article-item h2.title {
             font-size: 22px;
             margin-bottom: 10px;
-        }
-        .article-item h2.title a {
-            color: var(--text-color);
-        }
-        .article-item h2.title a:hover {
-            color: var(--theme-color);
         }
         .article-item .meta {
             font-size: 13px;
@@ -169,65 +160,145 @@
         }
         .article-item .summary {
             color: #555;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .article-item .read-more {
             display: inline-block;
-            padding: 8px 20px;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            border-radius: 5px;
-            font-weight: bold;
+            padding: 8px 15px;
+            background-color: var(--theme-color);
+            color: #fff;
+            border-radius: 3px;
         }
         .article-item .read-more:hover {
-            background-color: var(--theme-color);
-            border-color: var(--theme-color);
+            background-color: var(--theme-hover);
             color: #fff;
         }
-        /* --- 新的文章列表 END --- */
 
         /* 分页导航 */
-        .pagination { display: flex; justify-content: space-between; padding: 20px 0; }
-        .pagination a { padding: 10px 20px; border: 1px solid var(--theme-bd); border-radius: 5px; }
-
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+        .pagination a {
+            padding: 10px 20px;
+            border: 1px solid var(--theme-bd);
+            border-radius: 5px;
+        }
+        
         /* 右侧栏小工具 */
-        .widget { background-color: var(--widget-bg); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
-        .widget-title { font-size: 16px; margin-bottom: 15px; border-bottom: 2px solid var(--theme-color); padding-bottom: 8px; font-weight: bold; }
-        .widget .tag-cloud a { display: inline-block; margin: 3px; padding: 5px 10px; background: #f0f0f0; border-radius: 3px; }
-
-        /* 近期文章 (Recent Posts Widget) */
-        .widget-recent-posts ul li { display: flex; margin-bottom: 15px; align-items: center; }
-        .widget-recent-posts .post-thumbnail { flex: 0 0 60px; height: 60px; margin-right: 10px; border-radius: 4px; overflow: hidden; }
-        .widget-recent-posts .post-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-        .widget-recent-posts .post-content .post-title { font-weight: normal; line-height: 1.4; display: block; margin-bottom: 5px; color: var(--text-color); }
-        .widget-recent-posts .post-content .post-date { font-size: 12px; color: var(--text-color-light); }
+        .widget {
+            background-color: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .widget-title {
+            font-size: 16px; /* 模块标题字体大小 */
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--theme-color);
+            padding-bottom: 8px;
+            font-weight: bold;
+        }
+        .widget ul {
+            list-style: none;
+        }
+        .widget ul li {
+            margin-bottom: 10px;
+        }
+        .widget ul li a {
+            color: var(--text-color);
+        }
+        .widget .tag-cloud a {
+            display: inline-block;
+            margin: 3px;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
 
         /* 友情链接 */
-        .friend-links { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
-        .friend-links .links-container { display: flex; flex-wrap: wrap; gap: 15px; }
+        .friend-links {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        .friend-links .links-container {
+             display: flex;
+             flex-wrap: wrap;
+             gap: 15px;
+        }
 
         /* 页脚 */
-        .footer { text-align: center; padding: 30px 0; margin-top: 20px; background-color: #000; color: #ccc; }
-        .footer a { color: #fff; }
-        .footer a:hover { color: var(--theme-hover); }
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+            background-color: #000; /* 页脚黑色背景 */
+            color: #ccc; /* 页脚文字浅色 */
+        }
+        .footer a {
+            color: #fff; /* 页脚链接白色 */
+        }
+        .footer a:hover {
+            color: var(--theme-hover);
+        }
 
         /* 返回顶部按钮 */
-        .action { position: fixed; right: 20px; bottom: 20%; z-index: 10; }
-        .action-item.gotop { width: 40px; height: 40px; background-color: rgba(0,0,0,0.5); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s; }
-        .action-item.gotop:hover { background-color: rgba(0,0,0,0.7); }
+        .action {
+            position: fixed;
+            right: 20px;
+            bottom: 20%;
+        }
+        .action-item.gotop {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0,0,0,0.5);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .action-item.gotop:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
 
         /* 响应式媒体查询 */
         @media (max-width: 1200px) {
-            .main-layout { flex-direction: column; align-items: center; }
-            .left-column, .right-column { max-width: 870px; }
+            .main-layout {
+                flex-direction: column;
+                align-items: center; /* 在较小屏幕上居中 */
+            }
+             .left-column, .right-column {
+                max-width: 870px; /* 在堆叠时，让右侧栏和左侧同宽 */
+             }
         }
+
         @media (max-width: 768px) {
-            .header-content { flex-direction: column; height: auto; padding: 15px; }
-            .header-nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
-            .header-nav li { margin: 5px 10px; }
-            .hero-section { height: 300px; }
-            .hero-section .hero-title { font-size: 24px; }
-            .left-column, .right-column { max-width: 100%; }
+            .header-content {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            .header-nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .header-nav li {
+                margin: 5px 10px;
+            }
+            .article-item h2.title {
+                font-size: 18px;
+            }
+             .left-column, .right-column {
+                max-width: 100%; /* 在手机上占满宽度 */
+             }
         }
     </style>
 </head>
@@ -236,7 +307,10 @@
     <header class="header">
         <div class="header-content">
             <div class="header-logo">
-                <a href="/"><img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}"><span>{{ &OPT.siteName }}</span></a>
+                <a href="/">
+                    <img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}">
+                    <span>{{ &OPT.siteName }}</span>
+                </a>
             </div>
             <nav class="header-nav">
                 <ul>
@@ -250,68 +324,44 @@
     </header>
 
     <div id="wrap" class="container">
-        {{#articleList.[0]}}
-        <section class="hero-section">
-            <img src="{{thumbnail_url}}" alt="{{title}}" class="hero-bg-image">
-            <div class="hero-content">
-                <div class="hero-category">
-                    <a href="/category/{{category[0]}}/">{{category[0]}}</a>
-                </div>
-                <h1 class="hero-title">
-                    <a href="{{url}}">{{title}}</a>
-                </h1>
-                <div class="hero-meta">
-                    <span>By Admin</span> • <span>{{createDate10}}</span>
-                </div>
-            </div>
-        </section>
-        {{/articleList.[0]}}
-
         <div class="main-layout">
             <div class="left-column">
+                <div class="carousel-placeholder">
+                    <p>海报轮播区</p>
+                    </div>
+
                 <div class="article-list">
                     {{#articleList}}
                     <article class="article-item">
-                        <div class="thumbnail-container">
-                            <div class="category-tag"><a href="/category/{{category[0]}}/">{{category[0]}}</a></div>
-                            <a href="{{url}}">
-                                <img src="{{thumbnail_url}}" alt="{{title}}">
-                            </a>
+                        <h2 class="title"><a href="{{url}}">{{title}}</a></h2>
+                        <div class="meta">
+                            <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+                            {{#category[]}}
+                            <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                            {{/category[]}}
                         </div>
-                        <div class="content">
-                            <h2 class="title"><a href="{{url}}">{{title}}</a></h2>
-                            <div class="meta">
-                                <span><i class="fal fa-user"></i> By Admin</span>
-                                <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                                <span><i class="fal fa-comments"></i> 0 Comments</span>
-                            </div>
-                            <p class="summary">{{contentText}}...</p>
-                            <a href="{{url}}" class="read-more">Continue Reading</a>
-                        </div>
+                        <p class="summary">{{contentText}}...</p>
+                        <a href="{{url}}" class="read-more">阅读全文</a>
                     </article>
                     {{/articleList}}
                 </div>
 
                 <nav class="pagination">
-                    {{#pageNewer}}<a href="{{url}}" class="prev">← 上一页</a>{{/pageNewer}}
-                    {{#pageOlder}}<a href="{{url}}" class="next">下一页 →</a>{{/pageOlder}}
+                    {{#pageNewer}}
+                    <a href="{{url}}" class="prev">← 上一页</a>
+                    {{/pageNewer}}
+                    {{#pageOlder}}
+                    <a href="{{url}}" class="next">下一页 →</a>
+                    {{/pageOlder}}
                 </nav>
             </div>
 
             <aside class="right-column">
-                <div class="widget widget-recent-posts">
+                <div class="widget">
                     <h3 class="widget-title">最近文章</h3>
                     <ul>
                         {{#widgetRecentlyList}}
-                        <li>
-                            <a href="{{url}}" class="post-thumbnail">
-                                <img src="{{thumbnail_url}}" alt="{{title}}">
-                            </a>
-                            <div class="post-content">
-                                <a href="{{url}}" class="post-title">{{title}}</a>
-                                <span class="post-date">{{createDate10}}</span>
-                            </div>
-                        </li>
+                        <li><a href="{{url}}">{{title}}</a></li>
                         {{/widgetRecentlyList}}
                     </ul>
                 </div>
@@ -320,7 +370,7 @@
                     <h3 class="widget-title">分类目录</h3>
                     <ul>
                         {{#widgetCategoryList}}
-                        <li><a href="/category/{{name}}/"><i class="{{icon}}"></i> {{name}}</a></li>
+                        <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
                         {{/widgetCategoryList}}
                     </ul>
                 </div>
@@ -328,8 +378,18 @@
                 <div class="widget">
                     <h3 class="widget-title">标签</h3>
                     <div class="tag-cloud">
-                        <a href="#">示例标签</a><a href="#">Cloudflare</a><a href="#">Workers</a><a href="#">Blog</a>
+                        <a href="#">示例标签</a>
+                        <a href="#">Cloudflare</a>
+                        <a href="#">Workers</a>
+                        <a href="#">Blog</a>
                     </div>
+                </div>
+
+                <div class="widget">
+                    <h3 class="widget-title">最近评论</h3>
+                    <ul>
+                        <li>暂无评论</li>
+                    </ul>
                 </div>
             </aside>
         </div>
@@ -337,7 +397,9 @@
         <div class="friend-links">
              <h3 class="widget-title">友情链接</h3>
              <div class="links-container">
-                {{#widgetLinkList}}<a href="{{url}}" target="_blank">{{name}}</a>{{/widgetLinkList}}
+                {{#widgetLinkList}}
+                <a href="{{url}}" target="_blank">{{name}}</a>
+                {{/widgetLinkList}}
             </div>
         </div>
     </div>
@@ -349,14 +411,20 @@
         </div>
     </footer>
 
-    <div class="action"><div class="action-item gotop j-top"><i class="fal fa-arrow-up action-item-icon"></i></div></div>
+    <div class="action action-style-0 action-color-0 action-pos-0">
+        <div class="action-item gotop j-top">
+            <i class="fal fa-arrow-up action-item-icon"></i>
+        </div>
+    </div>
 
     <script>
+        // 简单的返回顶部功能
         document.addEventListener('DOMContentLoaded', function() {
-            // 返回顶部功能
             const topButton = document.querySelector('.j-top');
             if(topButton) {
-                topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+                topButton.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
             }
         });
     </script>
