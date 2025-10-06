@@ -15,9 +15,9 @@
     <style>
         /* CSS 变量定义 */
         :root {
-            --theme-bd: #617eaf;          /* 主题边框颜色 */
-            --theme-color: #206be7;        /* 主题主色 */
-            --theme-hover: #1162e8;        /* 主题悬停状态颜色 */
+            --theme-bd: #617eaf;
+            --theme-color: #206be7;
+            --theme-hover: #1162e8;
             --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
             --text-color: #333;
             --text-color-light: #777;
@@ -27,131 +27,120 @@
         }
 
         /* 基础样式重置 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--theme-font-family);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            font-size: 14px; /* 正文字体大小 */
-        }
-
-        a {
-            text-decoration: none; /* 去掉所有超链接的下划线 */
-            color: var(--theme-color);
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: var(--theme-hover);
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--theme-font-family); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; font-size: 14px; }
+        a { text-decoration: none; color: var(--theme-color); transition: color 0.3s; }
+        a:hover { color: var(--theme-hover); }
+        img { max-width: 100%; height: auto; border: none; vertical-align: middle; }
+        ul, ol { list-style: none; }
 
         /* 整体布局容器 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 
         /* 头部样式 */
-        .header {
-            background-color: #fff;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1300px;
-            height: 62px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        .header-logo a {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-        .header-logo img {
-            height: 40px;
-            margin-right: 10px;
-        }
-        .header-nav ul {
-            list-style: none;
-            display: flex;
-            font-size: 14px; /* 导航菜单字体大小 */
-        }
-        .header-nav li {
-            margin-left: 20px;
-        }
+        .header { background-color: #fff; padding: 10px 0; border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; height: 62px; margin: 0 auto; padding: 0 15px; }
+        .header-logo a { display: flex; align-items: center; font-size: 24px; font-weight: bold; color: var(--text-color); }
+        .header-logo img { height: 40px; margin-right: 10px; }
+        .header-nav ul { display: flex; font-size: 14px; }
+        .header-nav li { margin-left: 20px; }
 
         /* 主体内容区 */
-        #wrap {
-            padding: 20px 0;
-        }
+        #wrap { padding: 20px 0; }
+        .main-layout { display: flex; gap: 20px; justify-content: center; }
+        .left-column { width: 100%; max-width: 870px; }
+        .right-column { width: 100%; max-width: 310px; }
 
-        .main-layout {
-            display: flex;
-            gap: 20px;
-            justify-content: center; /* 居中对齐左右栏 */
-        }
-
-        .main-content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .left-column {
-            width: 100%;
-            max-width: 870px; /* 左边宽度 */
-        }
-
-        .right-column {
-            width: 100%;
-            max-width: 310px; /* 右侧宽度 */
-        }
-
-        /* 海报轮播 */
-        .carousel-placeholder {
-            background-color: var(--widget-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* --- 1. 轮播海报 (Featured Posts Grid) START --- */
+        .featured-posts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            height: 400px;
             margin-bottom: 20px;
         }
+        .featured-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .featured-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .featured-item:hover img {
+            transform: scale(1.05);
+        }
+        .featured-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            color: #fff;
+            z-index: 2;
+        }
+        .featured-item .overlay-title {
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+        .featured-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+        .featured-item .overlay-title.large-title {
+            font-size: 24px;
+        }
+        /* --- 轮播海报 END --- */
 
-        /* 文章列表 */
+        /* --- 2. 文章列表 (Article List) START --- */
         .article-list .article-item {
+            display: flex;
             background-color: var(--widget-bg);
-            border: 1px solid var(--border-color);
             border-radius: 5px;
             margin-bottom: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+        .article-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .article-item .thumbnail {
+            flex: 0 0 250px; /* 固定宽度 */
+            overflow: hidden;
+        }
+        .article-item .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .article-item:hover .thumbnail img {
+            transform: scale(1.05);
+        }
+        .article-item .content {
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
         }
         .article-item h2.title {
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 10px;
         }
+        .article-item h2.title a {
+            color: var(--text-color);
+        }
+        .article-item h2.title a:hover {
+            color: var(--theme-color);
+        }
         .article-item .meta {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-color-light);
             margin-bottom: 15px;
         }
@@ -160,145 +149,89 @@
         }
         .article-item .summary {
             color: #555;
-            margin-bottom: 15px;
+            flex-grow: 1; /* 占据剩余空间 */
+        }
+        .article-item .read-more-wrapper {
+            margin-top: 15px;
         }
         .article-item .read-more {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: var(--theme-color);
-            color: #fff;
-            border-radius: 3px;
-        }
-        .article-item .read-more:hover {
-            background-color: var(--theme-hover);
-            color: #fff;
-        }
-
-        /* 分页导航 */
-        .pagination {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 0;
-        }
-        .pagination a {
-            padding: 10px 20px;
-            border: 1px solid var(--theme-bd);
-            border-radius: 5px;
-        }
-        
-        /* 右侧栏小工具 */
-        .widget {
-            background-color: var(--widget-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .widget-title {
-            font-size: 16px; /* 模块标题字体大小 */
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--theme-color);
-            padding-bottom: 8px;
+            color: var(--text-color-light);
             font-weight: bold;
         }
-        .widget ul {
-            list-style: none;
+         /* --- 文章列表 END --- */
+
+        /* 分页导航 */
+        .pagination { display: flex; justify-content: space-between; padding: 20px 0; }
+        .pagination a { padding: 10px 20px; border: 1px solid var(--theme-bd); border-radius: 5px; }
+
+        /* 右侧栏小工具 */
+        .widget { background-color: var(--widget-bg); border-radius: 5px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+        .widget-title { font-size: 16px; margin-bottom: 15px; border-bottom: 2px solid var(--theme-color); padding-bottom: 8px; font-weight: bold; }
+        .widget .tag-cloud a { display: inline-block; margin: 3px; padding: 5px 10px; background: #f0f0f0; border-radius: 3px; }
+
+        /* --- 3. 近期文章 (Recent Posts Widget) START --- */
+        .widget-recent-posts ul li {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
         }
-        .widget ul li {
-            margin-bottom: 10px;
+        .widget-recent-posts .post-thumbnail {
+            flex: 0 0 60px;
+            height: 60px;
+            margin-right: 10px;
+            border-radius: 4px;
+            overflow: hidden;
         }
-        .widget ul li a {
+        .widget-recent-posts .post-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .widget-recent-posts .post-content .post-title {
+            font-weight: normal;
+            line-height: 1.4;
+            display: block;
+            margin-bottom: 5px;
             color: var(--text-color);
         }
-        .widget .tag-cloud a {
-            display: inline-block;
-            margin: 3px;
-            padding: 5px 10px;
-            background: #f0f0f0;
-            border-radius: 3px;
+        .widget-recent-posts .post-content .post-date {
+            font-size: 12px;
+            color: var(--text-color-light);
         }
+        /* --- 近期文章 END --- */
 
         /* 友情链接 */
-        .friend-links {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            border: 1px solid var(--border-color);
-        }
-        .friend-links .links-container {
-             display: flex;
-             flex-wrap: wrap;
-             gap: 15px;
-        }
+        .friend-links { background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+        .friend-links .links-container { display: flex; flex-wrap: wrap; gap: 15px; }
 
         /* 页脚 */
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 20px;
-            background-color: #000; /* 页脚黑色背景 */
-            color: #ccc; /* 页脚文字浅色 */
-        }
-        .footer a {
-            color: #fff; /* 页脚链接白色 */
-        }
-        .footer a:hover {
-            color: var(--theme-hover);
-        }
+        .footer { text-align: center; padding: 30px 0; margin-top: 20px; background-color: #000; color: #ccc; }
+        .footer a { color: #fff; }
+        .footer a:hover { color: var(--theme-hover); }
 
         /* 返回顶部按钮 */
-        .action {
-            position: fixed;
-            right: 20px;
-            bottom: 20%;
-        }
-        .action-item.gotop {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(0,0,0,0.5);
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .action-item.gotop:hover {
-            background-color: rgba(0,0,0,0.7);
-        }
+        .action { position: fixed; right: 20px; bottom: 20%; z-index: 10; }
+        .action-item.gotop { width: 40px; height: 40px; background-color: rgba(0,0,0,0.5); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s; }
+        .action-item.gotop:hover { background-color: rgba(0,0,0,0.7); }
 
         /* 响应式媒体查询 */
         @media (max-width: 1200px) {
-            .main-layout {
-                flex-direction: column;
-                align-items: center; /* 在较小屏幕上居中 */
-            }
-             .left-column, .right-column {
-                max-width: 870px; /* 在堆叠时，让右侧栏和左侧同宽 */
-             }
+            .main-layout { flex-direction: column; align-items: center; }
+            .left-column, .right-column { max-width: 870px; }
         }
-
+        @media (max-width: 992px) {
+            .featured-posts-grid { height: 300px; }
+            .article-item .thumbnail { flex-basis: 200px; }
+        }
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                height: auto;
-                padding: 15px;
-            }
-            .header-nav ul {
-                margin-top: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .header-nav li {
-                margin: 5px 10px;
-            }
-            .article-item h2.title {
-                font-size: 18px;
-            }
-             .left-column, .right-column {
-                max-width: 100%; /* 在手机上占满宽度 */
-             }
+            .header-content { flex-direction: column; height: auto; padding: 15px; }
+            .header-nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+            .header-nav li { margin: 5px 10px; }
+            .featured-posts-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); height: auto; aspect-ratio: 1 / 1; }
+            .featured-item.large { grid-column: span 2; grid-row: span 1; }
+            .article-list .article-item { flex-direction: column; }
+            .article-item .thumbnail { width: 100%; height: 200px; flex-basis: auto; }
+            .left-column, .right-column { max-width: 100%; }
         }
     </style>
 </head>
@@ -307,10 +240,7 @@
     <header class="header">
         <div class="header-content">
             <div class="header-logo">
-                <a href="/">
-                    <img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}">
-                    <span>{{ &OPT.siteName }}</span>
-                </a>
+                <a href="/"><img src="{{ &OPT.logo }}" alt="{{ &OPT.siteName }}"><span>{{ &OPT.siteName }}</span></a>
             </div>
             <nav class="header-nav">
                 <ul>
@@ -326,42 +256,70 @@
     <div id="wrap" class="container">
         <div class="main-layout">
             <div class="left-column">
-                <div class="carousel-placeholder">
-                    <p>海报轮播区</p>
+                <div class="featured-posts-grid">
+                    <div class="featured-item large" id="featured-large">
+                        <a href="#">
+                            <img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/1.jpg" alt="Featured Image">
+                            <div class="overlay"><h3 class="overlay-title large-title">这是特色文章标题1</h3></div>
+                        </a>
                     </div>
+                    <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/1.jpg" data-title="这是特色文章标题1" data-url="#">
+                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/1.jpg" alt="Thumbnail 1"><div class="overlay"><h3 class="overlay-title">文章1</h3></div></a>
+                    </div>
+                    <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/2.jpg" data-title="这是特色文章标题2" data-url="#">
+                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/2.jpg" alt="Thumbnail 2"><div class="overlay"><h3 class="overlay-title">文章2</h3></div></a>
+                    </div>
+                    <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/3.jpg" data-title="这是特色文章标题3" data-url="#">
+                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/3.jpg" alt="Thumbnail 3"><div class="overlay"><h3 class="overlay-title">文章3</h3></div></a>
+                    </div>
+                     <div class="featured-item" data-img="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/4.jpg" data-title="这是特色文章标题4" data-url="#">
+                        <a href="#"><img src="https://myblog-1dt.pages.dev/themes/JustNews/files/demo/4.jpg" alt="Thumbnail 4"><div class="overlay"><h3 class="overlay-title">文章4</h3></div></a>
+                    </div>
+                </div>
 
                 <div class="article-list">
                     {{#articleList}}
                     <article class="article-item">
-                        <h2 class="title"><a href="{{url}}">{{title}}</a></h2>
-                        <div class="meta">
-                            <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                            {{#category[]}}
-                            <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-                            {{/category[]}}
+                        <a href="{{url}}" class="thumbnail">
+                            <img src="{{thumbnail_url}}" alt="{{title}}">
+                        </a>
+                        <div class="content">
+                            <h2 class="title"><a href="{{url}}">{{title}}</a></h2>
+                            <div class="meta">
+                                <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+                                {{#category[]}}
+                                <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                                {{/category[]}}
+                            </div>
+                            <p class="summary">{{contentText}}...</p>
+                            <div class="read-more-wrapper">
+                               <a href="{{url}}" class="read-more">继续阅读 →</a>
+                            </div>
                         </div>
-                        <p class="summary">{{contentText}}...</p>
-                        <a href="{{url}}" class="read-more">阅读全文</a>
                     </article>
                     {{/articleList}}
                 </div>
 
                 <nav class="pagination">
-                    {{#pageNewer}}
-                    <a href="{{url}}" class="prev">← 上一页</a>
-                    {{/pageNewer}}
-                    {{#pageOlder}}
-                    <a href="{{url}}" class="next">下一页 →</a>
-                    {{/pageOlder}}
+                    {{#pageNewer}}<a href="{{url}}" class="prev">← 上一页</a>{{/pageNewer}}
+                    {{#pageOlder}}<a href="{{url}}" class="next">下一页 →</a>{{/pageOlder}}
                 </nav>
             </div>
 
             <aside class="right-column">
-                <div class="widget">
+                <div class="widget widget-recent-posts">
                     <h3 class="widget-title">最近文章</h3>
                     <ul>
                         {{#widgetRecentlyList}}
-                        <li><a href="{{url}}">{{title}}</a></li>
+                        <li>
+                            <a href="{{url}}" class="post-thumbnail">
+                                <img src="{{thumbnail_url}}" alt="{{title}}">
+                            </a>
+                            <div class="post-content">
+                                <a href="{{url}}" class="post-title">{{title}}</a>
+                                <span class="post-date">{{createDate10}}</span>
+                            </div>
+                        </li>
                         {{/widgetRecentlyList}}
                     </ul>
                 </div>
@@ -370,7 +328,7 @@
                     <h3 class="widget-title">分类目录</h3>
                     <ul>
                         {{#widgetCategoryList}}
-                        <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
+                        <li><a href="/category/{{name}}/"><i class="{{icon}}"></i> {{name}}</a></li>
                         {{/widgetCategoryList}}
                     </ul>
                 </div>
@@ -378,18 +336,8 @@
                 <div class="widget">
                     <h3 class="widget-title">标签</h3>
                     <div class="tag-cloud">
-                        <a href="#">示例标签</a>
-                        <a href="#">Cloudflare</a>
-                        <a href="#">Workers</a>
-                        <a href="#">Blog</a>
+                        <a href="#">示例标签</a><a href="#">Cloudflare</a><a href="#">Workers</a><a href="#">Blog</a>
                     </div>
-                </div>
-
-                <div class="widget">
-                    <h3 class="widget-title">最近评论</h3>
-                    <ul>
-                        <li>暂无评论</li>
-                    </ul>
                 </div>
             </aside>
         </div>
@@ -397,9 +345,7 @@
         <div class="friend-links">
              <h3 class="widget-title">友情链接</h3>
              <div class="links-container">
-                {{#widgetLinkList}}
-                <a href="{{url}}" target="_blank">{{name}}</a>
-                {{/widgetLinkList}}
+                {{#widgetLinkList}}<a href="{{url}}" target="_blank">{{name}}</a>{{/widgetLinkList}}
             </div>
         </div>
     </div>
@@ -411,19 +357,35 @@
         </div>
     </footer>
 
-    <div class="action action-style-0 action-color-0 action-pos-0">
-        <div class="action-item gotop j-top">
-            <i class="fal fa-arrow-up action-item-icon"></i>
-        </div>
-    </div>
+    <div class="action"><div class="action-item gotop j-top"><i class="fal fa-arrow-up action-item-icon"></i></div></div>
 
     <script>
-        // 简单的返回顶部功能
         document.addEventListener('DOMContentLoaded', function() {
+            // 返回顶部功能
             const topButton = document.querySelector('.j-top');
             if(topButton) {
-                topButton.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                topButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            }
+
+            // 轮播海报交互
+            const featuredLarge = document.getElementById('featured-large');
+            const featuredItems = document.querySelectorAll('.featured-posts-grid .featured-item:not(.large)');
+            
+            if(featuredLarge && featuredItems.length > 0) {
+                featuredItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        const newImg = this.dataset.img;
+                        const newTitle = this.dataset.title;
+                        const newUrl = this.dataset.url;
+
+                        const largeLink = featuredLarge.querySelector('a');
+                        const largeImg = featuredLarge.querySelector('img');
+                        const largeTitle = featuredLarge.querySelector('.overlay-title');
+
+                        largeLink.href = newUrl;
+                        largeImg.src = newImg;
+                        largeTitle.textContent = newTitle;
+                    });
                 });
             }
         });
