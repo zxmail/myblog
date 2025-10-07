@@ -1,14 +1,131 @@
+/* 原始 style.css 内容，保持不变 */
+body {
+    background-color: #f4f7f6;
+    font-family: 'Noto Serif SC',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 200px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding-top: 15px;
+    position: fixed;
+    height: 100%;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar-header a {
+    color: #ecf0f1;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.admin-sidebar .nav-pills > li > a {
+    color: #bdc3c7;
+    border-radius: 0;
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+.admin-sidebar .nav-pills > li > a:hover,
+.admin-sidebar .nav-pills > li > a:focus {
+    background-color: #34495e;
+    color: #ffffff;
+}
+
+.admin-sidebar .nav-pills > .active > a,
+.admin-sidebar .nav-pills > .active > a:hover,
+.admin-sidebar .nav-pills > .active > a:focus {
+    background-color: #1abc9c;
+    color: #ffffff;
+}
+
+.admin-sidebar .nav-pills > li > a > i {
+    margin-right: 10px;
+}
+
+.admin-content {
+    margin-left: 200px;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.tab-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7f6;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 360px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-header {
+    margin-bottom: 20px;
+}
+
+.login-header img {
+    max-width: 150px;
+    margin-bottom: 15px;
+}
+
+.login-header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.footer-link {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer-link a {
+    color: #777;
+    text-decoration: none;
+}
+
+#category-menu .panel { margin-top: 20px; }
+#category-menu .input-group { margin-bottom: 10px; }
+#category-menu .sub-menu-container { padding-left: 30px; border-left: 2px solid #f0f0f0; margin-top: 10px; }
+
+/* ================= 新增 Header 样式，请添加到文件末尾 ================= */
+
 /* --- 新 Header 样式 开始 --- */
-
-/* Font Awesome 图标 */
-/* 确保你的项目中已经引入了 Font Awesome，从文件列表看是有的 */
-@import url("/files/fonts/fontawesome5pro-all.min.css");
-
 .site-header {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 30px;
-    position: relative; /* 为搜索框绝对定位提供基准 */
+    position: relative;
 }
 
 .header-container {
@@ -53,7 +170,7 @@
 }
 
 .main-nav li {
-    position: relative; /* 为下拉菜单定位 */
+    position: relative;
 }
 
 .main-nav a {
@@ -63,49 +180,13 @@
     color: #555;
     text-decoration: none;
     transition: color 0.3s, background-color 0.3s;
+    position: relative;
 }
 
 .main-nav a:hover {
     color: #007bff;
     background-color: #f7f7f7;
 }
-
-/* 下拉菜单 (二级和三级) */
-.sub-menu {
-    display: none; /* 默认隐藏 */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-width: 180px;
-    z-index: 1000;
-    flex-direction: column; /* 下拉菜单垂直排列 */
-    padding: 5px 0;
-    border-radius: 4px;
-}
-
-.main-nav li:hover > .sub-menu {
-    display: flex; /* 鼠标悬停时显示 */
-}
-
-.sub-menu li {
-    width: 100%;
-}
-
-.sub-menu a {
-    line-height: 40px; /* 调整下拉菜单行高 */
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
-
-/* 三级菜单定位 */
-.sub-menu .sub-menu {
-    top: 0;
-    left: 100%;
-}
-
 
 /* 右侧区域 */
 .header-right {
@@ -127,7 +208,7 @@
 
 /* 弹出的搜索框 */
 .search-box-container {
-    display: none; /* 默认隐藏 */
+    display: none;
     position: absolute;
     top: 100%;
     right: 30px;
@@ -139,7 +220,7 @@
 }
 
 .search-box-container.visible {
-    display: block; /* 用于JS控制显示 */
+    display: block;
 }
 
 .search-input {
@@ -233,4 +314,3 @@
     display: block;
     white-space: nowrap;
 }
-/* --- 新 Header 样式 结束 --- */
