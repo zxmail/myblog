@@ -670,24 +670,71 @@ ul, li {
         max-width: none;
     }
 
+    /* ==================== MODIFICATION START ==================== */
     .article-item-box {
-        flex-direction: row;
+        flex-direction: row; /* 保持左图右文 */
+        align-items: flex-start; /* 顶部对齐 */
+        gap: 15px; /* 调整图片和内容之间的间距 */
     }
+
     .article-item-image {
-        flex: 0 0 120px;
-        height: 90px;
-        margin-right: 15px;
+        flex: 1 1 40%; /* 允许缩放，基础宽度为40% */
+        max-width: 40%;
+        height: auto; /* 高度自适应 */
+        margin-right: 0; /* 使用gap代替margin */
     }
+
     .article-item-image a {
-        height: 100%;
+        height: auto; /* 高度自适应 */
+        display: block;
+        width: 100%;
     }
+    
+    .article-item-image img {
+        width: 100%; /* 图片宽度填充容器 */
+        height: auto; /* 高度自动，保持比例 */
+    }
+
+    .article-item-content {
+        flex: 1 1 60%; /* 内容占据剩余空间 */
+        display: flex;
+        flex-direction: column;
+    }
+
     .article-item-content h3 {
         font-size: 16px;
+        white-space: normal; /* 标题自动换行 */
     }
+    
+    .article-item-content p {
+        display: none; /* 隐藏正文简介 */
+    }
+    
+    .article-meta {
+        margin-top: 10px; /* 与标题保持一定间距 */
+    }
+    /* ==================== MODIFICATION END ==================== */
     
     .main-layout,
     .friend-links {
         margin: 0 auto;
         max-width: 870px;
+    }
+}
+
+
+/* 当屏幕宽度小于等于 768px 时，可以进一步微调 */
+@media (max-width: 768px) {
+    .article-item-box {
+        gap: 15px; /* 在更小的屏幕上减小间距 */
+    }
+
+    .article-item-image {
+        flex-basis: 35%; /* 在手机上可以适当减小图片的基础宽度 */
+        max-width: 35%;
+    }
+
+    .article-item-content {
+        flex-basis: 65%;
     }
 }
