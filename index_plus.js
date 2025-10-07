@@ -1,3 +1,5 @@
+// index_plus.js (已修正显示逻辑的最终版)
+
 /**
  * Welcome to cf-blog-plus
  * @license Apache-2.0
@@ -27,18 +29,15 @@ const Mustache = (function () {
 }());
 // --- END: Mustache.js v4.1.0 ---
 
-// 新增的辅助函数：从HTML内容中提取第一张图片的URL
 function getFirstImageUrl(htmlContent) {
     if (!htmlContent) return '';
     const match = htmlContent.match(/<img.*?src=["'](.*?)["']/);
     return match ? match[1] : '';
 }
 
-// ======================= CONFIGURATION START =======================
 const password = "123456"; 
 const theme = "JustNews";
 const cdn = "https://myblog-1dt.pages.dev/themes";
-// ======================= CONFIGURATION END =========================
 
 let site = {
 	"title": "cf-blog", "logo": cdn + "/" + theme + "/files/logo.png", "siteName": "CF-BLOG", "siteDescription": "cf-blog", "copyRight": "Copyright © 2022", "keyWords": "cf-blog", "github": "-A-RA/cf-blog-plus", "theme_github_path": cdn + "/", "codeBeforHead": "", "codeBeforBody": "", "commentCode": "", "widgetOther": "",
@@ -59,7 +58,6 @@ async function handleRequest({ request, env, ctx }) {
 			return await renderHTML(request, await getIndexData(request, env), theme + "/index.html", 200, env, ctx);
 		}
 		else if (pathname.startsWith("/article/")) {
-            // ROBUST ID PARSING
 			const parts = pathname.split('/');
             const id = parts[2];
 			return await renderHTML(request, await getArticleData(request, id, env), theme + "/article.html", 200, env, ctx);
@@ -85,7 +83,6 @@ async function handleRequest({ request, env, ctx }) {
 		else if (pathname.startsWith("/admin")) {
 			if (pathname === "/admin" || pathname === "/admin/" || pathname.endsWith("/admin/index.html")) {
 				let data = {};
-				
 				let rawCategories = await env.XYRJ_CONFIG.get("WidgetCategory");
 				let categories = [];
 				if (rawCategories) {
@@ -100,7 +97,6 @@ async function handleRequest({ request, env, ctx }) {
 						categories = [];
 					}
 				}
-
 				data["widgetCategoryList"] = JSON.stringify(categories);
 				data["widgetMenuList"] = await env.XYRJ_CONFIG.get("WidgetMenu") || '[]';
 				data["widgetLinkList"] = await env.XYRJ_CONFIG.get("WidgetLink") || '[]';
@@ -113,7 +109,7 @@ async function handleRequest({ request, env, ctx }) {
 					jsonA.forEach(function (item) { article[item.name] = item.value; });
 					let id = Date.now().toString();
 					article.id = id;
-                    article.contentHtml = article.content; // Directly save content without encryption
+                    article.contentHtml = article.content;
                     delete article.content;
 					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					articleList.unshift(article);
@@ -124,7 +120,7 @@ async function handleRequest({ request, env, ctx }) {
 					let jsonA = await request.json();
 					let article = {};
 					jsonA.forEach(function (item) { article[item.name] = item.value; });
-                    article.contentHtml = article.content; // Directly save content without encryption
+                    article.contentHtml = article.content;
                     delete article.content;
 					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					let id = article.id;
@@ -138,16 +134,13 @@ async function handleRequest({ request, env, ctx }) {
 				else if (pathname.startsWith("/admin/get/")) {
 					const parts = pathname.split('/');
 					const id = parts[3]; 
-
 					if (!id) {
 						return new Response(JSON.stringify({ msg: "Article ID is missing." }), { status: 400, headers: { 'Content-Type': 'application/json' }});
 					}
-				
 					const articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 					const articleSingle = articleList.find(item => item.id === id);
-				
 					if (articleSingle) {
-                        articleSingle.content = articleSingle.contentHtml || ""; // Directly read content without decryption
+                        articleSingle.content = articleSingle.contentHtml || "";
                         delete articleSingle.contentHtml;
 						return new Response(JSON.stringify(articleSingle), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					} else {
@@ -174,12 +167,10 @@ async function handleRequest({ request, env, ctx }) {
 					return new Response(JSON.stringify({ "msg": "Article not found" }), { status: 404, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/saveConfig/")) {
-					let jsonA = await request.json();
-					let config = {};
-					jsonA.forEach(function (item) { config[item.name] = item.value; });
-					await env.XYRJ_CONFIG.put("WidgetCategory", config.WidgetCategory);
-					await env.XYRJ_CONFIG.put("WidgetMenu", config.WidgetMenu);
-					await env.XYRJ_CONFIG.put("WidgetLink", config.WidgetLink);
+					let receivedData = await request.json();
+					for (const item of receivedData) {
+						await env.XYRJ_CONFIG.put(item.name, item.value);
+					}
 					return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/export/")) {
@@ -310,6 +301,33 @@ async function render(data, template_path, env) {
     const templateUrl = cdn + "/" + template_path;
 	let templateResponse = await fetch(templateUrl);
 	let template = await templateResponse.text();
+    
+    const [
+        logo,
+        siteName,
+        widgetMenuList,
+        theme_github_path
+    ] = await Promise.all([
+        env.XYRJ_CONFIG.get('logo'),
+        env.XYRJ_CONFIG.get('siteName'),
+        env.XYRJ_CONFIG.get('WidgetMenu'),
+        env.XYRJ_CONFIG.get('theme_github_path')
+    ]);
+
+    // ======================= 核心修正区域 开始 =======================
+    // 如果从KV读到的值不是null或undefined，就用它；否则，就用一个空字符串 "" 来覆盖默认值。
+    site.logo = (logo !== null && logo !== undefined) ? logo : "";
+    site.siteName = (siteName !== null && siteName !== undefined) ? siteName : "";
+    // ======================= 核心修正区域 结束 =======================
+    
+    site.theme_github_path = theme_github_path || site.theme_github_path;
+    
+    try {
+        site.widgetMenuList = JSON.parse(widgetMenuList || "[]");
+    } catch (e) {
+        site.widgetMenuList = [];
+    }
+
     let renderData = { ...data, OPT: site };
 	return Mustache.render(template, renderData);
 }
@@ -326,14 +344,13 @@ async function getIndexData(request, env) {
 	for (const item of result) {
 		item.url = `/article/${item.id}/${item.link}/`;
 		item.createDate10 = item.createDate.substring(0, 10);
-        const content = item.contentHtml || ""; // Directly read content
+        const content = item.contentHtml || "";
 		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 150);
-        item.firstImageUrl = getFirstImageUrl(content); // 获取第一张图片URL
-        // 提取第一个分类
+        item.firstImageUrl = getFirstImageUrl(content);
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
-        item.views = Math.floor(Math.random() * 1000) + 50; // 添加随机阅读量
+        item.views = Math.floor(Math.random() * 1000) + 50;
 	}
 	let data = {};
 	data["articleList"] = result;
@@ -344,7 +361,7 @@ async function getIndexData(request, env) {
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        item.firstImageUrl = getFirstImageUrl(item.contentHtml); // 为最近文章也获取图片
+        item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	return data;
@@ -357,7 +374,7 @@ async function getArticleData(request, id, env) {
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
-	articleSingle.content = articleSingle.contentHtml || ""; // Directly read content
+	articleSingle.content = articleSingle.contentHtml || "";
 
     const allCategoriesText = await env.XYRJ_CONFIG.get("WidgetCategory") || "[]";
     const allCategories = JSON.parse(allCategoriesText);
@@ -382,7 +399,7 @@ async function getArticleData(request, id, env) {
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        item.firstImageUrl = getFirstImageUrl(item.contentHtml); // 为最近文章也获取图片
+        item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	return data;
@@ -407,14 +424,13 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        const content = item.contentHtml || ""; // Directly read content
+        const content = item.contentHtml || "";
 		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 150);
-        item.firstImageUrl = getFirstImageUrl(content); // 获取第一张图片URL
-        // 提取第一个分类
+        item.firstImageUrl = getFirstImageUrl(content);
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
-        item.views = Math.floor(Math.random() * 1000) + 50; // 添加随机阅读量
+        item.views = Math.floor(Math.random() * 1000) + 50;
 	}
 	let data = {};
 	data["articleList"] = resultPage;
@@ -426,7 +442,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        item.firstImageUrl = getFirstImageUrl(item.contentHtml); // 为最近文章也获取图片
+        item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	return data;
