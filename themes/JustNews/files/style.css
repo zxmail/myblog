@@ -1,281 +1,693 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
-    <title>{{ &title }}</title>
-    <meta name="keywords" content="{{ &keyWords }}" />
-    <meta name="description" content="{{ &OPT.siteDescription }}" />
+/*================================================================
+  style.css
+  
+  TABLE OF CONTENTS:
+  
+  1.  Font Awesome Icons Import
+  2.  CSS Variables
+  3.  Global Resets & Base Styles
+  4.  Layout Structure (Container, Columns)
+  5.  Header & Navigation
+  6.  Main Content Area (Article List, Pagination)
+  7.  Sidebar & Widgets
+  8.  Footer
+  9.  Utility & Components (Back to Top)
+  10. Responsive Design (Media Queries)
+================================================================*/
 
-    <link rel="stylesheet" href="">
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
-	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
-	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
-	{{& OPT.codeBeforHead}}
-</head>
-<body class=""> <header class="site-header">
-    <div class="header-container">
-        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
-            <i class="fal fa-bars"></i>
-        </div>
-        <div class="header-left">
-            <div class="logo-area">
-                {{ #OPT.logo }}
-                <img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image">
-                {{ /OPT.logo }}
-                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
-            </div>
-            <nav class="main-nav" id="main-nav">
-                <ul>
-                    {{ #OPT.widgetMenuList }}
-                    <li>
-                        <a href="{{ &url }}">
-                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                            {{ #children.length }}
-                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /children.length }}
-                        </a>
-                        {{ #children.length }}
-                        <ul class="sub-menu">
-                            {{ #children }}
-                            <li>
-                                <a href="{{ &url }}">
-                                    {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                                    {{ #children.length }}
-                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /children.length }}
-                                </a>
-                                {{ #children.length }}
-                                <ul class="sub-menu">
-                                    {{ #children }}
-                                    <li>
-                                        <a href="{{ &url }}">
-                                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                                        </a>
-                                    </li>
-                                    {{ /children }}
-                                </ul>
-                                {{ /children.length }}
-                            </li>
-                            {{ /children }}
-                        </ul>
-                        {{ /children.length }}
-                    </li>
-                    {{ /OPT.widgetMenuList }}
-                </ul>
-            </nav>
-        </div>
+/* 1. Font Awesome Icons Import */
+@import url("/files/fonts/fontawesome5pro-all.min.css");
 
-        <div class="header-right">
-            <div class="search-icon" id="search-toggle">
-                <i class="fal fa-search"></i>
-            </div>
-            <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
-        </div>
-    </div>
+/* 2. CSS Variables */
+:root {
+    --theme-bd: #617eaf;
+    --theme-color: #206be7;
+    --theme-hover: #1162e8;
+    --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hirgino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
+    --text-color: #333;
+    --text-color-light: #777;
+    --bg-color: #f5f5ff5;
+    --widget-bg: #fff;
+    --border-color: #fff;
+}
 
-    <div class="search-box-container" id="search-box">
-        <input type="text" placeholder="输入关键词搜索..." class="search-input">
-        <button class="search-button">搜索</button>
-    </div>
-</header>
-    <div id="wrap" class="container">
-        <div class="main-layout">
-            <div class="left-column">
-                <div class="carousel-placeholder">
-                    <p>海报轮播区</p>
-                </div>
+/* 3. Global Resets & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-                <div class="article-list">
-                    <ul>
-                    {{#articleList}}
-                        <li class="article-item-box">
-                            {{#firstImageUrl}}
-                            <div class="article-item-image">
-                                {{#firstCategory}}
-                                <div class="image-category">
-                                    <a href="/category/{{.}}/">{{.}}</a>
-                                </div>
-                                {{/firstCategory}}
-                                <a href="{{url}}">
-                                    <img src="{{firstImageUrl}}" alt="{{title}}">
-                                </a>
-                            </div>
-                            {{/firstImageUrl}}
-                            <div class="article-item-content">
-                                <h3><a href="{{url}}">{{title}}</a></h3>
-                                <p>{{contentText}}</p>
-                                <div class="article-meta">
-                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                                    {{#category[]}}
-                                    <span class="meta-category"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-                                    {{/category[]}}
-                                    <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
-                                </div>
-                            </div>
-                        </li>
-                    {{/articleList}}
-                    </ul>
-                </div>
+body {
+    font-family: var(--theme-font-family);
+    background: #f5f5f5;
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 14px;
+}
 
-                <nav class="pagination">
-                    {{#pageNewer}}
-                    <a href="{{url}}" class="prev">← 上一页</a>
-                    {{/pageNewer}}
-                    {{#pageOlder}}
-                    <a href="{{url}}" class="next">下一页 →</a>
-                    {{/pageOlder}}
-                </nav>
-            </div>
+a {
+    text-decoration: none;
+    color: var(--theme-color);
+    transition: color 0.3s;
+}
 
-            <aside class="right-column">
-                <div class="widget widget-recent-posts">
-                    <h3 class="widget-title">最近文章</h3>
-                    <ul>
-                        {{#widgetRecentlyList}}
-                        <li class="recent-article-item-box">
-                            {{#firstImageUrl}}
-                            <div class="recent-article-item-image">
-                                <a href="{{url}}">
-                                    <img src="{{firstImageUrl}}" alt="{{title}}">
-                                </a>
-                            </div>
-                            {{/firstImageUrl}}
-                            <div class="recent-article-item-content">
-                                <a href="{{url}}">{{title}}</a>
-                            </div>
-                        </li>
-                        {{/widgetRecentlyList}}
-                    </ul>
-                </div>
+a:hover {
+    color: var(--theme-hover);
+}
 
-                <div class="widget widget-categories">
-                    <h3 class="widget-title">分类目录</h3>
-                    <ul>
-                        {{#widgetCategoryList}}
-                        <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
-                        {{/widgetCategoryList}}
-                    </ul>
-                </div>
+img {
+    max-width: 100%;
+    height: auto;
+}
 
-                <div class="widget widget-tags">
-                    <h3 class="widget-title">标签</h3>
-                    <div class="tag-cloud">
-                        <a href="#">示例标签</a>
-                        <a href="#">Cloudflare</a>
-                        <a href="#">Workers</a>
-                        <a href="#">Blog</a>
-                    </div>
-                </div>
+ul, li {
+    list-style: none;
+}
 
-                <div class="widget widget-comments">
-                    <h3 class="widget-title">最近评论</h3>
-                    <ul>
-                        <li>暂无评论</li>
-                    </ul>
-                </div>
-                </aside>
-        </div>
+/* 4. Layout Structure (Container, Columns) */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
-        <div class="friend-links">
-             <h3 class="widget-title">友情链接</h3>
-             <div class="links-container">
-                {{#widgetLinkList}}
-                <a href="{{url}}" target="_blank">{{name}}</a>
-                {{/widgetLinkList}}
-            </div>
-        </div>
-    </div>
+#wrap {
+    padding: 20px 0;
+}
 
-    <footer class="footer">
-        <div class="container">
-            <p>{{ &OPT.copyRight }}</p>
-            <p>Powered by <a href="https://github.com/-A-RA/cf-blog-plus" target="_blank">cf-blog-plus</a>. Theme by JustNews.</p>
-        </div>
-    </footer>
+.main-layout {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
 
-    <div class="action action-style-0 action-color-0 action-pos-0">
-        <div class="action-item gotop j-top">
-            <i class="fal fa-arrow-up action-item-icon"></i>
-        </div>
-    </div>
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.left-column {
+    width: 100%;
+    max-width: 870px;
+}
+
+.right-column {
+    width: 100%;
+    max-width: 310px;
+}
+
+/* 5. Header & Navigation */
+.site-header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 30px;
+    position: relative;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 62px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.logo-image {
+    height: 40px;
+    margin-right: 15px;
+}
+
+.blog-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.main-nav ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-nav li {
+    position: relative;
+}
+
+.main-nav a {
+    display: block;
+    padding: 0 15px;
+    line-height: 62px;
+    color: #555;
+    transition: color 0.3s;
+}
+
+.main-nav a:hover {
+    color: #007bff;
+}
+
+.main-nav a .arrow-container {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+/* Sub-menu (Dropdown) - 动画与样式最终修改 */
+.sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background-color: #fff;
+    /* ★★★ 修改2：移除阴影和边框 ★★★ */
+    box-shadow: none;
+    border: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    /* ★★★ 修改1：二级菜单从上向下滑动 ★★★ */
+    transform: translateY(-10px); /* 初始位置在上方 */
+    transition: all 0.3s ease;
+}
+
+.sub-menu a {
+    line-height: 40px;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.sub-menu li {
+    width: 100%;
+    position: relative;
+}
+
+/* 三级菜单的特定样式 */
+.sub-menu .sub-menu {
+    top: 0;
+    left: 100%;
+    /* ★★★ 修改1：三级菜单从左向右滑动 ★★★ */
+    transform: translateX(-10px); /* 初始位置在左侧 */
+}
+
+/* 悬停时显示二级菜单 */
+.main-nav li:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* 悬停时显示三级菜单 */
+.sub-menu li:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* 箭头动画 */
+.main-nav > ul > li:hover > a > .arrow-container {
+    transform: rotate(-90deg);
+}
+
+.sub-menu li:hover > a > .arrow-container {
+    transform: none;
+}
+
+
+/* Header Right: Search & Login */
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon, .login-link {
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.search-icon:hover, .login-link:hover {
+    color: #007bff;
+}
+
+.search-box-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 30px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.search-box-container.visible {
+    display: block;
+}
+
+.search-input {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+/* Mobile Menu Toggle & Overlay */
+.mobile-menu-toggle {
+    display: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+/* 6. Main Content Area (Article List, Pagination) */
+.carousel-placeholder {
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.article-list {
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.article-item-box {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 25px;
+}
+
+.article-item-box:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.article-item-image {
+    flex: 0 0 220px;
+    margin-right: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.article-item-image a {
+    display: block;
+    width: 100%;
+    height: 140px;
+}
+
+.article-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.article-item-image img:hover {
+    transform: scale(1.05);
+}
+
+.image-category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(32, 107, 231, 0.85);
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    line-height: 1.5;
+    z-index: 2;
+}
+
+.image-category a {
+    color: #fff;
+}
+
+.article-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.article-item-content h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.article-item-content h3 a {
+    color: #333;
+}
+
+.article-item-content h3 a:hover {
+    color: var(--theme-hover);
+}
+
+.article-item-content p {
+    margin: 0 0 10px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 15px;
+}
+
+.article-meta {
+    font-size: 0.85rem;
+    color: #999;
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+}
+
+.article-meta span {
+    margin-right: 15px;
+}
+
+.article-meta .views {
+    margin-left: auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.pagination a {
+    padding: 10px 20px;
+    border: 1px solid var(--theme-bd);
+    border-radius: 5px;
+}
+
+/* 7. Sidebar & Widgets */
+.widget {
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.widget-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.widget-title::before {
+    content: "";
+    width: 4px;
+    height: 1em;
+    background-color: var(--theme-color);
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.widget ul li {
+    margin-bottom: 10px;
+}
+
+.widget ul li a {
+    color: var(--text-color);
+}
+
+.widget .tag-cloud a {
+    display: inline-block;
+    margin: 3px;
+    padding: 5px 10px;
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+/* Recent Posts Widget */
+.recent-article-item-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.recent-article-item-image {
+    flex: 0 0 60px;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.recent-article-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.recent-article-item-content {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.recent-article-item-content a {
+    color: #555;
+}
+
+.recent-article-item-content a:hover {
+    color: var(--theme-hover);
+}
+
+/* Friend Links Widget */
+.friend-links {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.friend-links .links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* 8. Footer */
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 20px;
+    background-color: #000;
+    color: #ccc;
+}
+
+.footer a {
+    color: #fff;
+}
+
+.footer a:hover {
+    color: var(--theme-hover);
+}
+
+/* 9. Utility & Components (Back to Top) */
+.action {
+    position: fixed;
+    right: 20px;
+    bottom: 20%;
+}
+
+.action-item.gotop {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-item.gotop:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 10. Responsive Design (Media Queries) */
+
+/* Screen width 991px - 1199px (Tablet) */
+@media (max-width: 1199px) and (min-width: 991px) {
+    .container {
+        max-width: 96%;
+    }
+    .main-layout {
+        justify-content: space-between;
+    }
+    .left-column {
+        width: calc(100% - 310px - 20px);
+        max-width: none;
+    }
+    .right-column {
+        width: 310px;
+        max-width: none;
+    }
+}
+
+/* Screen width < 990px (Mobile) */
+@media (max-width: 990px) {
+    .site-header {
+        padding: 0 15px;
+    }
+
+    /* Mobile Header Layout */
+    .mobile-menu-toggle {
+        display: block;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .header-container {
+        position: relative;
+        justify-content: center;
+    }
+    .header-left {
+        flex-grow: 1;
+        justify-content: center;
+    }
+    .header-right {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .logo-area {
+        margin-right: 0;
+    }
+    .blog-name,
+    .login-link {
+        display: none;
+    }
     
-    <div class="overlay" id="overlay"></div>
-    <script>
-        // 简单的返回顶部功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const topButton = document.querySelector('.j-top');
-            if(topButton) {
-                topButton.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
-    <script>
-    // --- Header 搜索框控制脚本 ---
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchToggle = document.getElementById('search-toggle');
-        const searchBox = document.getElementById('search-box');
+    /* Slide-out Mobile Navigation */
+    .main-nav {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 70%;
+        max-width: 400px;
+        background: #fff;
+        overflow-y: auto;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        padding-top: 20px;
+    }
+    .main-nav ul {
+        flex-direction: column;
+    }
+    .main-nav a {
+        line-height: 50px;
+        padding: 0 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .main-nav .sub-menu,
+    .main-nav .arrow-container {
+        display: none;
+    }
 
-        if (searchToggle && searchBox) {
-            searchToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                searchBox.classList.toggle('visible');
-            });
-            
-            searchBox.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        }
+    body.nav-open .main-nav {
+        transform: translateX(0);
+    }
+    body.nav-open .overlay {
+        display: block;
+    }
+    
+    /* Mobile Layout Adjustments */
+    .right-column,
+    .meta-category {
+        display: none;
+    }
+    
+    .left-column {
+        width: 100%;
+        max-width: none;
+    }
 
-        document.addEventListener('click', function() {
-            if (searchBox && searchBox.classList.contains('visible')) {
-                searchBox.classList.remove('visible');
-            }
-        });
-
-        // --- 移动端菜单控制脚本 ---
-        const menuToggle = document.getElementById('mobile-menu-toggle');
-        const mainNav = document.getElementById('main-nav');
-        const body = document.querySelector('body');
-        const overlay = document.getElementById('overlay');
-
-        if (menuToggle && mainNav) {
-            menuToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                body.classList.toggle('nav-open');
-            });
-        }
-        
-        // 点击菜单外部或遮罩层关闭菜单
-        const closeMenu = function() {
-            body.classList.remove('nav-open');
-        };
-        
-        if (overlay) {
-            overlay.addEventListener('click', closeMenu);
-        }
-        
-        document.addEventListener('click', function(event) {
-            if (body.classList.contains('nav-open') && !mainNav.contains(event.target)) {
-                 if (!menuToggle.contains(event.target)) {
-                    closeMenu();
-                }
-            }
-        });
-        mainNav.addEventListener('click', function(event){
-            event.stopPropagation();
-        });
-
-
-    });
-</script>
-</body>
-</html>
+    .article-item-box {
+        flex-direction: row;
+    }
+    .article-item-image {
+        flex: 0 0 120px;
+        height: 90px;
+        margin-right: 15px;
+    }
+    .article-item-image a {
+        height: 100%;
+    }
+    .article-item-content h3 {
+        font-size: 16px;
+    }
+    
+    .main-layout,
+    .friend-links {
+        margin: 0 auto;
+        max-width: 870px;
+    }
+}
