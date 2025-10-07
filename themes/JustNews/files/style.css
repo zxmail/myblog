@@ -1,14 +1,13 @@
 /* --- 新 Header 样式 开始 --- */
 
 /* Font Awesome 图标 */
-/* 确保你的项目中已经引入了 Font Awesome，从文件列表看是有的 */
 @import url("/files/fonts/fontawesome5pro-all.min.css");
 
 .site-header {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 30px;
-    position: relative; /* 为搜索框绝对定位提供基准 */
+    position: relative; 
 }
 
 .header-container {
@@ -53,7 +52,7 @@
 }
 
 .main-nav li {
-    position: relative; /* 为下拉菜单定位 */
+    position: relative;
 }
 
 .main-nav a {
@@ -62,7 +61,7 @@
     line-height: 62px;
     color: #555;
     text-decoration: none;
-    transition: color 0.3s, background-color 0.3s;
+    transition: color 0.3s;
 }
 
 .main-nav a .arrow-container {
@@ -72,17 +71,16 @@
 }
 
 .main-nav li:hover > a .arrow-container {
-    transform: rotate(-90deg); /* 鼠标悬停时，箭头向右旋转 */
+    transform: rotate(-90deg);
 }
 
 .main-nav a:hover {
     color: #007bff;
 }
 
-
 /* 下拉菜单 (二级和三级) */
 .sub-menu {
-    display: none; /* 默认隐藏 */
+    display: none;
     position: absolute;
     top: 100%;
     left: 0;
@@ -90,13 +88,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     min-width: 180px;
     z-index: 1000;
-    flex-direction: column; /* 下拉菜单垂直排列 */
+    flex-direction: column;
     padding: 5px 0;
     border-radius: 4px;
 }
 
 .main-nav li:hover > .sub-menu {
-    display: flex; /* 鼠标悬停时显示 */
+    display: flex;
 }
 
 .sub-menu li {
@@ -104,7 +102,7 @@
 }
 
 .sub-menu a {
-    line-height: 40px; /* 调整下拉菜单行高 */
+    line-height: 40px;
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
@@ -130,9 +128,6 @@
     margin-left: 20px;
     transition: color 0.3s;
 }
-.login-link{
-    display: none; /* 移动端隐藏后台登录入口 */
-}
 
 .search-icon:hover, .login-link:hover {
     color: #007bff;
@@ -140,7 +135,7 @@
 
 /* 弹出的搜索框 */
 .search-box-container {
-    display: none; /* 默认隐藏 */
+    display: none;
     position: absolute;
     top: 100%;
     right: 30px;
@@ -150,124 +145,148 @@
     border-radius: 4px;
     z-index: 1000;
 }
-
-.search-box-container.visible {
-    display: block; /* 用于JS控制显示 */
-}
-
-.search-input {
-    border: 1px solid #ccc;
-    padding: 8px 10px;
-    border-radius: 4px;
-    outline: none;
-}
-
-.search-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.search-button:hover {
-    background-color: #0056b3;
-}
+.search-box-container.visible { display: block; }
+.search-input { border: 1px solid #ccc; padding: 8px 10px; border-radius: 4px; outline: none; }
+.search-button { background-color: #007bff; color: #fff; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+.search-button:hover { background-color: #0056b3; }
 
 /* --- 下拉菜单悬停显示控制 --- */
-.main-nav ul ul {
-    display: none;
-    position: absolute;
-    top: 100%; 
-    left: 0;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-width: 180px;
-    z-index: 1000;
-    padding: 5px 0;
-    border-radius: 4px;
-}
+.main-nav ul ul { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 180px; z-index: 1000; padding: 5px 0; border-radius: 4px; }
+.main-nav ul li:hover > ul { display: block; }
+.main-nav ul ul ul { top: -5px; left: 100%; }
+.main-nav ul ul li { width: 100%; position: relative; }
+.main-nav ul ul a { line-height: 40px; width: 100%; padding: 0 20px; box-sizing: border-box; display: block; white-space: nowrap; }
 
-.main-nav ul li:hover > ul {
-    display: block;
-}
+/* 默认隐藏汉堡菜单和遮罩层 */
+.mobile-menu-toggle { display: none; font-size: 22px; cursor: pointer; }
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 998; }
 
-.main-nav ul ul ul {
-    top: -5px; 
-    left: 100%;
-}
+/* ============== 本次修改点: 新增响应式规则 ============== */
 
-.main-nav ul ul li {
-    width: 100%;
-    position: relative;
-}
-
-.main-nav ul ul a {
-    line-height: 40px; 
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
-    display: block;
-    white-space: nowrap;
-}
-
-/* ============== 本次修改点: 新增移动端样式 ============== */
-/* 默认隐藏汉堡菜单 */
-.mobile-menu-toggle {
-    display: none;
-    font-size: 22px;
-    cursor: pointer;
-}
-
-/* 响应式媒体查询 */
-/* 当屏幕小于 1200px 时，内容区会自动缩小，侧边栏保持在右侧 */
-
-/* 当屏幕小于 990px 时，侧边栏换行，并隐藏部分元素 */
-@media (max-width: 990px) {
+/* --- 1. 屏幕宽度 991px - 1199px (内容缩小) --- */
+@media (max-width: 1199px) and (min-width: 991px) {
+    .container {
+        max-width: 96%; /* 让容器宽度随屏幕变化 */
+    }
     .main-layout {
-        flex-direction: column;
-        align-items: center;
+        justify-content: space-between; /* 两端对齐 */
     }
-    .left-column, .right-column {
-        max-width: 100%; /* 宽度占满容器 */
+    .left-column {
+        width: calc(100% - 310px - 20px); /* 动态计算左栏宽度 */
+        max-width: none;
     }
-
-    /* 隐藏指定的侧边栏小工具 */
-    .widget-categories,
-    .widget-tags,
-    .widget-comments {
-        display: none;
-    }
-
-    /* 隐藏文章元信息中的分类目录 */
-    .article-meta .meta-category {
-        display: none;
+    .right-column {
+        width: 310px; /* 右栏保持固定宽度 */
+        max-width: none;
     }
 }
 
 
-@media (max-width: 768px) {
-    /* 移动端头部样式已在上一版中添加，此处保留 */
-    .header-content {
-        flex-direction: column;
-        height: auto;
-        padding: 15px;
+/* --- 2. 屏幕宽度 < 990px (移动端) --- */
+@media (max-width: 990px) {
+    .site-header {
+        padding: 0 15px;
     }
-    .header-nav ul {
-        margin-top: 15px;
-        flex-wrap: wrap;
+    .header-container {
+        position: relative;
+    }
+    
+    /* 页头布局: 左-中-右 */
+    .mobile-menu-toggle {
+        display: block;
+        position: absolute;
+        left: 0;
+    }
+    .header-left {
         justify-content: center;
+        flex-grow: 1;
     }
-    .header-nav li {
-        margin: 5px 10px;
+    .header-right {
+        position: absolute;
+        right: 0;
     }
+    .logo-area {
+        margin-right: 0;
+    }
+    .blog-name {
+        display: none; /* 移动端通常只显示logo图片 */
+    }
+    .login-link {
+        display: none; /* 隐藏后台登录入口 */
+    }
+    
+    /* 左侧滑出式菜单 */
+    .main-nav {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 70%;
+        max-width: 400px;
+        background: #fff;
+        overflow-y: auto;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        padding-top: 20px;
+    }
+    .main-nav ul {
+        flex-direction: column;
+    }
+    .main-nav li {
+        margin-left: 0;
+    }
+    .main-nav a {
+        line-height: 50px;
+        padding: 0 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .main-nav .sub-menu { display: none; } /* 移动端简化，不显示子菜单 */
+    .main-nav .arrow-container { display: none; }
 
-    /* 本次修改点: 
-       移除了 .article-item-box { flex-direction: column; } 
-       以及相关的 .article-item-image 样式覆盖,
-       以确保文章列表始终保持“左图右文”布局。
-    */
+    /* JS 控制菜单滑出 */
+    body.nav-open .main-nav {
+        transform: translateX(0);
+    }
+    body.nav-open .overlay {
+        display: block;
+    }
+    
+    /* 隐藏侧边栏和文章分类 */
+    .right-column {
+        display: none;
+    }
+    .meta-category {
+        display: none;
+    }
+    
+    /* 主体内容布局调整 */
+    .left-column {
+        width: 100%;
+        max-width: none;
+    }
+    .article-item-box {
+        flex-direction: row; /* 强制保持左图右文 */
+    }
+    .article-item-image {
+        flex: 0 0 120px; /* 缩小图片宽度 */
+        height: 90px;
+        margin-right: 15px;
+    }
+     .article-item-image a {
+        height: 100%;
+     }
+    .article-item-content h3 {
+        font-size: 16px;
+    }
+    
+    /* 友情链接与轮播图对齐 */
+    .main-layout, .friend-links {
+        margin: 0 auto;
+        max-width: 870px; /* 与桌面端左栏保持一致 */
+    }
 }
 
 /* --- 新 Header 样式 结束 --- */
