@@ -220,69 +220,54 @@
     cursor: pointer;
 }
 
-/* 响应式媒体查询 for Mobile */
-@media (max-width: 768px) {
-    .site-header {
-        padding: 0 15px;
+/* 响应式媒体查询 */
+/* 当屏幕小于 1200px 时，内容区会自动缩小，侧边栏保持在右侧 */
+
+/* 当屏幕小于 990px 时，侧边栏换行，并隐藏部分元素 */
+@media (max-width: 990px) {
+    .main-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+    .left-column, .right-column {
+        max-width: 100%; /* 宽度占满容器 */
     }
 
-    /* 1. 显示汉堡菜单，隐藏桌面导航 */
-    .mobile-menu-toggle {
-        display: block;
-    }
-    .main-nav {
-        display: none; /* 默认隐藏导航 */
-        position: absolute;
-        top: 62px; /* header的高度 */
-        left: 0;
-        width: 100%;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        z-index: 999;
-    }
-
-    /* 2. 实现 左-中-右 布局 */
-    .header-left {
-        flex-grow: 1; /* 让左侧区域占据剩余空间 */
-        justify-content: center; /* 将内部的logo居中 */
-    }
-    .logo-area {
-        margin-right: 0;
-    }
-
-    /* 3. JS触发后的移动端菜单样式 */
-    .main-nav.is-open {
-        display: block;
-    }
-    .main-nav.is-open ul {
-        flex-direction: column; /* 菜单项垂直排列 */
-        width: 100%;
-    }
-    .main-nav.is-open li {
-        margin-left: 0;
-    }
-    .main-nav.is-open a {
-        line-height: 50px;
-        padding: 0 20px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .main-nav.is-open .sub-menu {
-        display: none; /* 移动端简化，暂时不处理多级菜单的复杂交互 */
-        /* 如果需要显示，则需要重新设计交互方式 */
-    }
-    .main-nav.is-open .arrow-container {
-        display: none; /* 隐藏箭头 */
-    }
-
-
-    /* 4. 隐藏指定的小工具 */
+    /* 隐藏指定的侧边栏小工具 */
     .widget-categories,
     .widget-tags,
     .widget-comments {
         display: none;
     }
-}
-/* ============== 修改点结束 ============== */
 
+    /* 隐藏文章元信息中的分类目录 */
+    .article-meta .meta-category {
+        display: none;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* 移动端头部样式已在上一版中添加，此处保留 */
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+    }
+    .header-nav ul {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .header-nav li {
+        margin: 5px 10px;
+    }
+
+    /* 本次修改点: 
+       移除了 .article-item-box { flex-direction: column; } 
+       以及相关的 .article-item-image 样式覆盖,
+       以确保文章列表始终保持“左图右文”布局。
+    */
+}
 
 /* --- 新 Header 样式 结束 --- */
