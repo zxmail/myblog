@@ -269,7 +269,6 @@
         flex-direction: row; /* 强制保持左图右文 */
     }
     
-    /* ============== 本次修改点 ============== */
     .article-item-image {
         flex: 0 0 100px; /* 进一步缩小图片容器宽度 */
         height: 75px;  /* 按4:3比例调整高度 */
@@ -278,7 +277,6 @@
     .article-item-content p {
         display: none; /* 隐藏正文简介 */
     }
-    /* ============== 修改点结束 ============== */
     
      .article-item-image a {
         height: 100%;
