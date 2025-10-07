@@ -447,37 +447,53 @@
     <div class="header-container">
         <div class="header-left">
             <div class="logo-area">
-                <img src="/files/logo.png" alt="博客Logo" class="logo-image">
-                <a href="/" class="blog-name">我的博客</a>
+                {{ #OPT.logo }}
+                <img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image">
+                {{ /OPT.logo }}
+                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#">首页</a></li>
+                    {{ #OPT.widgetMenuList }}
                     <li>
-                        <a href="#">分类 ▾</a>
+                        <a href="{{ &url }}">
+                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                        </a>
+                        {{ #children.length }}
                         <ul class="sub-menu">
-                            <li><a href="#">技术</a></li>
+                            {{ #children }}
                             <li>
-                                <a href="#">生活 ▾</a>
+                                <a href="{{ &url }}">
+                                    {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                </a>
+                                {{ #children.length }}
                                 <ul class="sub-menu">
-                                    <li><a href="#">美食</a></li>
-                                    <li><a href="#">旅行</a></li>
+                                    {{ #children }}
+                                    <li>
+                                        <a href="{{ &url }}">
+                                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                        </a>
+                                    </li>
+                                    {{ /children }}
                                 </ul>
+                                {{ /children.length }}
                             </li>
-                            <li><a href="#">随笔</a></li>
+                            {{ /children }}
                         </ul>
+                        {{ /children.length }}
                     </li>
-                    <li><a href="#">关于</a></li>
-                    <li><a href="#">归档</a></li>
+                    {{ /OPT.widgetMenuList }}
                 </ul>
             </nav>
         </div>
 
         <div class="header-right">
             <div class="search-icon" id="search-toggle">
-                <i class="fas fa-search"></i> </div>
+                <i class="fas fa-search"></i>
+            </div>
             <a href="/admin" class="login-link">
-                <i class="fas fa-user-circle"></i> </a>
+                <i class="fas fa-user-circle"></i>
+            </a>
         </div>
     </div>
 
@@ -486,7 +502,6 @@
         <button class="search-button">搜索</button>
     </div>
 </header>
-
     <div id="wrap" class="container">
         <div class="main-layout">
             <div class="left-column">
