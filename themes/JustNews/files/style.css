@@ -17,7 +17,7 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    height: 70px;
+    height: 62px; /* <-- 修改点: 高度从 70px 修改为 62px */
 }
 
 /* 左侧区域 */
@@ -59,11 +59,24 @@
 .main-nav a {
     display: block;
     padding: 0 15px;
-    line-height: 70px;
+    line-height: 62px; /* <-- 修改点: 行高从 70px 修改为 62px */
     color: #555;
     text-decoration: none;
     transition: color 0.3s, background-color 0.3s;
 }
+
+/* ============== 本次新增样式 ============== */
+.main-nav a .arrow-container {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.main-nav li:hover > a .arrow-container {
+    transform: rotate(-90deg); /* 鼠标悬停时，箭头向右旋转 */
+}
+/* ============== 新增样式结束 ============== */
+
 
 .main-nav a:hover {
     color: #007bff;
