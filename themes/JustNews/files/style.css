@@ -161,6 +161,8 @@
 .mobile-menu-toggle { display: none; font-size: 22px; cursor: pointer; }
 .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 998; }
 
+/* ============== 本次修改点: 新增响应式规则 ============== */
+
 /* --- 1. 屏幕宽度 991px - 1199px (内容缩小) --- */
 @media (max-width: 1199px) and (min-width: 991px) {
     .container {
@@ -268,16 +270,11 @@
     .article-item-box {
         flex-direction: row; /* 强制保持左图右文 */
     }
-    
     .article-item-image {
-        flex: 0 0 100px; /* 进一步缩小图片容器宽度 */
-        height: 75px;  /* 按4:3比例调整高度 */
+        flex: 0 0 120px; /* 缩小图片宽度 */
+        height: 90px;
         margin-right: 15px;
     }
-    .article-item-content p {
-        display: none; /* 隐藏正文简介 */
-    }
-    
      .article-item-image a {
         height: 100%;
      }
@@ -291,3 +288,5 @@
         max-width: 870px; /* 与桌面端左栏保持一致 */
     }
 }
+
+/* --- 新 Header 样式 结束 --- */
