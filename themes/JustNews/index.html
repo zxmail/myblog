@@ -1,277 +1,669 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>{{& OPT.siteName}}</title>
-		<meta name="description" content="{{& OPT.siteDescription}}">
-		<meta name="keywords" content="{{& OPT.keyWords}}">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/style.css">
-		<link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/noto+serif.css">
-		<link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/fonts/fontawesome5pro-all.min.css">
-		<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
-		<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
-		{{& OPT.codeBeforHead}}
-	</head>
-	<body>
-		{{& OPT.codeBeforBody}}
-		<div class="main">
-			<header class="site-header">
-				<div class="header-container">
-					<div class="header-left">
-						<div class="logo-area">
-							{{ #OPT.logo }}
-							<img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image">
-							{{ /OPT.logo }}
-							<a href="/" class="blog-name">{{ &OPT.siteName }}</a>
-						</div>
-						<nav class="main-nav">
-							<ul>
-								{{ #OPT.widgetMenuList }}
-								<li class="{{ #hasChildren }}has-children{{ /hasChildren }}">
-									<a href="{{ &url }}">
-										{{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-									</a>
-									{{ #children.length }}
-									<ul class="sub-menu">
-										{{ #children }}
-										<li class="{{ #hasChildren }}has-children{{ /hasChildren }}">
-											<a href="{{ &url }}">
-												{{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-											</a>
-											{{ #children.length }}
-											<ul class="sub-menu">
-												{{ #children }}
-												<li>
-													<a href="{{ &url }}">
-														{{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-													</a>
-												</li>
-												{{ /children }}
-											</ul>
-											{{ /children.length }}
-										</li>
-										{{ /children }}
-									</ul>
-									{{ /children.length }}
-								</li>
-								{{ /OPT.widgetMenuList }}
-							</ul>
-						</nav>
-					</div>
-					<div class="header-right">
-						<div class="search-icon" id="search-toggle">
-							<i class="fas fa-search"></i>
-						</div>
-						<a href="/admin" class="login-link">
-							<i class="fas fa-user-circle"></i>
-						</a>
-					</div>
-				</div>
-				<div class="search-box-container" id="search-box">
-					<input type="text" placeholder="输入关键词搜索..." class="search-input">
-					<button class="search-button">搜索</button>
-				</div>
-			</header>
-			<div class="wrapper">
-				<div class="content">
-					{{#is_single}}
-						<div class="card">
-							<div class="card-header">
-								<h1>{{&title}}</h1>
-								<div class="card-meta">
-									<span><i class="fas fa-calendar-alt"></i>{{&createDate10}}</span>
-									<span><i class="fas fa-user"></i><a href="#">admin</a></span>
-									<span><i class="fas fa-book-reader"></i><a href="#">{{&views}}</a></span>
-									<span>
-										<i class="fas fa-th-large"></i>
-										{{#categories}}
-											<a href="/category/{{&name}}/">{{&name}}</a>
-										{{/categories}}
-									</span>
-								</div>
-							</div>
-							<div class="card-body">
-								<div class="card-content">
-									{{&content}}
-								</div>
-								<div class="card-tags">
-									{{#tags}}
-										<a href="/tags/{{&.}}/">{{&.}}</a>
-									{{/tags}}
-								</div>
-							</div>
-						</div>
-						<div class="near-card">
-							{{#articleOlder}}
-								<a href="{{&url}}" class="card-older">
-									<i class="fas fa-arrow-left"></i>
-									<span>{{&title}}</span>
-								</a>
-							{{/articleOlder}}
-							{{^articleOlder}}
-								<div class="card-older-none">
-									<i class="fas fa-arrow-left"></i>
-									<span>没有了</span>
-								</div>
-							{{/articleOlder}}
-							{{#articleNewer}}
-								<a href="{{&url}}" class="card-newer">
-									<span>{{&title}}</span>
-									<i class="fas fa-arrow-right"></i>
-								</a>
-							{{/articleNewer}}
-							{{^articleNewer}}
-								<div class="card-newer-none">
-									<span>没有了</span>
-									<i class="fas fa-arrow-right"></i>
-								</div>
-							{{/articleNewer}}
-						</div>
-						<div class="comment">
-							{{&OPT.commentCode}}
-						</div>
-					{{/is_single}}
-					{{^is_single}}
-						{{#articleList}}
-							<div class="card">
-								<div class="card-head">
-									<a href="{{&url}}"><img src="{{#img}}{{&img}}{{/img}}{{^img}}{{#firstImageUrl}}{{&firstImageUrl}}{{/firstImageUrl}}{{^firstImageUrl}}{{{&OPT.theme_github_path}}}JustNews/files/logo2.png{{/firstImageUrl}}{{/img}}"></a>
-								</div>
-								<div class="card-body">
-									<h2><a href="{{&url}}">{{&title}}</a></h2>
-									<div class="card-meta">
-										<span><i class="fas fa-calendar-alt"></i>{{&createDate10}}</span>
-										<span><i class="fas fa-user"></i><a href="#">admin</a></span>
-										<span><i class="fas fa-book-reader"></i><a href="#">{{&views}}</a></span>
-										<span><i class="fas fa-th-large"></i><a href="/category/{{&firstCategory}}/">{{&firstCategory}}</a></span>
-									</div>
-									<div class="card-text">
-										{{&contentText}}
-									</div>
-								</div>
-							</div>
-						{{/articleList}}
-						<div class="near-card">
-							{{#pageOlder}}
-								<a href="{{&url}}" class="card-older">
-									<i class="fas fa-arrow-left"></i>
-									<span>上一页</span>
-								</a>
-							{{/pageOlder}}
-							{{^pageOlder}}
-								<div class="card-older-none">
-									<i class="fas fa-arrow-left"></i>
-									<span>没有了</span>
-								</div>
-							{{/pageOlder}}
-							{{#pageNewer}}
-								<a href="{{&url}}" class="card-newer">
-									<span>下一页</span>
-									<i class="fas fa-arrow-right"></i>
-								</a>
-							{{/pageNewer}}
-							{{^pageNewer}}
-								<div class="card-newer-none">
-									<span>没有了</span>
-									<i class="fas fa-arrow-right"></i>
-								</div>
-							{{/pageNewer}}
-						</div>
-					{{/is_single}}
-				</div>
-				<div class="sidebar">
-					<div class="card">
-						<div class="card-header">
-							<h3><i class="fas fa-bars"></i>分类</h3>
-						</div>
-						<div class="card-body">
-							<div class="card-ul">
-								<ul>
-									{{#widgetCategoryList}}
-									<li>
-										<a href="/category/{{&name}}/">
-											<span><i class="{{&icon}}"></i>{{&name}}</span>
-											<span>{{&count}}</span>
-										</a>
-									</li>
-									{{/widgetCategoryList}}
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header">
-							<h3><i class="fas fa-fire-alt"></i>最近文章</h3>
-						</div>
-						<div class="card-body">
-							<div class="card-ul">
-								<ul>
-									{{#widgetRecentlyList}}
-									<li>
-										<a href="{{&url}}">
-											<div class="recently-img">
-												<img src="{{#img}}{{&img}}{{/img}}{{^img}}{{#firstImageUrl}}{{&firstImageUrl}}{{/firstImageUrl}}{{^firstImageUrl}}{{{&OPT.theme_github_path}}}JustNews/files/logo2.png{{/firstImageUrl}}{{/img}}">
-											</div>
-											<div class="recently-text">
-												<div class="recently-title">{{&title}}</div>
-												<div class="recently-time">{{&createDate10}}</div>
-											</div>
-										</a>
-									</li>
-									{{/widgetRecentlyList}}
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header">
-							<h3><i class="fas fa-link"></i>友情链接</h3>
-						</div>
-						<div class="card-body">
-							<div class="card-ul">
-								<ul>
-									{{#widgetLinkList}}
-									<li>
-										<a href="{{&url}}">
-											<span><i class="{{&icon}}"></i>{{&name}}</span>
-										</a>
-									</li>
-									{{/widgetLinkList}}
-								</ul>
-							</div>
-						</div>
-					</div>
-					{{&OPT.widgetOther}}
-				</div>
-			</div>
-			<footer>
-				{{&OPT.copyRight}}
-			</footer>
-		</div>
-		<script>
-			// 搜索框控制脚本
-			document.addEventListener('DOMContentLoaded', function() {
-				const searchToggle = document.getElementById('search-toggle');
-				const searchBox = document.getElementById('search-box');
-		
-				if (searchToggle && searchBox) {
-					searchToggle.addEventListener('click', function(event) {
-						event.stopPropagation();
-						searchBox.classList.toggle('visible');
-					});
-					
-					searchBox.addEventListener('click', function(event) {
-						event.stopPropagation();
-					});
-				}
-		
-				document.addEventListener('click', function() {
-					if (searchBox && searchBox.classList.contains('visible')) {
-						searchBox.classList.remove('visible');
-					}
-				});
-			});
-		</script>
-	</body>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
+    <title>{{ &title }}</title>
+    <meta name="keywords" content="{{ &keyWords }}" />
+    <meta name="description" content="{{ &OPT.siteDescription }}" />
+
+    <link rel="stylesheet" href="">
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
+	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
+	{{& OPT.codeBeforHead}}
+
+    <style>
+        /* CSS 变量定义 */
+        :root {
+            --theme-bd: #617eaf;          /* 主题边框颜色 */
+            --theme-color: #206be7;        /* 主题主色 */
+            --theme-hover: #1162e8;        /* 主题悬停状态颜色 */
+            --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
+            --text-color: #333;
+            --text-color-light: #777;
+            --bg-color: #f5f5f5;
+            --widget-bg: #fff;
+            --border-color: #fff;
+        }
+
+        /* 基础样式重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--theme-font-family);
+            background: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 14px; /* 正文字体大小 */
+        }
+
+        a {
+            text-decoration: none; /* 去掉所有超链接的下划线 */
+            color: var(--theme-color);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--theme-hover);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        ul, li {
+            list-style: none;
+        }
+
+        /* 整体布局容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* 头部样式 */
+        .header {
+            background-color: #fff;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9e9e9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            height: 62px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .header-logo a {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .header-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .header-nav ul {
+            list-style: none;
+            display: flex;
+            font-size: 14px; /* 导航菜单字体大小 */
+        }
+        .header-nav li {
+            margin-left: 20px;
+        }
+
+        /* 主体内容区 */
+        #wrap {
+            padding: 20px 0;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            justify-content: center; /* 居中对齐左右栏 */
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .left-column {
+            width: 100%;
+            max-width: 870px; /* 左边宽度 */
+        }
+
+        .right-column {
+            width: 100%;
+            max-width: 310px; /* 右侧宽度 */
+        }
+
+        /* 海报轮播 */
+        .carousel-placeholder {
+            background-color: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .article-list {
+            background-color: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        /* 分页导航 */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+        .pagination a {
+            padding: 10px 20px;
+            border: 1px solid var(--theme-bd);
+            border-radius: 5px;
+        }
+        
+        /* 右侧栏小工具 */
+        .widget {
+            background-color: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .widget-title {
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .widget-title::before {
+            content: "";
+            width: 4px;
+            height: 1em;
+            background-color: var(--theme-color);
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+
+        .widget ul {
+            list-style: none;
+        }
+        .widget ul li {
+            margin-bottom: 10px;
+        }
+        .widget ul li a {
+            color: var(--text-color);
+        }
+        .widget .tag-cloud a {
+            display: inline-block;
+            margin: 3px;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        /* 友情链接 */
+        .friend-links {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        .friend-links .links-container {
+             display: flex;
+             flex-wrap: wrap;
+             gap: 15px;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+            background-color: #000;
+            color: #ccc;
+        }
+        .footer a {
+            color: #fff;
+        }
+        .footer a:hover {
+            color: var(--theme-hover);
+        }
+
+        /* 返回顶部按钮 */
+        .action {
+            position: fixed;
+            right: 20px;
+            bottom: 20%;
+        }
+        .action-item.gotop {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0,0,0,0.5);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .action-item.gotop:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        /* 左图右文CSS样式 */
+        .article-item-box {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+        }
+        .article-item-box:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .article-item-image {
+            flex: 0 0 220px;
+            margin-right: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-item-image a {
+            display: block;
+            width: 100%;
+            height: 140px;
+        }
+
+        .article-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .article-item-image img:hover {
+            transform: scale(1.05);
+        }
+
+        .image-category {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(32, 107, 231, 0.85);
+            color: #fff;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+            line-height: 1.5;
+            z-index: 2;
+        }
+        .image-category a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .article-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-item-content h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .article-item-content h3 a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .article-item-content h3 a:hover {
+            color: var(--theme-hover);
+        }
+        
+        /* ============== 本次修改点 ============== */
+        .article-item-content p {
+            margin: 0 0 10px;
+            color: #666;
+            /* flex-grow: 1; */ /* <-- 移除此行 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 确保最多显示两行 */
+            -webkit-box-orient: vertical;
+            font-size: 15px; /* 修改字体大小 */
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: #999;
+            display: flex;
+            align-items: center;
+            margin-top: auto; /* <-- 新增此行，将元信息推到底部 */
+        }
+        /* ============== 修改点结束 ============== */
+        
+        .article-meta span {
+            margin-right: 15px;
+        }
+        .article-meta .views {
+            margin-left: auto;
+        }
+
+        /* 右侧最新文章列表的样式 */
+        .recent-article-item-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .recent-article-item-image {
+            flex: 0 0 60px;
+            height: 60px;
+            margin-right: 10px;
+        }
+
+        .recent-article-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .recent-article-item-content {
+            flex: 1;
+            line-height: 1.4;
+        }
+        .recent-article-item-content a {
+            color: #555;
+            text-decoration: none;
+        }
+
+        .recent-article-item-content a:hover {
+             color: var(--theme-hover);
+        }
+
+        /* 响应式媒体查询 */
+        @media (max-width: 1200px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+             .left-column, .right-column {
+                max-width: 870px;
+             }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            .header-nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .header-nav li {
+                margin: 5px 10px;
+            }
+            
+             .left-column, .right-column {
+                max-width: 100%;
+             }
+            .article-item-box {
+                flex-direction: column;
+            }
+            .article-item-image {
+                flex-basis: auto;
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 100%;
+                height: 200px;
+            }
+            .article-item-image a {
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-container">
+        <div class="header-left">
+            <div class="logo-area">
+                {{ #OPT.logo }}
+                <img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image">
+                {{ /OPT.logo }}
+                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    {{ #OPT.widgetMenuList }}
+                    <li>
+                        <a href="{{ &url }}">
+                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                        </a>
+                        {{ #children.length }}
+                        <ul class="sub-menu">
+                            {{ #children }}
+                            <li>
+                                <a href="{{ &url }}">
+                                    {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                </a>
+                                {{ #children.length }}
+                                <ul class="sub-menu">
+                                    {{ #children }}
+                                    <li>
+                                        <a href="{{ &url }}">
+                                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                        </a>
+                                    </li>
+                                    {{ /children }}
+                                </ul>
+                                {{ /children.length }}
+                            </li>
+                            {{ /children }}
+                        </ul>
+                        {{ /children.length }}
+                    </li>
+                    {{ /OPT.widgetMenuList }}
+                </ul>
+            </nav>
+        </div>
+
+        <div class="header-right">
+            <div class="search-icon" id="search-toggle">
+                <i class="fas fa-search"></i>
+            </div>
+            <a href="/admin" class="login-link">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="search-box-container" id="search-box">
+        <input type="text" placeholder="输入关键词搜索..." class="search-input">
+        <button class="search-button">搜索</button>
+    </div>
+</header>
+    <div id="wrap" class="container">
+        <div class="main-layout">
+            <div class="left-column">
+                <div class="carousel-placeholder">
+                    <p>海报轮播区</p>
+                </div>
+
+                <div class="article-list">
+                    <ul>
+                    {{#articleList}}
+                        <li class="article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="article-item-image">
+                                {{#firstCategory}}
+                                <div class="image-category">
+                                    <a href="/category/{{.}}/">{{.}}</a>
+                                </div>
+                                {{/firstCategory}}
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="article-item-content">
+                                <h3><a href="{{url}}">{{title}}</a></h3>
+                                <p>{{contentText}}</p>
+                                <div class="article-meta">
+                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+                                    {{#category[]}}
+                                    <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                                    {{/category[]}}
+                                    <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    {{/articleList}}
+                    </ul>
+                </div>
+
+                <nav class="pagination">
+                    {{#pageNewer}}
+                    <a href="{{url}}" class="prev">← 上一页</a>
+                    {{/pageNewer}}
+                    {{#pageOlder}}
+                    <a href="{{url}}" class="next">下一页 →</a>
+                    {{/pageOlder}}
+                </nav>
+            </div>
+
+            <aside class="right-column">
+                <div class="widget">
+                    <h3 class="widget-title">最近文章</h3>
+                    <ul>
+                        {{#widgetRecentlyList}}
+                        <li class="recent-article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="recent-article-item-image">
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="recent-article-item-content">
+                                <a href="{{url}}">{{title}}</a>
+                            </div>
+                        </li>
+                        {{/widgetRecentlyList}}
+                    </ul>
+                </div>
+
+                <div class="widget">
+                    <h3 class="widget-title">分类目录</h3>
+                    <ul>
+                        {{#widgetCategoryList}}
+                        <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
+                        {{/widgetCategoryList}}
+                    </ul>
+                </div>
+
+                <div class="widget">
+                    <h3 class="widget-title">标签</h3>
+                    <div class="tag-cloud">
+                        <a href="#">示例标签</a>
+                        <a href="#">Cloudflare</a>
+                        <a href="#">Workers</a>
+                        <a href="#">Blog</a>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <h3 class="widget-title">最近评论</h3>
+                    <ul>
+                        <li>暂无评论</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <div class="friend-links">
+             <h3 class="widget-title">友情链接</h3>
+             <div class="links-container">
+                {{#widgetLinkList}}
+                <a href="{{url}}" target="_blank">{{name}}</a>
+                {{/widgetLinkList}}
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>{{ &OPT.copyRight }}</p>
+            <p>Powered by <a href="https://github.com/-A-RA/cf-blog-plus" target="_blank">cf-blog-plus</a>. Theme by JustNews.</p>
+        </div>
+    </footer>
+
+    <div class="action action-style-0 action-color-0 action-pos-0">
+        <div class="action-item gotop j-top">
+            <i class="fal fa-arrow-up action-item-icon"></i>
+        </div>
+    </div>
+
+    <script>
+        // 简单的返回顶部功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const topButton = document.querySelector('.j-top');
+            if(topButton) {
+                topButton.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+    <script>
+    // --- Header 搜索框控制脚本 ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchToggle = document.getElementById('search-toggle');
+        const searchBox = document.getElementById('search-box');
+
+        if (searchToggle && searchBox) {
+            searchToggle.addEventListener('click', function(event) {
+                // 阻止事件冒泡，以防点击图标时，下面的 document 点击事件立即关闭它
+                event.stopPropagation();
+                // 切换 .visible 类来显示或隐藏搜索框
+                searchBox.classList.toggle('visible');
+            });
+            
+            // 点击搜索框内部不关闭
+            searchBox.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        }
+
+        // 点击页面其他任何地方，隐藏搜索框
+        document.addEventListener('click', function() {
+            if (searchBox && searchBox.classList.contains('visible')) {
+                searchBox.classList.remove('visible');
+            }
+        });
+    });
+</script>
+</body>
 </html>
