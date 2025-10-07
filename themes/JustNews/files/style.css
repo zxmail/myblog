@@ -169,7 +169,7 @@ ul, li {
     position: absolute;
     top: 100%;
     left: 0;
-    min-width: 180px;
+    min-width: 100%;
     background-color: #fff;
     /* ★★★ 修改2：移除阴影和边框 ★★★ */
     box-shadow: none;
