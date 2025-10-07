@@ -164,10 +164,8 @@ ul, li {
     transition: transform 0.3s ease;
 }
 
-/* Sub-menu (Dropdown) */
-/* ★★★ FIX: Removed 'flex-direction: column' from here ★★★ */
+/* Sub-menu (Dropdown) - 全新重写以实现动画效果 */
 .sub-menu {
-    display: none;
     position: absolute;
     top: 100%;
     left: 0;
@@ -177,16 +175,10 @@ ul, li {
     padding: 5px 0;
     border-radius: 4px;
     z-index: 1000;
-}
-
-/* ★★★ FIX: Moved 'flex-direction: column' here, so it only applies when the menu is visible ★★★ */
-.main-nav li:hover > .sub-menu {
-    display: flex;
-    flex-direction: column;
-}
-
-.sub-menu li {
-    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
 }
 
 .sub-menu a {
@@ -197,13 +189,35 @@ ul, li {
     white-space: nowrap;
 }
 
+.sub-menu li {
+    width: 100%;
+    position: relative;
+}
+
 .sub-menu .sub-menu {
     top: -5px;
     left: 100%;
+    transform: translateX(10px);
 }
 
-.main-nav li:hover > a .arrow-container {
-    transform: rotate(-90deg);
+.main-nav li:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sub-menu li:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.main-nav > ul > li:hover > a > .arrow-container {
+    transform: rotate(180deg);
+}
+
+.sub-menu li:hover > a > .arrow-container {
+    transform: rotate(90deg);
 }
 
 /* Header Right: Search & Login */
