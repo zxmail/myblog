@@ -531,17 +531,17 @@
                                 </a>
                             </div>
                             {{/firstImageUrl}}
-                            <div class="article-item-content">
-                                <h3><a href="{{url}}">{{title}}</a></h3>
-                                <p>{{contentText}}</p>
-                                <div class="article-meta">
-                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                                    {{#category[]}}
-                                    <span><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-                                    {{/category[]}}
-                                    <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
-                                </div>
-                            </div>
+<div class="article-item-content">
+    <h3><a href="{{url}}">{{title}}</a></h3>
+    <p>{{contentText}}</p>
+    <div class="article-meta">
+        <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+        {{#category[]}}
+        <span class="meta-category"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+        {{/category[]}}
+        <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
+    </div>
+</div>
                         </li>
                     {{/articleList}}
                     </ul>
