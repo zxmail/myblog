@@ -455,39 +455,42 @@
                 {{ /OPT.logo }}
                 <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
             </div>
-            <nav class="main-nav">
-                <ul>
-                    {{ #OPT.widgetMenuList }}
-                    <li>
-                        <a href="{{ &url }}">
-                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                        </a>
-                        {{ #children.length }}
-                        <ul class="sub-menu">
-                            {{ #children }}
-                            <li>
-                                <a href="{{ &url }}">
-                                    {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                                </a>
-                                {{ #children.length }}
-                                <ul class="sub-menu">
-                                    {{ #children }}
-                                    <li>
-                                        <a href="{{ &url }}">
-                                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                                        </a>
-                                    </li>
-                                    {{ /children }}
-                                </ul>
-                                {{ /children.length }}
-                            </li>
-                            {{ /children }}
-                        </ul>
-                        {{ /children.length }}
-                    </li>
-                    {{ /OPT.widgetMenuList }}
-                </ul>
-            </nav>
+<nav class="main-nav">
+    <ul>
+        {{ #OPT.widgetMenuList }}
+        <li>
+            <a href="{{ &url }}">
+                {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                {{ #children.length }}
+                <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
+                {{ /children.length }}
+            </a>
+            {{ #children.length }}
+            <ul class="sub-menu">
+                {{ #children }}
+                <li>
+                    <a href="{{ &url }}">
+                        {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                    </a>
+                    {{ #children.length }}
+                    <ul class="sub-menu">
+                        {{ #children }}
+                        <li>
+                            <a href="{{ &url }}">
+                                {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                            </a>
+                        </li>
+                        {{ /children }}
+                    </ul>
+                    {{ /children.length }}
+                </li>
+                {{ /children }}
+            </ul>
+            {{ /children.length }}
+        </li>
+        {{ /OPT.widgetMenuList }}
+    </ul>
+</nav>
         </div>
 
         <div class="header-right">
