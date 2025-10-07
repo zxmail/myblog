@@ -1,13 +1,108 @@
-/* --- 新 Header 样式 开始 --- */
+/*================================================================
+  style.css
+  
+  TABLE OF CONTENTS:
+  
+  1.  Font Awesome Icons Import
+  2.  CSS Variables
+  3.  Global Resets & Base Styles
+  4.  Layout Structure (Container, Columns)
+  5.  Header & Navigation
+  6.  Main Content Area (Article List, Pagination)
+  7.  Sidebar & Widgets
+  8.  Footer
+  9.  Utility & Components (Back to Top)
+  10. Responsive Design (Media Queries)
+================================================================*/
 
-/* Font Awesome 图标 */
+/* 1. Font Awesome Icons Import */
 @import url("/files/fonts/fontawesome5pro-all.min.css");
 
+/* 2. CSS Variables */
+:root {
+    --theme-bd: #617eaf;          /* 主题边框颜色 */
+    --theme-color: #206be7;        /* 主题主色 */
+    --theme-hover: #1162e8;        /* 主题悬停状态颜色 */
+    --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
+    --text-color: #333;
+    --text-color-light: #777;
+    --bg-color: #f5f5ff5;
+    --widget-bg: #fff;
+    --border-color: #fff;
+}
+
+/* 3. Global Resets & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--theme-font-family);
+    background: #f5f5f5;
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--theme-color);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--theme-hover);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+ul, li {
+    list-style: none;
+}
+
+/* 4. Layout Structure (Container, Columns) */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+#wrap {
+    padding: 20px 0;
+}
+
+.main-layout {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.left-column {
+    width: 100%;
+    max-width: 870px;
+}
+
+.right-column {
+    width: 100%;
+    max-width: 310px;
+}
+
+/* 5. Header & Navigation */
 .site-header {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 30px;
-    position: relative; 
+    position: relative;
 }
 
 .header-container {
@@ -19,7 +114,6 @@
     height: 62px;
 }
 
-/* 左侧区域 */
 .header-left {
     display: flex;
     align-items: center;
@@ -40,14 +134,11 @@
     font-size: 24px;
     font-weight: bold;
     color: #333;
-    text-decoration: none;
 }
 
-/* 导航菜单 */
 .main-nav ul {
     margin: 0;
     padding: 0;
-    list-style: none;
     display: flex;
 }
 
@@ -60,8 +151,11 @@
     padding: 0 15px;
     line-height: 62px;
     color: #555;
-    text-decoration: none;
     transition: color 0.3s;
+}
+
+.main-nav a:hover {
+    color: #007bff;
 }
 
 .main-nav a .arrow-container {
@@ -70,31 +164,22 @@
     transition: transform 0.3s ease;
 }
 
-.main-nav li:hover > a .arrow-container {
-    transform: rotate(-90deg);
-}
-
-.main-nav a:hover {
-    color: #007bff;
-}
-
-/* 下拉菜单 (二级和三级) */
+/* Sub-menu (Dropdown) */
 .sub-menu {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
+    min-width: 180px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-width: 180px;
-    z-index: 1000;
-    flex-direction: column;
     padding: 5px 0;
     border-radius: 4px;
+    z-index: 1000;
 }
 
 .main-nav li:hover > .sub-menu {
-    display: flex;
+    display: block;
 }
 
 .sub-menu li {
@@ -106,16 +191,19 @@
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+    white-space: nowrap;
 }
 
-/* 三级菜单定位 */
 .sub-menu .sub-menu {
-    top: -5px; 
+    top: -5px;
     left: 100%;
 }
 
+.main-nav li:hover > a .arrow-container {
+    transform: rotate(-90deg);
+}
 
-/* 右侧区域 */
+/* Header Right: Search & Login */
 .header-right {
     display: flex;
     align-items: center;
@@ -126,14 +214,12 @@
     color: #555;
     cursor: pointer;
     margin-left: 20px;
-    transition: color 0.3s;
 }
 
 .search-icon:hover, .login-link:hover {
     color: #007bff;
 }
 
-/* 弹出的搜索框 */
 .search-box-container {
     display: none;
     position: absolute;
@@ -145,235 +231,50 @@
     border-radius: 4px;
     z-index: 1000;
 }
-.search-box-container.visible { display: block; }
-.search-input { border: 1px solid #ccc; padding: 8px 10px; border-radius: 4px; outline: none; }
-.search-button { background-color: #007bff; color: #fff; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
-.search-button:hover { background-color: #0056b3; }
 
-/* --- 下拉菜单悬停显示控制 --- */
-.main-nav ul ul { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 180px; z-index: 1000; padding: 5px 0; border-radius: 4px; }
-.main-nav ul li:hover > ul { display: block; }
-.main-nav ul ul ul { top: -5px; left: 100%; }
-.main-nav ul ul li { width: 100%; position: relative; }
-.main-nav ul ul a { line-height: 40px; width: 100%; padding: 0 20px; box-sizing: border-box; display: block; white-space: nowrap; }
-
-/* 默认隐藏汉堡菜单和遮罩层 */
-.mobile-menu-toggle { display: none; font-size: 22px; cursor: pointer; }
-.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 998; }
-
-/* ============== 本次修改点: 新增响应式规则 ============== */
-
-/* --- 1. 屏幕宽度 991px - 1199px (内容缩小) --- */
-@media (max-width: 1199px) and (min-width: 991px) {
-    .container {
-        max-width: 96%; /* 让容器宽度随屏幕变化 */
-    }
-    .main-layout {
-        justify-content: space-between; /* 两端对齐 */
-    }
-    .left-column {
-        width: calc(100% - 310px - 20px); /* 动态计算左栏宽度 */
-        max-width: none;
-    }
-    .right-column {
-        width: 310px; /* 右栏保持固定宽度 */
-        max-width: none;
-    }
+.search-box-container.visible {
+    display: block;
 }
 
-
-/* --- 2. 屏幕宽度 < 990px (移动端) --- */
-@media (max-width: 990px) {
-    .site-header {
-        padding: 0 15px;
-    }
-    .header-container {
-        position: relative;
-    }
-    
-    /* 页头布局: 左-中-右 */
-    .mobile-menu-toggle {
-        display: block;
-        position: absolute;
-        left: 0;
-    }
-    .header-left {
-        justify-content: center;
-        flex-grow: 1;
-    }
-    .header-right {
-        position: absolute;
-        right: 0;
-    }
-    .logo-area {
-        margin-right: 0;
-    }
-    .blog-name {
-        display: none; /* 移动端通常只显示logo图片 */
-    }
-    .login-link {
-        display: none; /* 隐藏后台登录入口 */
-    }
-    
-    /* 左侧滑出式菜单 */
-    .main-nav {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 70%;
-        max-width: 400px;
-        background: #fff;
-        overflow-y: auto;
-        z-index: 1000;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        padding-top: 20px;
-    }
-    .main-nav ul {
-        flex-direction: column;
-    }
-    .main-nav li {
-        margin-left: 0;
-    }
-    .main-nav a {
-        line-height: 50px;
-        padding: 0 20px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .main-nav .sub-menu { display: none; } /* 移动端简化，不显示子菜单 */
-    .main-nav .arrow-container { display: none; }
-
-    /* JS 控制菜单滑出 */
-    body.nav-open .main-nav {
-        transform: translateX(0);
-    }
-    body.nav-open .overlay {
-        display: block;
-    }
-    
-    /* 隐藏侧边栏和文章分类 */
-    .right-column {
-        display: none;
-    }
-    .meta-category {
-        display: none;
-    }
-    
-    /* 主体内容布局调整 */
-    .left-column {
-        width: 100%;
-        max-width: none;
-    }
-    .article-item-box {
-        flex-direction: row; /* 强制保持左图右文 */
-    }
-    .article-item-image {
-        flex: 0 0 120px; /* 缩小图片宽度 */
-        height: 90px;
-        margin-right: 15px;
-    }
-     .article-item-image a {
-        height: 100%;
-     }
-    .article-item-content h3 {
-        font-size: 16px;
-    }
-    
-    /* 友情链接与轮播图对齐 */
-    .main-layout, .friend-links {
-        margin: 0 auto;
-        max-width: 870px; /* 与桌面端左栏保持一致 */
-    }
+.search-input {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 4px;
+    outline: none;
 }
 
-/* --- 新 Header 样式 结束 --- */
-
-/* --- 从 index.html 移动过来的样式 开始 --- */
-
-/* CSS 变量定义 */
-:root {
-    --theme-bd: #617eaf;          /* 主题边框颜色 */
-    --theme-color: #206be7;        /* 主题主色 */
-    --theme-hover: #1162e8;        /* 主题悬停状态颜色 */
-    --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
-    --text-color: #333;
-    --text-color-light: #777;
-    --bg-color: #f5f5ff5;
-    --widget-bg: #fff;
-    --border-color: #fff;
+.search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-/* 基础样式重置 */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.search-button:hover {
+    background-color: #0056b3;
 }
 
-body {
-    font-family: var(--theme-font-family);
-    background: #f5f5f5;
-    color: var(--text-color);
-    line-height: 1.6;
-    font-size: 14px; /* 正文字体大小 */
+/* Mobile Menu Toggle & Overlay */
+.mobile-menu-toggle {
+    display: none;
+    font-size: 22px;
+    cursor: pointer;
 }
 
-a {
-    text-decoration: none; /* 去掉所有超链接的下下划线 */
-    color: var(--theme-color);
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: var(--theme-hover);
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-ul, li {
-    list-style: none;
-}
-
-/* 整体布局容器 */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-/* 主体内容区 */
-#wrap {
-    padding: 20px 0;
-}
-
-.main-layout {
-    display: flex;
-    gap: 20px;
-    justify-content: center; /* 居中对齐左右栏 */
-}
-
-.main-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.left-column {
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 870px; /* 左边宽度 */
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
 }
 
-.right-column {
-    width: 100%;
-    max-width: 310px; /* 右侧宽度 */
-}
-
-/* 海报轮播 */
+/* 6. Main Content Area (Article List, Pagination) */
 .carousel-placeholder {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
@@ -390,123 +291,16 @@ ul, li {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-/* 分页导航 */
-.pagination {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 0;
-}
-.pagination a {
-    padding: 10px 20px;
-    border: 1px solid var(--theme-bd);
-    border-radius: 5px;
-}
-
-/* 右侧栏小工具 */
-.widget {
-    background-color: var(--widget-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.widget-title {
-    font-size: 16px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-}
-
-.widget-title::before {
-    content: "";
-    width: 4px;
-    height: 1em;
-    background-color: var(--theme-color);
-    margin-right: 8px;
-    border-radius: 2px;
-}
-
-.widget ul {
-    list-style: none;
-}
-.widget ul li {
-    margin-bottom: 10px;
-}
-.widget ul li a {
-    color: var(--text-color);
-}
-.widget .tag-cloud a {
-    display: inline-block;
-    margin: 3px;
-    padding: 5px 10px;
-    background: #f0f0f0;
-    border-radius: 3px;
-}
-
-/* 友情链接 */
-.friend-links {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-}
-.friend-links .links-container {
-     display: flex;
-     flex-wrap: wrap;
-     gap: 15px;
-}
-
-/* 页脚 */
-.footer {
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 20px;
-    background-color: #000;
-    color: #ccc;
-}
-.footer a {
-    color: #fff;
-}
-.footer a:hover {
-    color: var(--theme-hover);
-}
-
-/* 返回顶部按钮 */
-.action {
-    position: fixed;
-    right: 20px;
-    bottom: 20%;
-}
-.action-item.gotop {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0,0,0,0.5);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.action-item.gotop:hover {
-    background-color: rgba(0,0,0,0.7);
-}
-
-/* 左图右文CSS样式 */
 .article-item-box {
     display: flex;
     margin-bottom: 25px;
     border-bottom: 1px solid #eee;
     padding-bottom: 25px;
 }
+
 .article-item-box:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -550,9 +344,9 @@ ul, li {
     line-height: 1.5;
     z-index: 2;
 }
+
 .image-category a {
     color: #fff;
-    text-decoration: none;
 }
 
 .article-item-content {
@@ -568,7 +362,6 @@ ul, li {
 }
 
 .article-item-content h3 a {
-    text-decoration: none;
     color: #333;
 }
 
@@ -582,9 +375,9 @@ ul, li {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 确保最多显示两行 */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    font-size: 15px; 
+    font-size: 15px;
 }
 
 .article-meta {
@@ -598,11 +391,68 @@ ul, li {
 .article-meta span {
     margin-right: 15px;
 }
+
 .article-meta .views {
     margin-left: auto;
 }
 
-/* 右侧最新文章列表的样式 */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.pagination a {
+    padding: 10px 20px;
+    border: 1px solid var(--theme-bd);
+    border-radius: 5px;
+}
+
+/* 7. Sidebar & Widgets */
+.widget {
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.widget-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.widget-title::before {
+    content: "";
+    width: 4px;
+    height: 1em;
+    background-color: var(--theme-color);
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.widget ul li {
+    margin-bottom: 10px;
+}
+
+.widget ul li a {
+    color: var(--text-color);
+}
+
+.widget .tag-cloud a {
+    display: inline-block;
+    margin: 3px;
+    padding: 5px 10px;
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+/* Recent Posts Widget */
 .recent-article-item-box {
     display: flex;
     align-items: center;
@@ -626,12 +476,191 @@ ul, li {
     flex: 1;
     line-height: 1.4;
 }
+
 .recent-article-item-content a {
     color: #555;
-    text-decoration: none;
 }
 
 .recent-article-item-content a:hover {
-     color: var(--theme-hover);
+    color: var(--theme-hover);
 }
-/* --- 从 index.html 移动过来的样式 结束 --- */
+
+/* Friend Links Widget */
+.friend-links {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.friend-links .links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* 8. Footer */
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 20px;
+    background-color: #000;
+    color: #ccc;
+}
+
+.footer a {
+    color: #fff;
+}
+
+.footer a:hover {
+    color: var(--theme-hover);
+}
+
+/* 9. Utility & Components (Back to Top) */
+.action {
+    position: fixed;
+    right: 20px;
+    bottom: 20%;
+}
+
+.action-item.gotop {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-item.gotop:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 10. Responsive Design (Media Queries) */
+
+/* Screen width 991px - 1199px (Tablet) */
+@media (max-width: 1199px) and (min-width: 991px) {
+    .container {
+        max-width: 96%;
+    }
+    .main-layout {
+        justify-content: space-between;
+    }
+    .left-column {
+        width: calc(100% - 310px - 20px);
+        max-width: none;
+    }
+    .right-column {
+        width: 310px;
+        max-width: none;
+    }
+}
+
+/* Screen width < 990px (Mobile) */
+@media (max-width: 990px) {
+    .site-header {
+        padding: 0 15px;
+    }
+
+    /* Mobile Header Layout */
+    .mobile-menu-toggle {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .header-container {
+        justify-content: center;
+    }
+    .header-left {
+        flex-grow: 1;
+        justify-content: center;
+    }
+    .header-right {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .logo-area {
+        margin-right: 0;
+    }
+    .blog-name,
+    .login-link {
+        display: none;
+    }
+    
+    /* Slide-out Mobile Navigation */
+    .main-nav {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 70%;
+        max-width: 400px;
+        background: #fff;
+        overflow-y: auto;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        padding-top: 20px;
+    }
+    .main-nav ul {
+        flex-direction: column;
+    }
+    .main-nav a {
+        line-height: 50px;
+        padding: 0 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .main-nav .sub-menu,
+    .main-nav .arrow-container {
+        display: none;
+    }
+
+    body.nav-open .main-nav {
+        transform: translateX(0);
+    }
+    body.nav-open .overlay {
+        display: block;
+    }
+    
+    /* Mobile Layout Adjustments */
+    .right-column,
+    .meta-category {
+        display: none;
+    }
+    
+    .left-column {
+        width: 100%;
+        max-width: none;
+    }
+
+    .article-item-box {
+        flex-direction: row;
+    }
+    .article-item-image {
+        flex: 0 0 120px;
+        height: 90px;
+        margin-right: 15px;
+    }
+    .article-item-image a {
+        height: 100%;
+    }
+    .article-item-content h3 {
+        font-size: 16px;
+    }
+    
+    .main-layout,
+    .friend-links {
+        margin: 0 auto;
+        max-width: 870px;
+    }
+}
