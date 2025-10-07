@@ -164,14 +164,15 @@ ul, li {
     transition: transform 0.3s ease;
 }
 
-/* Sub-menu (Dropdown) - 全新重写以实现动画效果 */
+/* Sub-menu (Dropdown) - 动画、对齐和样式修改 */
 .sub-menu {
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 180px;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* ★★★ 修改3：移除阴影 ★★★ */
+    box-shadow: none; 
     padding: 5px 0;
     border-radius: 4px;
     z-index: 1000;
@@ -179,6 +180,7 @@ ul, li {
     visibility: hidden;
     transform: translateY(10px);
     transition: all 0.3s ease;
+    border: 1px solid #eee; /* 添加一个细边框代替阴影 */
 }
 
 .sub-menu a {
@@ -194,8 +196,10 @@ ul, li {
     position: relative;
 }
 
+/* ★★★ 修改2：三级菜单与二级菜单水平对齐 ★★★ */
 .sub-menu .sub-menu {
-    top: -5px;
+    /* top: 0 使三级菜单的顶部与二级菜单项的顶部对齐 */
+    top: 0;
     left: 100%;
     transform: translateX(10px);
 }
@@ -212,13 +216,17 @@ ul, li {
     transform: translateX(0);
 }
 
+/* ★★★ 修改1：箭头动画 ★★★ */
+/* 悬停在一级菜单上时，其直接子元素a中的箭头旋转 */
 .main-nav > ul > li:hover > a > .arrow-container {
-    transform: rotate(180deg);
+    transform: rotate(-90deg); /* 变为向右箭头 */
 }
 
+/* 悬停在二级菜单上时，其直接子元素a中的箭头不旋转（保持向右） */
 .sub-menu li:hover > a > .arrow-container {
-    transform: rotate(90deg);
+    transform: none; 
 }
+
 
 /* Header Right: Search & Login */
 .header-right {
