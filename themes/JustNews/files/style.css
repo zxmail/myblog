@@ -669,46 +669,21 @@ ul, li {
         width: 100%;
         max-width: none;
     }
-    
-    /* === MODIFICATION START === */
+
     .article-item-box {
-        flex-direction: column; /* 将图文改为上下结构 */
+        flex-direction: row;
     }
-
     .article-item-image {
-        flex: 1; /* 恢复弹性布局，让图片自适应宽度 */
-        width: 100%; /* 图片宽度占满容器 */
-        height: auto; /* 高度自动，保持图片比例 */
-        margin-right: 0;
-        margin-bottom: 15px; /* 图片和下方内容之间增加间距 */
+        flex: 0 0 120px;
+        height: 90px;
+        margin-right: 15px;
     }
-
     .article-item-image a {
-        height: auto;
-        padding-bottom: 56.25%; /* 保持16:9的宽高比 */
-        position: relative;
-        display: block;
-    }
-    
-    .article-item-image img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
         height: 100%;
-        object-fit: cover; /* 保持图片填充方式 */
     }
-
-    .article-item-content p {
-        display: none; /* 隐藏文章简介 */
-    }
-
     .article-item-content h3 {
         font-size: 16px;
-        white-space: normal; /* 允许标题换行 */
-        margin-bottom: 10px;
     }
-    /* === MODIFICATION END === */
     
     .main-layout,
     .friend-links {
