@@ -441,9 +441,7 @@
         }
     </style>
 </head>
-<body>
-
-<header class="site-header">
+<body class=""> <header class="site-header">
     <div class="header-container">
         <div class="mobile-menu-toggle" id="mobile-menu-toggle">
             <i class="fal fa-bars"></i>
@@ -531,17 +529,17 @@
                                 </a>
                             </div>
                             {{/firstImageUrl}}
-<div class="article-item-content">
-    <h3><a href="{{url}}">{{title}}</a></h3>
-    <p>{{contentText}}</p>
-    <div class="article-meta">
-        <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-        {{#category[]}}
-        <span class="meta-category"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-        {{/category[]}}
-        <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
-    </div>
-</div>
+                            <div class="article-item-content">
+                                <h3><a href="{{url}}">{{title}}</a></h3>
+                                <p>{{contentText}}</p>
+                                <div class="article-meta">
+                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+                                    {{#category[]}}
+                                    <span class="meta-category"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                                    {{/category[]}}
+                                    <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
+                                </div>
+                            </div>
                         </li>
                     {{/articleList}}
                     </ul>
@@ -558,7 +556,7 @@
             </div>
 
             <aside class="right-column">
-                <div class="widget">
+                <div class="widget widget-recent-posts">
                     <h3 class="widget-title">最近文章</h3>
                     <ul>
                         {{#widgetRecentlyList}}
@@ -628,7 +626,8 @@
             <i class="fal fa-arrow-up action-item-icon"></i>
         </div>
     </div>
-
+    
+    <div class="overlay" id="overlay"></div>
     <script>
         // 简单的返回顶部功能
         document.addEventListener('DOMContentLoaded', function() {
@@ -648,34 +647,55 @@
 
         if (searchToggle && searchBox) {
             searchToggle.addEventListener('click', function(event) {
-                // 阻止事件冒泡，以防点击图标时，下面的 document 点击事件立即关闭它
                 event.stopPropagation();
-                // 切换 .visible 类来显示或隐藏搜索框
                 searchBox.classList.toggle('visible');
             });
             
-            // 点击搜索框内部不关闭
             searchBox.addEventListener('click', function(event) {
                 event.stopPropagation();
             });
         }
 
-        // 点击页面其他任何地方，隐藏搜索框
         document.addEventListener('click', function() {
             if (searchBox && searchBox.classList.contains('visible')) {
                 searchBox.classList.remove('visible');
             }
         });
 
-        // --- ============== 本次修改点: 新增移动端菜单控制脚本 ============== ---
+        // --- 移动端菜单控制脚本 ---
         const menuToggle = document.getElementById('mobile-menu-toggle');
         const mainNav = document.getElementById('main-nav');
+        const body = document.querySelector('body');
+        const overlay = document.getElementById('overlay');
+
         if (menuToggle && mainNav) {
-            menuToggle.addEventListener('click', function() {
-                mainNav.classList.toggle('is-open');
+            menuToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                body.classList.toggle('nav-open');
             });
         }
-        // --- ============== 修改点结束 ============== ---
+        
+        // 点击菜单外部或遮罩层关闭菜单
+        const closeMenu = function() {
+            body.classList.remove('nav-open');
+        };
+        
+        if (overlay) {
+            overlay.addEventListener('click', closeMenu);
+        }
+        
+        document.addEventListener('click', function(event) {
+            if (body.classList.contains('nav-open') && !mainNav.contains(event.target)) {
+                 if (!menuToggle.contains(event.target)) {
+                    closeMenu();
+                }
+            }
+        });
+        mainNav.addEventListener('click', function(event){
+            event.stopPropagation();
+        });
+
+
     });
 </script>
 </body>
