@@ -17,7 +17,7 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    height: 62px; /* <-- 修改点: 高度从 70px 修改为 62px */
+    height: 62px;
 }
 
 /* 左侧区域 */
@@ -59,13 +59,12 @@
 .main-nav a {
     display: block;
     padding: 0 15px;
-    line-height: 62px; /* <-- 修改点: 行高从 70px 修改为 62px */
+    line-height: 62px;
     color: #555;
     text-decoration: none;
     transition: color 0.3s, background-color 0.3s;
 }
 
-/* ============== 本次新增样式 ============== */
 .main-nav a .arrow-container {
     display: inline-block;
     margin-left: 5px;
@@ -75,13 +74,14 @@
 .main-nav li:hover > a .arrow-container {
     transform: rotate(-90deg); /* 鼠标悬停时，箭头向右旋转 */
 }
-/* ============== 新增样式结束 ============== */
 
-
+/* ============== 本次修改点 (移除背景色) ============== */
 .main-nav a:hover {
     color: #007bff;
-    background-color: #f7f7f7;
+    /* background-color: #f7f7f7; <-- 已移除此行 */
 }
+/* ============== 修改点结束 ============== */
+
 
 /* 下拉菜单 (二级和三级) */
 .sub-menu {
@@ -113,11 +113,13 @@
     box-sizing: border-box;
 }
 
+/* ============== 本次修改点 (对齐子菜单) ============== */
 /* 三级菜单定位 */
 .sub-menu .sub-menu {
-    top: 0;
+    top: -5px; /* <-- 修改点: 从 0 修改为 -5px 以补偿父菜单的内边距 */
     left: 100%;
 }
+/* ============== 修改点结束 ============== */
 
 
 /* 右侧区域 */
@@ -198,7 +200,7 @@
 
 /* 定位三级及更深层次的菜单 */
 .main-nav ul ul ul {
-    top: 0;
+    top: -5px; /* <-- 修改点: 同样需要修改这里 */
     left: 100%; /* 三级菜单出现在二级菜单项的右侧 */
 }
 
