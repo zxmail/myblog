@@ -20,10 +20,10 @@
 
 /* 2. CSS Variables */
 :root {
-    --theme-bd: #617eaf;          /* 主题边框颜色 */
-    --theme-color: #206be7;        /* 主题主色 */
-    --theme-hover: #1162e8;        /* 主题悬停状态颜色 */
-    --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
+    --theme-bd: #617eaf;
+    --theme-color: #206be7;
+    --theme-hover: #1162e8;
+    --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hirgino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
     --text-color: #333;
     --text-color-light: #777;
     --bg-color: #f5f5ff5;
@@ -176,10 +176,13 @@ ul, li {
     padding: 5px 0;
     border-radius: 4px;
     z-index: 1000;
+    /* This allows the flex-direction property to work */
+    flex-direction: column;
 }
 
+/* ★★★ FIX 1: Changed 'display: block' back to 'display: flex' to fix PC menu hover effect ★★★ */
 .main-nav li:hover > .sub-menu {
-    display: block;
+    display: flex;
 }
 
 .sub-menu li {
@@ -570,11 +573,13 @@ ul, li {
     .mobile-menu-toggle {
         display: block;
         position: absolute;
-        left: 0;
+        /* ★★★ FIX 2: Changed 'left: 0' to 'left: 15px' to add space from the edge ★★★ */
+        left: 15px;
         top: 50%;
         transform: translateY(-50%);
     }
     .header-container {
+        position: relative;
         justify-content: center;
     }
     .header-left {
@@ -583,7 +588,8 @@ ul, li {
     }
     .header-right {
         position: absolute;
-        right: 0;
+        /* ★★★ FIX 2: Changed 'right: 0' to 'right: 15px' to add space from the edge ★★★ */
+        right: 15px;
         top: 50%;
         transform: translateY(-50%);
     }
