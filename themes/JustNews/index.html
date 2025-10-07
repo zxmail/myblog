@@ -47,7 +47,7 @@
         }
 
         a {
-            text-decoration: none; /* 去掉所有超链接的下划线 */
+            text-decoration: none; /* 去掉所有超链接的下下划线 */
             color: var(--theme-color);
             transition: color 0.3s;
         }
@@ -337,17 +337,15 @@
             color: var(--theme-hover);
         }
         
-        /* ============== 本次修改点 ============== */
         .article-item-content p {
             margin: 0 0 10px;
             color: #666;
-            /* flex-grow: 1; */ /* <-- 移除此行 */
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2; /* 确保最多显示两行 */
             -webkit-box-orient: vertical;
-            font-size: 15px; /* 修改字体大小 */
+            font-size: 15px; 
         }
 
         .article-meta {
@@ -355,9 +353,8 @@
             color: #999;
             display: flex;
             align-items: center;
-            margin-top: auto; /* <-- 新增此行，将元信息推到底部 */
+            margin-top: auto;
         }
-        /* ============== 修改点结束 ============== */
         
         .article-meta span {
             margin-right: 15px;
@@ -448,6 +445,9 @@
 
 <header class="site-header">
     <div class="header-container">
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fal fa-bars"></i>
+        </div>
         <div class="header-left">
             <div class="logo-area">
                 {{ #OPT.logo }}
@@ -455,42 +455,42 @@
                 {{ /OPT.logo }}
                 <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
             </div>
-<nav class="main-nav">
-    <ul>
-        {{ #OPT.widgetMenuList }}
-        <li>
-            <a href="{{ &url }}">
-                {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                {{ #children.length }}
-                <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                {{ /children.length }}
-            </a>
-            {{ #children.length }}
-            <ul class="sub-menu">
-                {{ #children }}
-                <li>
-                    <a href="{{ &url }}">
-                        {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                    </a>
-                    {{ #children.length }}
-                    <ul class="sub-menu">
-                        {{ #children }}
-                        <li>
-                            <a href="{{ &url }}">
-                                {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
-                            </a>
-                        </li>
-                        {{ /children }}
-                    </ul>
-                    {{ /children.length }}
-                </li>
-                {{ /children }}
-            </ul>
-            {{ /children.length }}
-        </li>
-        {{ /OPT.widgetMenuList }}
-    </ul>
-</nav>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    {{ #OPT.widgetMenuList }}
+                    <li>
+                        <a href="{{ &url }}">
+                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                            {{ #children.length }}
+                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
+                            {{ /children.length }}
+                        </a>
+                        {{ #children.length }}
+                        <ul class="sub-menu">
+                            {{ #children }}
+                            <li>
+                                <a href="{{ &url }}">
+                                    {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                </a>
+                                {{ #children.length }}
+                                <ul class="sub-menu">
+                                    {{ #children }}
+                                    <li>
+                                        <a href="{{ &url }}">
+                                            {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                        </a>
+                                    </li>
+                                    {{ /children }}
+                                </ul>
+                                {{ /children.length }}
+                            </li>
+                            {{ /children }}
+                        </ul>
+                        {{ /children.length }}
+                    </li>
+                    {{ /OPT.widgetMenuList }}
+                </ul>
+            </nav>
         </div>
 
         <div class="header-right">
@@ -578,7 +578,7 @@
                     </ul>
                 </div>
 
-                <div class="widget">
+                <div class="widget widget-categories">
                     <h3 class="widget-title">分类目录</h3>
                     <ul>
                         {{#widgetCategoryList}}
@@ -587,7 +587,7 @@
                     </ul>
                 </div>
 
-                <div class="widget">
+                <div class="widget widget-tags">
                     <h3 class="widget-title">标签</h3>
                     <div class="tag-cloud">
                         <a href="#">示例标签</a>
@@ -597,13 +597,13 @@
                     </div>
                 </div>
 
-                <div class="widget">
+                <div class="widget widget-comments">
                     <h3 class="widget-title">最近评论</h3>
                     <ul>
                         <li>暂无评论</li>
                     </ul>
                 </div>
-            </aside>
+                </aside>
         </div>
 
         <div class="friend-links">
@@ -666,6 +666,16 @@
                 searchBox.classList.remove('visible');
             }
         });
+
+        // --- ============== 本次修改点: 新增移动端菜单控制脚本 ============== ---
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('is-open');
+            });
+        }
+        // --- ============== 修改点结束 ============== ---
     });
 </script>
 </body>
