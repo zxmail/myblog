@@ -165,6 +165,7 @@ ul, li {
 }
 
 /* Sub-menu (Dropdown) */
+/* ★★★ FIX: Removed 'flex-direction: column' from here ★★★ */
 .sub-menu {
     display: none;
     position: absolute;
@@ -176,13 +177,12 @@ ul, li {
     padding: 5px 0;
     border-radius: 4px;
     z-index: 1000;
-    /* This allows the flex-direction property to work */
-    flex-direction: column;
 }
 
-/* ★★★ FIX 1: Changed 'display: block' back to 'display: flex' to fix PC menu hover effect ★★★ */
+/* ★★★ FIX: Moved 'flex-direction: column' here, so it only applies when the menu is visible ★★★ */
 .main-nav li:hover > .sub-menu {
     display: flex;
+    flex-direction: column;
 }
 
 .sub-menu li {
@@ -573,7 +573,6 @@ ul, li {
     .mobile-menu-toggle {
         display: block;
         position: absolute;
-        /* ★★★ FIX 2: Changed 'left: 0' to 'left: 15px' to add space from the edge ★★★ */
         left: 15px;
         top: 50%;
         transform: translateY(-50%);
@@ -588,7 +587,6 @@ ul, li {
     }
     .header-right {
         position: absolute;
-        /* ★★★ FIX 2: Changed 'right: 0' to 'right: 15px' to add space from the edge ★★★ */
         right: 15px;
         top: 50%;
         transform: translateY(-50%);
