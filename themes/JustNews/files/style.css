@@ -337,6 +337,7 @@ ul, li {
 
 .article-item-image img:hover {
     transform: scale(1.05);
+    border-radius: 5px;
 }
 
 .image-category {
@@ -762,7 +763,6 @@ ul, li {
     .article-item-image img {
         width: 100%;
         height: 100%;
-      border-radius: 5px;
         object-fit: cover;
         border-radius: 0;
     }
