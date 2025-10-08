@@ -999,3 +999,53 @@ ul, li {
     color: #999;
     margin-top: auto; /* 将日期推到底部 */
 }
+
+/* --- 标签云样式修改 (Tags Widget Style Modification) --- */
+
+/* 1. 设置网格布局容器，实现三等分水平排列 */
+.widget .tag-cloud {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 平等的三份水平排列 */
+    gap: 8px; /* 设置模块之间的间距 */
+    padding: 0;
+}
+
+/* 2. 重置标签模块的默认外边距，以适应新的网格布局 */
+.widget .tag-cloud a {
+    margin: 0;
+}
+
+/* 3. 设置标签小模块的默认样式 (白底黑字) */
+.widget .tag-cloud a {
+    display: block;
+    border: 1px solid rgba(100, 100, 100, .3); /* 设置边框 */
+    background-color: #fff; /* 白底 */
+    color: #000; /* 黑字 */
+    font-size: 12px !important; /* 设置字体大小 */
+    text-align: center; /* 文本居中 */
+    padding: 8px 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s; /* 平滑过渡效果 */
+    white-space: nowrap; /* 强制文本不换行 */
+    overflow: hidden; /* 隐藏溢出的文本 */
+}
+
+/* 4. 设置鼠标悬停时的样式 (蓝底白字) */
+.widget .tag-cloud a:hover {
+    background-color: #07c; /* 蓝底 */
+    color: #fff; /* 白字 */
+    
+    /* 悬停时为长文字添加左右往复显示动画 */
+    animation: marquee-text 4s linear infinite alternate;
+}
+
+/* 5. 定义文本左右往复显示的动画 */
+@keyframes marquee-text {
+    from {
+        text-indent: 5px;
+    }
+    to {
+        /* 这个值决定了文字向左移动的距离，您可以根据需要调整 */
+        text-indent: -30px; 
+    }
+}
