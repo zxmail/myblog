@@ -17,7 +17,7 @@
 ================================================================*/
 
 /* 1. Font Awesome Icons Import */
-@import url("/files/fonts/fontawesome5pro-all.min.css");
+/* @import url("/files/fonts/fontawesome5pro-all.min.css"); */ /* This is often handled by the template now */
 
 /* 2. CSS Variables */
 :root {
@@ -175,20 +175,21 @@ ul, li {
 }
 
 
-/* Desktop Sub-menu (Dropdown) */
+/* MODIFICATION: Desktop Sub-menu (Dropdown) without border/shadow */
 .sub-menu {
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    box-shadow: none;
-    border-radius: 0;
+    box-shadow: none; /* MODIFIED */
+    border-radius: 0; /* MODIFIED */
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    border-top: 1px solid #f0f0f0; /* Optional: adds a subtle separator */
 }
 
 .sub-menu a {
@@ -208,6 +209,8 @@ ul, li {
     top: 0;
     left: 100%;
     transform: translateX(-10px);
+    border-top: none;
+    border-left: 1px solid #f0f0f0; /* Optional */
 }
 
 .main-nav li:hover > .sub-menu {
@@ -613,7 +616,7 @@ ul, li {
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         padding-top: 0;
     }
-    
+    /* MODIFICATION: Force hide desktop arrow on mobile */
     .main-nav a .arrow-container {
         display: none !important;
     }
@@ -681,8 +684,8 @@ ul, li {
     .submenu-toggle i {
         transition: transform 0.3s ease;
     }
-
-    .submenu-toggle.active > i {
+    /* MODIFICATION: Arrow points right when open (same as PC hover effect) */
+    .submenu-toggle .fa-angle-down {
         transform: rotate(-90deg);
     }
 
@@ -696,6 +699,7 @@ ul, li {
         visibility: visible;
         transform: none;
         background-color: #f8f9fa;
+        border-top: none; /* remove border for mobile submenus */
     }
     .main-nav .sub-menu.open {
         display: block;
@@ -706,6 +710,7 @@ ul, li {
     .main-nav .sub-menu .sub-menu {
         padding-left: 15px;
         background-color: #f1f3f5;
+        border-left: none; /* remove border for mobile submenus */
     }
 
     .main-nav .mobile-nav-footer {
@@ -837,6 +842,7 @@ ul, li {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    position: relative; /* Needed for advanced controls later */
 }
 
 .carousel-slides {
@@ -852,13 +858,13 @@ ul, li {
 .carousel-slide a {
     display: block;
     width: 100%;
-    aspect-ratio: 870 / 300;
+    aspect-ratio: 870 / 300; /* Proportional scaling */
 }
 
 .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Ensures image covers the area without distortion */
     display: block;
 }
 
@@ -867,11 +873,5 @@ ul, li {
         margin-left: 3px;
         margin-right: 3px;
         width: calc(100% - 6px);
-    }
-}
-
-@media (max-width: 990px) {
-    .carousel-container {
-        display: block;
     }
 }
