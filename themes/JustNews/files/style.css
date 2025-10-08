@@ -158,7 +158,7 @@ ul, li {
     color: #007bff;
 }
 
-/* ★★★ HIDE NEW ELEMENTS ON DESKTOP ★★★ */
+/* Hide mobile-only elements on desktop */
 .main-nav .submenu-toggle,
 .main-nav .close-menu-btn,
 .main-nav .mobile-nav-header,
@@ -279,6 +279,17 @@ ul, li {
 }
 
 /* 6. Main Content Area (Article List, Pagination) */
+.carousel-placeholder {
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 .article-list {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
@@ -531,8 +542,25 @@ ul, li {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-
 /* 10. Responsive Design (Media Queries) */
+@media (max-width: 1199px) and (min-width: 991px) {
+    .container {
+        max-width: 96%;
+    }
+    .main-layout {
+        justify-content: space-between;
+    }
+    .left-column {
+        width: calc(100% - 310px - 20px);
+        max-width: none;
+    }
+    .right-column {
+        width: 310px;
+        max-width: none;
+    }
+}
+
+/* Base styles for screens < 990px */
 @media (max-width: 990px) {
     .site-header {
         padding: 0 15px;
@@ -564,7 +592,7 @@ ul, li {
         display: none;
     }
     
-    /* --- ★★★ START: MOBILE NAVIGATION PANEL STYLES ★★★ --- */
+    /* --- MOBILE NAVIGATION PANEL STYLES --- */
     .main-nav {
         display: flex;
         flex-direction: column;
@@ -588,7 +616,6 @@ ul, li {
         display: block;
     }
 
-    /* 1. Close Button */
     .main-nav .close-menu-btn {
         display: block;
         position: absolute;
@@ -601,7 +628,6 @@ ul, li {
         z-index: 1001;
     }
 
-    /* 2. Header Image */
     .main-nav .mobile-nav-header {
         display: block;
         width: 100%;
@@ -612,7 +638,6 @@ ul, li {
         display: block;
     }
 
-    /* Main Menu List */
     .main-nav > ul {
         flex-direction: column;
         overflow-y: auto;
@@ -635,7 +660,6 @@ ul, li {
         gap: 10px;
     }
     
-    /* 3. Submenu Arrow Toggle */
     .main-nav .submenu-toggle {
         display: flex;
         align-items: center;
@@ -655,7 +679,6 @@ ul, li {
         transform: rotate(90deg);
     }
 
-    /* Submenu Styles */
     .main-nav .sub-menu {
         display: none;
         position: static;
@@ -678,7 +701,6 @@ ul, li {
         background-color: #f1f3f5;
     }
 
-    /* 4. Login Button Footer */
     .main-nav .mobile-nav-footer {
         display: block;
         padding: 20px;
@@ -703,16 +725,19 @@ ul, li {
         margin-right: 8px;
     }
     
-    /* --- ★★★ END: MOBILE NAVIGATION PANEL STYLES ★★★ --- */
+    /* --- ARTICLE LIST & OTHER LAYOUT STYLES --- */
+    .right-column,
+    .meta-category {
+        display: none;
+    }
 
-    /* Previous responsive styles for article list */
     .left-column {
         width: 100%;
         max-width: none;
     }
     .article-item-box {
         flex-direction: row;
-        align-items: stretch;
+        align-items: flex-start;
         gap: 20px;
     }
     .article-item-image {
@@ -724,7 +749,7 @@ ul, li {
     .article-item-image a {
         display: block;
         width: 100%;
-        height: 100%;
+        height: auto;
         aspect-ratio: 220 / 140;
         overflow: hidden;
         border-radius: 5px;
@@ -739,8 +764,6 @@ ul, li {
         flex: 1 1 60%;
         display: flex;
         flex-direction: column;
-        aspect-ratio: 588 / 140;
-        overflow: hidden;
     }
     .article-item-content h3 {
         font-size: 16px;
