@@ -651,7 +651,7 @@ ul, li {
     /* === MODIFICATION FOR < 990px START === */
     .article-item-box {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: flex-start; /* ★ 保持顶部对齐 */
         gap: 20px;
     }
     .article-item-image {
@@ -678,19 +678,24 @@ ul, li {
         flex: 1 1 60%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* Creates space between top and bottom elements */
+        /* ★ 移除 justify-content */
     }
     .article-item-content h3 {
         font-size: 16px;
         white-space: normal;
+        margin-bottom: 8px; /* 调整标题和简介间距 */
     }
     .article-item-content p {
-        /* This is the default state for < 990px */
-        display: -webkit-box; /* Re-enable for this breakpoint */
-        -webkit-line-clamp: 2; /* Default to 2 lines */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        margin: 10px 0 0; /* Add some top margin */
+        margin: 0; /* 移除上下边距 */
+    }
+    .article-meta {
+        /* ★ 核心修正：使用 margin-top: auto 将其推到底部 */
+        margin-top: auto;
+        padding-top: 8px; /* 增加一点上边距，防止内容太挤 */
     }
     /* === MODIFICATION FOR < 990px END === */
     
@@ -711,7 +716,6 @@ ul, li {
         flex-basis: 65%;
     }
     .article-item-content p {
-        /* Show only one line of summary */
         -webkit-line-clamp: 1; 
     }
 }
@@ -719,7 +723,6 @@ ul, li {
 /* Screens < 580px */
 @media (max-width: 580px) {
     .article-item-content p {
-        /* Hide the summary */
         display: none;
     }
 }
@@ -727,10 +730,9 @@ ul, li {
 /* Screens < 500px */
 @media (max-width: 500px) {
     .article-item-content h3 {
-        font-size: 14px; /* Slightly smaller title */
+        font-size: 14px;
     }
     .article-meta {
-        /* Change font size for date and views */
         font-size: 12px;
     }
 }
