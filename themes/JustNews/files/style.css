@@ -181,10 +181,8 @@ ul, li {
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    /* MODIFICATION START: Removed shadow and border-radius */
     box-shadow: none;
     border-radius: 0;
-    /* MODIFICATION END */
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
@@ -626,9 +624,12 @@ ul, li {
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         padding-top: 0;
     }
-    .main-nav .arrow-container {
-        display: none; /* Hide desktop arrow on mobile */
+    
+    /* MODIFICATION START: Force hide desktop arrow on mobile */
+    .main-nav a .arrow-container {
+        display: none !important;
     }
+    /* MODIFICATION END */
 
     body.nav-open .main-nav {
         transform: translateX(0);
@@ -694,12 +695,9 @@ ul, li {
         transition: transform 0.3s ease;
     }
 
-    /* MODIFICATION START: Replaced static rotation with dynamic rotation on 'active' class */
-    /* Removed: .submenu-toggle i.fa-angle-down { transform: rotate(90deg); } */
     .submenu-toggle.active > i {
         transform: rotate(-90deg);
     }
-    /* MODIFICATION END */
 
     .main-nav .sub-menu {
         display: none;
