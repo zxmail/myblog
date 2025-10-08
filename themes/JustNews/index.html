@@ -30,12 +30,6 @@
                 <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
             </div>
             <nav class="main-nav" id="main-nav">
-                <div class="close-menu-btn" id="close-menu-btn">&times;</div>
-                
-                <div class="mobile-nav-header">
-                    <img src="{{ &OPT.theme_github_path }}JustNews/files/image_a3be87.png" alt="导航背景" class="mobile-nav-header-image">
-                </div>
-
                 <ul>
                     {{ #OPT.widgetMenuList }}
                     <li>
@@ -46,10 +40,6 @@
                             {{ /children.length }}
                         </a>
                         {{ #children.length }}
-                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /children.length }}
-
-                        {{ #children.length }}
                         <ul class="sub-menu">
                             {{ #children }}
                             <li>
@@ -59,10 +49,6 @@
                                     <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
                                     {{ /children.length }}
                                 </a>
-                                {{ #children.length }}
-                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /children.length }}
-
                                 {{ #children.length }}
                                 <ul class="sub-menu">
                                     {{ #children }}
@@ -81,14 +67,8 @@
                     </li>
                     {{ /OPT.widgetMenuList }}
                 </ul>
-
-                <div class="mobile-nav-footer">
-                    <a href="/admin" class="mobile-login-btn">
-                        <i class="fal fa-user-circle"></i> 登陆
-                    </a>
-                </div>
             </nav>
-            </div>
+        </div>
 
         <div class="header-right">
             <div class="search-icon" id="search-toggle">
@@ -266,62 +246,35 @@
         const mainNav = document.getElementById('main-nav');
         const body = document.querySelector('body');
         const overlay = document.getElementById('overlay');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
 
-
-        const openMenu = function() {
-            body.classList.add('nav-open');
-        };
-
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                body.classList.toggle('nav-open');
+            });
+        }
+        
+        // 点击菜单外部或遮罩层关闭菜单
         const closeMenu = function() {
             body.classList.remove('nav-open');
         };
         
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                openMenu();
-            });
-        }
-
         if (overlay) {
             overlay.addEventListener('click', closeMenu);
         }
         
-        if (closeMenuBtn) {
-            closeMenuBtn.addEventListener('click', closeMenu);
-        }
-
+        document.addEventListener('click', function(event) {
+            if (body.classList.contains('nav-open') && !mainNav.contains(event.target)) {
+                 if (!menuToggle.contains(event.target)) {
+                    closeMenu();
+                }
+            }
+        });
         mainNav.addEventListener('click', function(event){
             event.stopPropagation();
         });
 
-        // --- NEW: MOBILE SUBMENU TOGGLE SCRIPT ---
-        const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
-        submenuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const subMenu = this.nextElementSibling;
-                if (subMenu && subMenu.classList.contains('sub-menu')) {
-                    
-                    // Close other open submenus at the same level
-                    const parentLi = this.parentElement;
-                    const parentUl = parentLi.parentElement;
-                    parentUl.querySelectorAll(':scope > li > .sub-menu.open').forEach(openMenu => {
-                        if (openMenu !== subMenu) {
-                            openMenu.classList.remove('open');
-                            openMenu.previousElementSibling.querySelector('i').classList.remove('fa-angle-down');
-                            openMenu.previousElementSibling.querySelector('i').classList.add('fa-angle-right');
-                        }
-                    });
 
-                    // Toggle current submenu
-                    subMenu.classList.toggle('open');
-                    const icon = this.querySelector('i');
-                    icon.classList.toggle('fa-angle-right');
-                    icon.classList.toggle('fa-angle-down');
-                }
-            });
-        });
     });
 </script>
 </body>
