@@ -932,3 +932,70 @@ ul, li {
     .swiper-button-prev { left: 5px; }
     .swiper-button-next { right: 5px; }
 }
+
+/* --- 热门文章模块样式修改 --- */
+
+/* 1. 修改整体布局和添加分隔线 */
+.recent-article-item-box {
+    display: flex;
+    align-items: flex-start; /* 顶部对齐 */
+    margin-bottom: 15px;
+    padding-bottom: 15px; /* 为分隔线留出空间 */
+    border-bottom: 1px solid #eee; /* 添加浅灰色分隔线 */
+    gap: 10px; /* 图片和内容之间的间距 */
+}
+
+.recent-article-item-box:last-child {
+    border-bottom: none; /* 最后一篇文章不需要分隔线 */
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+
+/* 2. 设置图片宽高比为 100:63 */
+.recent-article-item-image {
+    flex: 0 0 100px; /* 固定宽度为100px */
+    width: 100px;
+    height: 63px; /* 根据100:63的比例计算高度 */
+    margin-right: 0;
+}
+
+.recent-article-item-image a,
+.recent-article-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* 3. 调整内容区域（标题和日期）的布局 */
+.recent-article-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    justify-content: space-between; /* 两端对齐，标题在顶部，日期在底部 */
+    align-self: stretch; /* 确保内容区域和图片一样高 */
+}
+
+.recent-article-item-content a {
+    color: #555;
+    line-height: 1.4;
+    margin: 0; /* 移除默认的margin */
+    /* 限制标题最多显示两行 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.recent-article-item-content a:hover {
+    color: var(--theme-hover);
+}
+
+/* 4. 添加日期样式 */
+.recent-article-item-date {
+    font-size: 12px;
+    color: #999;
+    margin-top: auto; /* 将日期推到底部 */
+}
