@@ -147,7 +147,8 @@ ul, li {
 }
 
 .main-nav a {
-    display: block;
+    display: flex; /* Use flex for alignment */
+    align-items: center;
     padding: 0 15px;
     line-height: 62px;
     color: #555;
@@ -164,17 +165,25 @@ ul, li {
     transition: transform 0.3s ease;
 }
 
-/* Sub-menu (Dropdown) - 动画与样式最终修改 */
+/* Hide mobile-only elements on desktop */
+.main-nav .submenu-toggle,
+.main-nav .close-menu-btn,
+.main-nav .mobile-nav-header,
+.main-nav .mobile-nav-footer {
+    display: none;
+}
+
+
+/* Desktop Sub-menu (Dropdown) */
 .sub-menu {
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    box-shadow: none;
-    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 5px 0;
-    border-radius: 2px;
+    border-radius: 4px;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
@@ -207,19 +216,15 @@ ul, li {
     transform: translateY(0);
 }
 
-.sub-menu li:hover > .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-}
-
+/* Desktop arrow animation */
 .main-nav > ul > li:hover > a > .arrow-container {
-    transform: rotate(-90deg);
+    transform: rotate(180deg);
 }
 
 .sub-menu li:hover > a > .arrow-container {
     transform: none;
 }
+
 
 .header-right {
     display: flex;
@@ -585,7 +590,6 @@ ul, li {
         transform: translateY(-50%);
     }
     .header-container {
-        position: relative;
         justify-content: center;
     }
     .header-left {
@@ -601,56 +605,157 @@ ul, li {
     .logo-area {
         margin-right: 0;
     }
-    .blog-name,
-    .login-link {
+    .blog-name, .login-link {
         display: none;
     }
+    
+    /* --- MOBILE NAVIGATION PANEL STYLES --- */
     .main-nav {
-        display: block;
+        display: flex;
+        flex-direction: column;
         position: fixed;
         top: 0;
         left: 0;
         height: 100%;
-        width: 70%;
-        max-width: 400px;
+        width: 80%;
+        max-width: 320px;
         background: #fff;
-        overflow-y: auto;
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        padding-top: 20px;
+        padding-top: 0;
     }
-    .main-nav ul {
-        flex-direction: column;
-    }
-    .main-nav a {
-        line-height: 50px;
-        padding: 0 20px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .main-nav .sub-menu,
     .main-nav .arrow-container {
-        display: none;
+        display: none; /* Hide desktop arrow on mobile */
     }
+
     body.nav-open .main-nav {
         transform: translateX(0);
     }
     body.nav-open .overlay {
         display: block;
     }
+
+    .main-nav .close-menu-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 30px;
+        line-height: 1;
+        color: #888;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .main-nav .mobile-nav-header {
+        display: block;
+        width: 100%;
+    }
+    .mobile-nav-header-image {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .main-nav > ul {
+        flex-direction: column;
+        overflow-y: auto;
+        flex-grow: 1;
+        padding: 15px 0;
+    }
+    .main-nav li {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        position: relative;
+    }
+    .main-nav a {
+        padding: 0 20px;
+        border-bottom: 1px solid #f0f0f0;
+        flex-grow: 1;
+        gap: 10px;
+    }
+    
+    .main-nav .submenu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 50px;
+        cursor: pointer;
+        color: #888;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .submenu-toggle i {
+        transition: transform 0.3s ease;
+    }
+    .submenu-toggle i.fa-angle-down {
+        transform: rotate(90deg);
+    }
+
+    .main-nav .sub-menu {
+        display: none;
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        padding: 0 0 0 20px;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background-color: #f8f9fa;
+    }
+    .main-nav .sub-menu.open {
+        display: block;
+    }
+    .main-nav .sub-menu a {
+        border-color: #e9ecef;
+    }
+    .main-nav .sub-menu .sub-menu {
+        padding-left: 15px;
+        background-color: #f1f3f5;
+    }
+
+    .main-nav .mobile-nav-footer {
+        display: block;
+        padding: 20px;
+        margin-top: auto;
+        border-top: 1px solid #f0f0f0;
+    }
+    .mobile-login-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: var(--theme-color);
+        color: #fff;
+        padding: 12px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .mobile-login-btn:hover {
+        background-color: var(--theme-hover);
+        color: #fff;
+    }
+    .mobile-login-btn i {
+        margin-right: 8px;
+    }
+    
+    /* --- ARTICLE LIST & OTHER LAYOUT STYLES (RESTORED) --- */
     .right-column,
     .meta-category {
         display: none;
     }
+
     .left-column {
         width: 100%;
         max-width: none;
     }
-
     .article-item-box {
         flex-direction: row;
-        align-items: stretch;
+        align-items: flex-start;
         gap: 20px;
     }
     .article-item-image {
@@ -662,7 +767,7 @@ ul, li {
     .article-item-image a {
         display: block;
         width: 100%;
-        height: 100%;
+        height: auto;
         aspect-ratio: 220 / 140;
         overflow: hidden;
         border-radius: 5px;
@@ -677,8 +782,6 @@ ul, li {
         flex: 1 1 60%;
         display: flex;
         flex-direction: column;
-        aspect-ratio: 588 / 140;
-        overflow: hidden;
     }
     .article-item-content h3 {
         font-size: 16px;
@@ -696,7 +799,6 @@ ul, li {
         margin-top: auto;
         padding-top: 8px;
     }
-    
     .main-layout,
     .friend-links {
         margin: 0 auto;
@@ -704,7 +806,6 @@ ul, li {
     }
 }
 
-/* Screens < 800px */
 @media (max-width: 800px) {
     .article-item-image {
         flex-basis: 35%;
@@ -718,18 +819,15 @@ ul, li {
     }
 }
 
-/* Screens < 580px */
 @media (max-width: 580px) {
     .article-item-content p {
         display: none;
     }
 }
 
-/* Screens < 500px */
 @media (max-width: 500px) {
     .article-item-content h3 {
         font-size: 14px;
-        /* ★ 新增：将标题限制为两行 */
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
