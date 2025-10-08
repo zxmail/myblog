@@ -319,6 +319,7 @@ ul, li {
     margin-right: 20px;
     overflow: hidden;
     position: relative;
+  border-radius: 5px;
 }
 
 .article-item-image a {
@@ -337,7 +338,6 @@ ul, li {
 
 .article-item-image img:hover {
     transform: scale(1.05);
-    border-radius: 5px;
 }
 
 .image-category {
