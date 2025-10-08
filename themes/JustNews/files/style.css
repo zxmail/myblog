@@ -129,7 +129,7 @@ ul, li {
 .logo-image {
     height: 50px;
     margin-top: 3px;
-    margin-right: 15px;
+    margin-right: 25px;
 }
 
 .blog-name {
@@ -152,7 +152,7 @@ ul, li {
     gap: 3px; /* 新增：调整图标和文字的间距 */
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 8px;
     line-height: 62px;
     color: #555;
     transition: color 0.3s;
