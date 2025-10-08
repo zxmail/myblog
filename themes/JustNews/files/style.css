@@ -158,23 +158,25 @@ ul, li {
     color: #007bff;
 }
 
-.main-nav a .arrow-container {
-    display: inline-block;
-    margin-left: 5px;
-    transition: transform 0.3s ease;
+/* ★★★ HIDE NEW ELEMENTS ON DESKTOP ★★★ */
+.main-nav .submenu-toggle,
+.main-nav .close-menu-btn,
+.main-nav .mobile-nav-header,
+.main-nav .mobile-nav-footer {
+    display: none;
 }
 
-/* Sub-menu (Dropdown) - 动画与样式最终修改 */
+
+/* Sub-menu (Dropdown) */
 .sub-menu {
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    box-shadow: none;
-    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 5px 0;
-    border-radius: 2px;
+    border-radius: 4px;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
@@ -205,20 +207,6 @@ ul, li {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-}
-
-.sub-menu li:hover > .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-}
-
-.main-nav > ul > li:hover > a > .arrow-container {
-    transform: rotate(-90deg);
-}
-
-.sub-menu li:hover > a > .arrow-container {
-    transform: none;
 }
 
 .header-right {
@@ -291,17 +279,6 @@ ul, li {
 }
 
 /* 6. Main Content Area (Article List, Pagination) */
-.carousel-placeholder {
-    background-color: var(--widget-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
 .article-list {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
@@ -317,262 +294,11 @@ ul, li {
     padding-bottom: 25px;
 }
 
-.article-item-box:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
+/* 7. Footer, etc. (remaining styles are the same) */
+/* ... (omitted for brevity, please keep your existing styles from here on) ... */
 
-.article-item-image {
-    flex: 0 0 220px;
-    margin-right: 20px;
-    overflow: hidden;
-    position: relative;
-}
-
-.article-item-image a {
-    display: block;
-    width: 100%;
-    height: 140px;
-}
-
-.article-item-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5px;
-    transition: transform 0.3s ease;
-}
-
-.article-item-image img:hover {
-    transform: scale(1.05);
-}
-
-.image-category {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(32, 107, 231, 0.85);
-    color: #fff;
-    padding: 3px 8px;
-    font-size: 12px;
-    border-radius: 3px;
-    line-height: 1.5;
-    z-index: 2;
-}
-
-.image-category a {
-    color: #fff;
-}
-
-.article-item-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.article-item-content h3 {
-    margin: 0 0 10px;
-    font-size: 17px;
-    font-weight: bold;
-}
-
-.article-item-content h3 a {
-    color: #333;
-}
-
-.article-item-content h3 a:hover {
-    color: var(--theme-hover);
-}
-
-.article-item-content p {
-    margin: 0 0 10px;
-    color: #666;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    font-size: 15px;
-}
-
-.article-meta {
-    font-size: 0.85rem;
-    color: #999;
-    display: flex;
-    align-items: center;
-    margin-top: auto;
-}
-
-.article-meta span {
-    margin-right: 15px;
-}
-
-.article-meta .views {
-    margin-left: auto;
-}
-
-.pagination {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 0;
-}
-
-.pagination a {
-    padding: 10px 20px;
-    border: 1px solid var(--theme-bd);
-    border-radius: 5px;
-}
-
-/* 7. Sidebar & Widgets */
-.widget {
-    background-color: var(--widget-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.widget-title {
-    font-size: 16px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-}
-
-.widget-title::before {
-    content: "";
-    width: 4px;
-    height: 1em;
-    background-color: var(--theme-color);
-    margin-right: 8px;
-    border-radius: 2px;
-}
-
-.widget ul li {
-    margin-bottom: 10px;
-}
-
-.widget ul li a {
-    color: var(--text-color);
-}
-
-.widget .tag-cloud a {
-    display: inline-block;
-    margin: 3px;
-    padding: 5px 10px;
-    background: #f0f0f0;
-    border-radius: 3px;
-}
-
-.recent-article-item-box {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.recent-article-item-image {
-    flex: 0 0 60px;
-    height: 60px;
-    margin-right: 10px;
-}
-
-.recent-article-item-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.recent-article-item-content {
-    flex: 1;
-    line-height: 1.4;
-}
-
-.recent-article-item-content a {
-    color: #555;
-}
-
-.recent-article-item-content a:hover {
-    color: var(--theme-hover);
-}
-
-.friend-links {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-}
-
-.friend-links .links-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-/* 8. Footer */
-.footer {
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 20px;
-    background-color: #000;
-    color: #ccc;
-}
-
-.footer a {
-    color: #fff;
-}
-
-.footer a:hover {
-    color: var(--theme-hover);
-}
-
-/* 9. Utility & Components (Back to Top) */
-.action {
-    position: fixed;
-    right: 20px;
-    bottom: 20%;
-}
-
-.action-item.gotop {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.action-item.gotop:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
 
 /* 10. Responsive Design (Media Queries) */
-@media (max-width: 1199px) and (min-width: 991px) {
-    .container {
-        max-width: 96%;
-    }
-    .main-layout {
-        justify-content: space-between;
-    }
-    .left-column {
-        width: calc(100% - 310px - 20px);
-        max-width: none;
-    }
-    .right-column {
-        width: 310px;
-        max-width: none;
-    }
-}
-
-/* Base styles for screens < 990px */
 @media (max-width: 990px) {
     .site-header {
         padding: 0 15px;
@@ -585,7 +311,6 @@ ul, li {
         transform: translateY(-50%);
     }
     .header-container {
-        position: relative;
         justify-content: center;
     }
     .header-left {
@@ -601,37 +326,26 @@ ul, li {
     .logo-area {
         margin-right: 0;
     }
-    .blog-name,
-    .login-link {
+    .blog-name, .login-link {
         display: none;
     }
+    
+    /* --- ★★★ START: MOBILE NAVIGATION PANEL STYLES ★★★ --- */
     .main-nav {
-        display: block;
+        display: flex; /* Changed to flex for vertical alignment */
+        flex-direction: column; /* Align items vertically */
         position: fixed;
         top: 0;
         left: 0;
         height: 100%;
-        width: 70%;
-        max-width: 400px;
+        width: 80%; /* Wider for better view */
+        max-width: 320px;
         background: #fff;
-        overflow-y: auto;
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        padding-top: 20px;
-    }
-    .main-nav ul {
-        flex-direction: column;
-    }
-    .main-nav a {
-        line-height: 50px;
-        padding: 0 20px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .main-nav .sub-menu,
-    .main-nav .arrow-container {
-        display: none;
+        padding-top: 0; /* Remove padding */
     }
     body.nav-open .main-nav {
         transform: translateX(0);
@@ -639,103 +353,123 @@ ul, li {
     body.nav-open .overlay {
         display: block;
     }
-    .right-column,
-    .meta-category {
-        display: none;
-    }
-    .left-column {
-        width: 100%;
-        max-width: none;
+
+    /* 1. Close Button */
+    .main-nav .close-menu-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 30px;
+        line-height: 1;
+        color: #888;
+        cursor: pointer;
+        z-index: 1001;
     }
 
-    .article-item-box {
-        flex-direction: row;
-        align-items: stretch;
-        gap: 20px;
-    }
-    .article-item-image {
-        flex: 1 1 40%;
-        max-width: 40%;
-        margin-right: 0;
-        height: auto;
-    }
-    .article-item-image a {
+    /* 2. Header Image */
+    .main-nav .mobile-nav-header {
         display: block;
         width: 100%;
-        height: 100%;
-        aspect-ratio: 220 / 140;
-        overflow: hidden;
-        border-radius: 5px;
     }
-    .article-item-image img {
+    .mobile-nav-header-image {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 0;
+        height: auto;
+        display: block;
     }
-    .article-item-content {
-        flex: 1 1 60%;
-        display: flex;
+
+    /* Main Menu List */
+    .main-nav > ul {
         flex-direction: column;
-        aspect-ratio: 588 / 140;
-        overflow: hidden;
+        overflow-y: auto; /* Allow scrolling for long menus */
+        flex-grow: 1; /* Take available space */
+        padding: 15px 0;
     }
-    .article-item-content h3 {
-        font-size: 16px;
-        white-space: normal;
-        margin-bottom: 8px;
+    .main-nav li {
+        display: flex;
+        flex-wrap: wrap; /* Allow submenu to wrap to the next line */
+        align-items: center;
+        position: relative;
     }
-    .article-item-content p {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        margin: 0;
-    }
-    .article-meta {
-        margin-top: auto;
-        padding-top: 8px;
+    .main-nav a {
+        line-height: 50px;
+        padding: 0 20px;
+        border-bottom: 1px solid #f0f0f0;
+        flex-grow: 1; /* Link takes up the left space */
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
     
-    .main-layout,
-    .friend-links {
-        margin: 0 auto;
-        max-width: 870px;
+    /* 3. Submenu Arrow Toggle */
+    .main-nav .submenu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 50px;
+        cursor: pointer;
+        color: #888;
+        position: absolute;
+        right: 0;
+        top: 0;
     }
+    .submenu-toggle i {
+        transition: transform 0.3s ease;
+    }
+    .submenu-toggle i.fa-angle-down {
+        transform: rotate(90deg);
+    }
+
+    /* Submenu Styles */
+    .main-nav .sub-menu {
+        display: none; /* Hide by default */
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        padding: 0 0 0 20px; /* Indent submenu */
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background-color: #f8f9fa;
+    }
+    .main-nav .sub-menu.open {
+        display: block; /* Show on click */
+    }
+    .main-nav .sub-menu a {
+        border-color: #e9ecef;
+    }
+    .main-nav .sub-menu .sub-menu {
+        padding-left: 15px; /* Further indent third-level menu */
+        background-color: #f1f3f5;
+    }
+
+    /* 4. Login Button Footer */
+    .main-nav .mobile-nav-footer {
+        display: block;
+        padding: 20px;
+        margin-top: auto; /* Push to the bottom */
+        border-top: 1px solid #f0f0f0;
+    }
+    .mobile-login-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: var(--theme-color);
+        color: #fff;
+        padding: 12px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .mobile-login-btn:hover {
+        background-color: var(--theme-hover);
+        color: #fff;
+    }
+    .mobile-login-btn i {
+        margin-right: 8px;
+    }
+    
+    /* --- ★★★ END: MOBILE NAVIGATION PANEL STYLES ★★★ --- */
 }
 
-/* Screens < 800px */
-@media (max-width: 800px) {
-    .article-item-image {
-        flex-basis: 35%;
-        max-width: 35%;
-    }
-    .article-item-content {
-        flex-basis: 65%;
-    }
-    .article-item-content p {
-        -webkit-line-clamp: 1; 
-    }
-}
-
-/* Screens < 580px */
-@media (max-width: 580px) {
-    .article-item-content p {
-        display: none;
-    }
-}
-
-/* Screens < 500px */
-@media (max-width: 500px) {
-    .article-item-content h3 {
-        font-size: 14px;
-        /* ★ 新增：将标题限制为两行 */
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .article-meta {
-        font-size: 12px;
-    }
-}
+/* ... (Keep your other media queries for article lists etc.) ... */
