@@ -10,6 +10,8 @@
     <meta name="description" content="{{ &OPT.siteDescription }}" />
 
     <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper-bundle.min.css"/>
+
+    <link rel="stylesheet" href="">
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
@@ -307,6 +309,7 @@
 
         // 4. 初始化 Swiper
         const swiper = new Swiper('.swiper', {
+            autoHeight: true, // 高度自适应
             loop: true,
             autoplay: {
                 delay: 3000,
