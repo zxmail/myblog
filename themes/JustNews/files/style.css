@@ -1006,7 +1006,7 @@ ul, li {
 .widget .tag-cloud {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 平等的三份水平排列 */
-    gap: 8px; /* 设置模块之间的间距 */
+    gap: 4px; /* 设置模块之间的间距 */
     padding: 0;
 }
 
