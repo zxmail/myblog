@@ -9,11 +9,12 @@
     <meta name="keywords" content="{{ &keyWords }}" />
     <meta name="description" content="{{ &OPT.siteDescription }}" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
     <link rel="stylesheet" href="">
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
-	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper-bundle.min.js"></script>
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
@@ -111,18 +112,23 @@
             <div class="left-column">
                 
                 {{#carousel_slides.length}}
-                <div class="carousel-container">
-                    <div class="carousel-slides">
+                <div class="swiper carousel-container">
+                    <div class="swiper-wrapper">
                         {{#carousel_slides}}
-                        <div class="carousel-slide">
-                            <a href="{{ &url }}" target="_blank">
-                                <img src="{{ &imageUrl }}" alt="{{ &caption }}">
+                        <div class="swiper-slide">
+                            <a href="{{ &linkUrl }}" target="_blank">
+                                <img src="{{ &imageUrl }}" alt="Carousel Image">
                             </a>
                         </div>
                         {{/carousel_slides}}
                     </div>
+                    <div class="swiper-pagination"></div>
+
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                 </div>
                 {{/carousel_slides.length}}
+
                 <div class="article-list">
                     <ul>
                     {{#articleList}}
@@ -238,6 +244,9 @@
     </div>
     
     <div class="overlay" id="overlay"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
         // 简单的返回顶部功能
         document.addEventListener('DOMContentLoaded', function() {
@@ -250,8 +259,8 @@
         });
     </script>
     <script>
-    // --- Header 搜索框控制脚本 ---
     document.addEventListener('DOMContentLoaded', function() {
+        // --- Header 搜索框控制脚本 ---
         const searchToggle = document.getElementById('search-toggle');
         const searchBox = document.getElementById('search-box');
 
@@ -279,62 +288,40 @@
         const overlay = document.getElementById('overlay');
         const closeMenuBtn = document.getElementById('close-menu-btn');
 
-
-        const openMenu = function() {
-            body.classList.add('nav-open');
-        };
-
-        const closeMenu = function() {
-            body.classList.remove('nav-open');
-        };
+        const openMenu = function() { body.classList.add('nav-open'); };
+        const closeMenu = function() { body.classList.remove('nav-open'); };
         
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                openMenu();
-            });
-        }
+        if (menuToggle) { menuToggle.addEventListener('click', function(event) { event.stopPropagation(); openMenu(); }); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        if (closeMenuBtn) { closeMenuBtn.addEventListener('click', closeMenu); }
+        mainNav.addEventListener('click', function(event){ event.stopPropagation(); });
 
-        if (overlay) {
-            overlay.addEventListener('click', closeMenu);
-        }
-        
-        if (closeMenuBtn) {
-            closeMenuBtn.addEventListener('click', closeMenu);
-        }
-
-        mainNav.addEventListener('click', function(event){
-            event.stopPropagation();
-        });
-
-        // --- NEW: MOBILE SUBMENU TOGGLE SCRIPT ---
         const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
         submenuToggles.forEach(toggle => {
             toggle.addEventListener('click', function() {
+                this.classList.toggle('active'); // 用于箭头动画
                 const subMenu = this.nextElementSibling;
                 if (subMenu && subMenu.classList.contains('sub-menu')) {
-                    
-                    const parentLi = this.parentElement;
-                    const parentUl = parentLi.parentElement;
-                    parentUl.querySelectorAll(':scope > li > .sub-menu.open').forEach(openMenu => {
-                        if (openMenu !== subMenu) {
-                            openMenu.classList.remove('open');
-                            let otherToggle = openMenu.previousElementSibling;
-                            if(otherToggle.classList.contains('submenu-toggle')){
-                                const icon = otherToggle.querySelector('i');
-                                icon.classList.remove('fa-angle-down');
-                                icon.classList.add('fa-angle-right');
-                            }
-                        }
-                    });
-
-                    // Toggle current submenu
                     subMenu.classList.toggle('open');
-                    const icon = this.querySelector('i');
-                    icon.classList.toggle('fa-angle-right');
-                    icon.classList.toggle('fa-angle-down');
                 }
             });
+        });
+
+        // 4. 初始化 Swiper
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
         });
     });
 </script>
