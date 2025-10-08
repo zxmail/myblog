@@ -147,7 +147,7 @@ ul, li {
 }
 
 .main-nav a {
-    display: flex; /* Use flex for alignment */
+    display: flex; /* Use flexbox for alignment */
     align-items: center;
     padding: 0 15px;
     line-height: 62px;
@@ -216,11 +216,10 @@ ul, li {
     transform: translateY(0);
 }
 
-/* Desktop arrow animation */
+/* Desktop arrow animation - RESTORED */
 .main-nav > ul > li:hover > a > .arrow-container {
     transform: rotate(180deg);
 }
-
 .sub-menu li:hover > a > .arrow-container {
     transform: none;
 }
