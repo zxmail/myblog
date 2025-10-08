@@ -41,6 +41,9 @@
                     <li>
                         <a href="{{ &url }}">
                             {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                            {{ #children.length }}
+                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
+                            {{ /children.length }}
                         </a>
                         {{ #children.length }}
                         <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
@@ -52,6 +55,9 @@
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}"></i> {{ /icon}}{{ &name }}
+                                    {{ #children.length }}
+                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
+                                    {{ /children.length }}
                                 </a>
                                 {{ #children.length }}
                                 <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
@@ -290,7 +296,7 @@
             event.stopPropagation();
         });
 
-        // --- ★★★ NEW: MOBILE SUBMENU TOGGLE SCRIPT ★★★ ---
+        // --- NEW: MOBILE SUBMENU TOGGLE SCRIPT ---
         const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
         submenuToggles.forEach(toggle => {
             toggle.addEventListener('click', function() {
