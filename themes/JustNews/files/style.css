@@ -454,7 +454,7 @@ ul, li {
 .widget .tag-cloud a {
     display: inline-block;
     margin: 3px;
-    padding: 5px 10px;
+    padding: 3px 5px;
     background: #f0f0f0;
     border-radius: 3px;
 }
@@ -1023,8 +1023,8 @@ ul, li {
     color: #000; /* 黑字 */
     font-size: 12px !important; /* 设置字体大小 */
     text-align: center; /* 文本居中 */
-    padding: 8px 5px;
-    border-radius: 4px;
+    /*padding: 8px 5px; 文本居中 */
+    border-radius: 2px;
     transition: background-color 0.3s, color 0.3s; /* 平滑过渡效果 */
     white-space: nowrap; /* 强制文本不换行 */
     overflow: hidden; /* 隐藏溢出的文本 */
@@ -1036,7 +1036,7 @@ ul, li {
     color: #fff; /* 白字 */
     
     /* 悬停时为长文字添加左右往复显示动画 */
-    animation: marquee-text 4s linear infinite alternate;
+    animation: marquee-text 1s linear infinite alternate;
 }
 
 /* 5. 定义文本左右往复显示的动画 */
