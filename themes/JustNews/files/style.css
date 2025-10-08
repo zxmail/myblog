@@ -674,25 +674,32 @@ ul, li {
     .article-item-box {
         flex-direction: row; /* 保持左图右文 */
         align-items: flex-start; /* 顶部对齐 */
-        gap: 15px; /* 调整图片和内容之间的间距 */
+        gap: 20px; /* 图片和内容之间的间距 */
     }
 
     .article-item-image {
         flex: 1 1 40%; /* 允许缩放，基础宽度为40% */
         max-width: 40%;
-        height: auto; /* 高度自适应 */
         margin-right: 0; /* 使用gap代替margin */
+        /* ★ 移除固定的height，让aspect-ratio生效 */
+        height: auto; 
     }
 
     .article-item-image a {
-        height: auto; /* 高度自适应 */
         display: block;
         width: 100%;
+        height: auto;
+        /* ★ 新增：设置220/140的宽高比 */
+        aspect-ratio: 220 / 140; 
+        overflow: hidden; /* 隐藏图片溢出的部分 */
+        border-radius: 5px; /* 圆角移动到这里 */
     }
     
     .article-item-image img {
-        width: 100%; /* 图片宽度填充容器 */
-        height: auto; /* 高度自动，保持比例 */
+        width: 100%;
+        height: 100%; /* ★ 修改：让图片高度填满容器 */
+        object-fit: cover; /* 保持图片比例，裁剪多余部分 */
+        border-radius: 0; /* 图片不再需要圆角，因为容器已经有了 */
     }
 
     .article-item-content {
