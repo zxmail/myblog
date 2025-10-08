@@ -13,6 +13,7 @@
   8.  Footer
   9.  Utility & Components (Back to Top)
   10. Responsive Design (Media Queries)
+  11. Carousel Styles (NEW)
 ================================================================*/
 
 /* 1. Font Awesome Icons Import */
@@ -215,7 +216,6 @@ ul, li {
     transform: translateY(0);
 }
 
-/* Desktop arrow animation - RESTORED */
 .main-nav > ul > li:hover > a > .arrow-container {
     transform: rotate(-90deg);
 }
@@ -294,17 +294,6 @@ ul, li {
 }
 
 /* 6. Main Content Area (Article List, Pagination) */
-.carousel-placeholder {
-    background-color: var(--widget-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
 .article-list {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
@@ -625,11 +614,9 @@ ul, li {
         padding-top: 0;
     }
     
-    /* MODIFICATION START: Force hide desktop arrow on mobile */
     .main-nav a .arrow-container {
         display: none !important;
     }
-    /* MODIFICATION END */
 
     body.nav-open .main-nav {
         transform: translateX(0);
@@ -745,7 +732,6 @@ ul, li {
         margin-right: 8px;
     }
     
-    /* --- ARTICLE LIST & OTHER LAYOUT STYLES (RESTORED) --- */
     .right-column,
     .meta-category {
         display: none;
@@ -757,7 +743,7 @@ ul, li {
     }
     .article-item-box {
         flex-direction: row;
-        align-items: stretch; /* Stretch to equal height */
+        align-items: stretch;
         gap: 20px;
     }
     .article-item-image {
@@ -769,7 +755,7 @@ ul, li {
     .article-item-image a {
         display: block;
         width: 100%;
-        height: 100%; /* Fill container */
+        height: 100%;
         aspect-ratio: 220 / 140;
         overflow: hidden;
         border-radius: 5px;
@@ -839,5 +825,53 @@ ul, li {
     }
     .article-meta {
         font-size: 12px;
+    }
+}
+
+/* 11. Carousel Styles */
+.carousel-container {
+    width: 100%;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: var(--widget-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    width: 100%;
+}
+
+.carousel-slide a {
+    display: block;
+    width: 100%;
+    aspect-ratio: 870 / 300;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 870px) {
+    .carousel-container {
+        margin-left: 3px;
+        margin-right: 3px;
+        width: calc(100% - 6px);
+    }
+}
+
+@media (max-width: 990px) {
+    .carousel-container {
+        display: block;
     }
 }
