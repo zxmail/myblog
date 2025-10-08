@@ -108,10 +108,20 @@
     <div id="wrap" class="container">
         <div class="main-layout">
             <div class="left-column">
-                <div class="carousel-placeholder">
-                    <p>海报轮播区</p>
+                
+                {{#carousel_slides.length}}
+                <div class="carousel-container">
+                    <div class="carousel-slides">
+                        {{#carousel_slides}}
+                        <div class="carousel-slide">
+                            <a href="{{ &url }}" target="_blank">
+                                <img src="{{ &imageUrl }}" alt="{{ &caption }}">
+                            </a>
+                        </div>
+                        {{/carousel_slides}}
+                    </div>
                 </div>
-
+                {{/carousel_slides.length}}
                 <div class="article-list">
                     <ul>
                     {{#articleList}}
@@ -303,14 +313,17 @@
                 const subMenu = this.nextElementSibling;
                 if (subMenu && subMenu.classList.contains('sub-menu')) {
                     
-                    // Close other open submenus at the same level
                     const parentLi = this.parentElement;
                     const parentUl = parentLi.parentElement;
                     parentUl.querySelectorAll(':scope > li > .sub-menu.open').forEach(openMenu => {
                         if (openMenu !== subMenu) {
                             openMenu.classList.remove('open');
-                            openMenu.previousElementSibling.querySelector('i').classList.remove('fa-angle-down');
-                            openMenu.previousElementSibling.querySelector('i').classList.add('fa-angle-right');
+                            let otherToggle = openMenu.previousElementSibling;
+                            if(otherToggle.classList.contains('submenu-toggle')){
+                                const icon = otherToggle.querySelector('i');
+                                icon.classList.remove('fa-angle-down');
+                                icon.classList.add('fa-angle-right');
+                            }
                         }
                     });
 
