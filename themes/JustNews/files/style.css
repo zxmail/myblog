@@ -147,7 +147,8 @@ ul, li {
 }
 
 .main-nav a {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 0 15px;
     line-height: 62px;
     color: #555;
@@ -156,6 +157,12 @@ ul, li {
 
 .main-nav a:hover {
     color: #007bff;
+}
+
+.main-nav a .arrow-container {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
 }
 
 /* Hide mobile-only elements on desktop */
@@ -208,6 +215,15 @@ ul, li {
     visibility: visible;
     transform: translateY(0);
 }
+
+/* Desktop arrow animation */
+.main-nav > ul > li:hover > a > .arrow-container {
+    transform: rotate(180deg);
+}
+.sub-menu li:hover > a > .arrow-container {
+    transform: none;
+}
+
 
 .header-right {
     display: flex;
@@ -609,6 +625,10 @@ ul, li {
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         padding-top: 0;
     }
+    .main-nav .arrow-container {
+        display: none; /* Hide desktop arrow on mobile */
+    }
+
     body.nav-open .main-nav {
         transform: translateX(0);
     }
@@ -651,12 +671,9 @@ ul, li {
         position: relative;
     }
     .main-nav a {
-        line-height: 50px;
         padding: 0 20px;
         border-bottom: 1px solid #f0f0f0;
         flex-grow: 1;
-        display: flex;
-        align-items: center;
         gap: 10px;
     }
     
@@ -725,7 +742,7 @@ ul, li {
         margin-right: 8px;
     }
     
-    /* --- ARTICLE LIST & OTHER LAYOUT STYLES --- */
+    /* --- ARTICLE LIST & OTHER LAYOUT STYLES (RESTORED) --- */
     .right-column,
     .meta-category {
         display: none;
