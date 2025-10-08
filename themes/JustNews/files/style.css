@@ -171,7 +171,6 @@ ul, li {
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    /* ★★★ 修改2：移除阴影和边框 ★★★ */
     box-shadow: none;
     border: none;
     padding: 5px 0;
@@ -179,8 +178,7 @@ ul, li {
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    /* ★★★ 修改1：二级菜单从上向下滑动 ★★★ */
-    transform: translateY(-10px); /* 初始位置在上方 */
+    transform: translateY(-10px);
     transition: all 0.3s ease;
 }
 
@@ -197,29 +195,24 @@ ul, li {
     position: relative;
 }
 
-/* 三级菜单的特定样式 */
 .sub-menu .sub-menu {
     top: 0;
     left: 100%;
-    /* ★★★ 修改1：三级菜单从左向右滑动 ★★★ */
-    transform: translateX(-10px); /* 初始位置在左侧 */
+    transform: translateX(-10px);
 }
 
-/* 悬停时显示二级菜单 */
 .main-nav li:hover > .sub-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* 悬停时显示三级菜单 */
 .sub-menu li:hover > .sub-menu {
     opacity: 1;
     visibility: visible;
     transform: translateX(0);
 }
 
-/* 箭头动画 */
 .main-nav > ul > li:hover > a > .arrow-container {
     transform: rotate(-90deg);
 }
@@ -228,8 +221,6 @@ ul, li {
     transform: none;
 }
 
-
-/* Header Right: Search & Login */
 .header-right {
     display: flex;
     align-items: center;
@@ -282,7 +273,6 @@ ul, li {
     background-color: #0056b3;
 }
 
-/* Mobile Menu Toggle & Overlay */
 .mobile-menu-toggle {
     display: none;
     font-size: 22px;
@@ -478,7 +468,6 @@ ul, li {
     border-radius: 3px;
 }
 
-/* Recent Posts Widget */
 .recent-article-item-box {
     display: flex;
     align-items: center;
@@ -511,7 +500,6 @@ ul, li {
     color: var(--theme-hover);
 }
 
-/* Friend Links Widget */
 .friend-links {
     background-color: #fff;
     padding: 20px;
@@ -567,8 +555,6 @@ ul, li {
 }
 
 /* 10. Responsive Design (Media Queries) */
-
-/* Screen width 991px - 1199px (Tablet) */
 @media (max-width: 1199px) and (min-width: 991px) {
     .container {
         max-width: 96%;
@@ -586,13 +572,11 @@ ul, li {
     }
 }
 
-/* Screen width < 990px (Mobile) */
+/* Base styles for screens < 990px */
 @media (max-width: 990px) {
     .site-header {
         padding: 0 15px;
     }
-
-    /* Mobile Header Layout */
     .mobile-menu-toggle {
         display: block;
         position: absolute;
@@ -621,8 +605,6 @@ ul, li {
     .login-link {
         display: none;
     }
-    
-    /* Slide-out Mobile Navigation */
     .main-nav {
         display: block;
         position: fixed;
@@ -651,76 +633,66 @@ ul, li {
     .main-nav .arrow-container {
         display: none;
     }
-
     body.nav-open .main-nav {
         transform: translateX(0);
     }
     body.nav-open .overlay {
         display: block;
     }
-    
-    /* Mobile Layout Adjustments */
     .right-column,
     .meta-category {
         display: none;
     }
-    
     .left-column {
         width: 100%;
         max-width: none;
     }
 
-    /* ==================== MODIFICATION START ==================== */
+    /* === MODIFICATION FOR < 990px START === */
     .article-item-box {
-        flex-direction: row; /* 保持左图右文 */
-        align-items: flex-start; /* 顶部对齐 */
-        gap: 20px; /* 图片和内容之间的间距 */
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
     }
-
     .article-item-image {
-        flex: 1 1 40%; /* 允许缩放，基础宽度为40% */
+        flex: 1 1 40%;
         max-width: 40%;
-        margin-right: 0; /* 使用gap代替margin */
-        /* ★ 移除固定的height，让aspect-ratio生效 */
-        height: auto; 
+        margin-right: 0;
+        height: auto;
     }
-
     .article-item-image a {
         display: block;
         width: 100%;
         height: auto;
-        /* ★ 新增：设置220/140的宽高比 */
-        aspect-ratio: 220 / 140; 
-        overflow: hidden; /* 隐藏图片溢出的部分 */
-        border-radius: 5px; /* 圆角移动到这里 */
+        aspect-ratio: 220 / 140;
+        overflow: hidden;
+        border-radius: 5px;
     }
-    
     .article-item-image img {
         width: 100%;
-        height: 100%; /* ★ 修改：让图片高度填满容器 */
-        object-fit: cover; /* 保持图片比例，裁剪多余部分 */
-        border-radius: 0; /* 图片不再需要圆角，因为容器已经有了 */
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
     }
-
     .article-item-content {
-        flex: 1 1 60%; /* 内容占据剩余空间 */
+        flex: 1 1 60%;
         display: flex;
         flex-direction: column;
+        justify-content: space-between; /* Creates space between top and bottom elements */
     }
-
     .article-item-content h3 {
         font-size: 16px;
-        white-space: normal; /* 标题自动换行 */
+        white-space: normal;
     }
-    
     .article-item-content p {
-        display: none; /* 隐藏正文简介 */
+        /* This is the default state for < 990px */
+        display: -webkit-box; /* Re-enable for this breakpoint */
+        -webkit-line-clamp: 2; /* Default to 2 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin: 10px 0 0; /* Add some top margin */
     }
-    
-    .article-meta {
-        margin-top: 10px; /* 与标题保持一定间距 */
-    }
-    /* ==================== MODIFICATION END ==================== */
+    /* === MODIFICATION FOR < 990px END === */
     
     .main-layout,
     .friend-links {
@@ -729,19 +701,36 @@ ul, li {
     }
 }
 
-
-/* 当屏幕宽度小于等于 768px 时，可以进一步微调 */
-@media (max-width: 768px) {
-    .article-item-box {
-        gap: 15px; /* 在更小的屏幕上减小间距 */
-    }
-
+/* Screens < 800px */
+@media (max-width: 800px) {
     .article-item-image {
-        flex-basis: 35%; /* 在手机上可以适当减小图片的基础宽度 */
+        flex-basis: 35%;
         max-width: 35%;
     }
-
     .article-item-content {
         flex-basis: 65%;
+    }
+    .article-item-content p {
+        /* Show only one line of summary */
+        -webkit-line-clamp: 1; 
+    }
+}
+
+/* Screens < 580px */
+@media (max-width: 580px) {
+    .article-item-content p {
+        /* Hide the summary */
+        display: none;
+    }
+}
+
+/* Screens < 500px */
+@media (max-width: 500px) {
+    .article-item-content h3 {
+        font-size: 14px; /* Slightly smaller title */
+    }
+    .article-meta {
+        /* Change font size for date and views */
+        font-size: 12px;
     }
 }
