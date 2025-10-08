@@ -181,8 +181,10 @@ ul, li {
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 4px;
+    /* MODIFICATION START: Removed shadow and border-radius */
+    box-shadow: none;
+    border-radius: 0;
+    /* MODIFICATION END */
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
@@ -691,9 +693,13 @@ ul, li {
     .submenu-toggle i {
         transition: transform 0.3s ease;
     }
-    .submenu-toggle i.fa-angle-down {
-        transform: rotate(90deg);
+
+    /* MODIFICATION START: Replaced static rotation with dynamic rotation on 'active' class */
+    /* Removed: .submenu-toggle i.fa-angle-down { transform: rotate(90deg); } */
+    .submenu-toggle.active > i {
+        transform: rotate(-90deg);
     }
+    /* MODIFICATION END */
 
     .main-nav .sub-menu {
         display: none;
