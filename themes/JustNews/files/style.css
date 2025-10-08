@@ -17,7 +17,7 @@
 ================================================================*/
 
 /* 1. Font Awesome Icons Import */
-/* @import url("/files/fonts/fontawesome5pro-all.min.css"); */ /* This is often handled by the template now */
+/* @import url("/files/fonts/fontawesome5pro-all.min.css"); */
 
 /* 2. CSS Variables */
 :root {
@@ -166,7 +166,6 @@ ul, li {
     transition: transform 0.3s ease;
 }
 
-/* Hide mobile-only elements on desktop */
 .main-nav .submenu-toggle,
 .main-nav .close-menu-btn,
 .main-nav .mobile-nav-header,
@@ -174,22 +173,20 @@ ul, li {
     display: none;
 }
 
-
-/* MODIFICATION: Desktop Sub-menu (Dropdown) without border/shadow */
 .sub-menu {
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 100%;
     background-color: #fff;
-    box-shadow: none; /* MODIFIED */
-    border-radius: 0; /* MODIFIED */
+    box-shadow: none;
+    border-radius: 0;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
-    border-top: 1px solid #f0f0f0; /* Optional: adds a subtle separator */
+    border-top: 1px solid #f0f0f0;
 }
 
 .sub-menu a {
@@ -210,7 +207,7 @@ ul, li {
     left: 100%;
     transform: translateX(-10px);
     border-top: none;
-    border-left: 1px solid #f0f0f0; /* Optional */
+    border-left: 1px solid #f0f0f0;
 }
 
 .main-nav li:hover > .sub-menu {
@@ -225,7 +222,6 @@ ul, li {
 .sub-menu li:hover > a > .arrow-container {
     transform: none;
 }
-
 
 .header-right {
     display: flex;
@@ -567,7 +563,6 @@ ul, li {
     }
 }
 
-/* Base styles for screens < 990px */
 @media (max-width: 990px) {
     .site-header {
         padding: 0 15px;
@@ -599,7 +594,6 @@ ul, li {
         display: none;
     }
     
-    /* --- MOBILE NAVIGATION PANEL STYLES --- */
     .main-nav {
         display: flex;
         flex-direction: column;
@@ -616,7 +610,7 @@ ul, li {
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         padding-top: 0;
     }
-    /* MODIFICATION: Force hide desktop arrow on mobile */
+    
     .main-nav a .arrow-container {
         display: none !important;
     }
@@ -684,9 +678,9 @@ ul, li {
     .submenu-toggle i {
         transition: transform 0.3s ease;
     }
-    /* MODIFICATION: Arrow points right when open (same as PC hover effect) */
-    .submenu-toggle .fa-angle-down {
-        transform: rotate(-90deg);
+    
+    .submenu-toggle.active > i.fa-angle-right {
+        transform: rotate(90deg);
     }
 
     .main-nav .sub-menu {
@@ -699,7 +693,7 @@ ul, li {
         visibility: visible;
         transform: none;
         background-color: #f8f9fa;
-        border-top: none; /* remove border for mobile submenus */
+        border-top: none;
     }
     .main-nav .sub-menu.open {
         display: block;
@@ -710,7 +704,7 @@ ul, li {
     .main-nav .sub-menu .sub-menu {
         padding-left: 15px;
         background-color: #f1f3f5;
-        border-left: none; /* remove border for mobile submenus */
+        border-left: none;
     }
 
     .main-nav .mobile-nav-footer {
@@ -842,30 +836,52 @@ ul, li {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    position: relative; /* Needed for advanced controls later */
+    position: relative;
 }
 
-.carousel-slides {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+.carousel-container.swiper {
+    padding: 0;
 }
 
-.carousel-slide {
-    flex: 0 0 100%;
-    width: 100%;
-}
-
-.carousel-slide a {
+.swiper-slide a {
     display: block;
     width: 100%;
-    aspect-ratio: 870 / 300; /* Proportional scaling */
+    aspect-ratio: 870 / 300;
 }
 
-.carousel-slide img {
+.swiper-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures image covers the area without distortion */
+    object-fit: cover;
     display: block;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.swiper-pagination-bullet {
+    background: #fff;
+    opacity: 0.7;
+}
+.swiper-pagination-bullet-active {
+    background: var(--theme-color);
+    opacity: 1;
 }
 
 @media (max-width: 870px) {
