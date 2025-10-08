@@ -147,8 +147,7 @@ ul, li {
 }
 
 .main-nav a {
-    display: flex;
-    align-items: center;
+    display: block;
     padding: 0 15px;
     line-height: 62px;
     color: #555;
@@ -159,20 +158,13 @@ ul, li {
     color: #007bff;
 }
 
-.main-nav a .arrow-container {
-    display: inline-block;
-    margin-left: 5px;
-    transition: transform 0.3s ease;
-}
-
-/* Hide mobile-only elements on desktop */
+/* ★★★ HIDE NEW ELEMENTS ON DESKTOP ★★★ */
 .main-nav .submenu-toggle,
 .main-nav .close-menu-btn,
 .main-nav .mobile-nav-header,
 .main-nav .mobile-nav-footer {
     display: none;
 }
-
 
 /* Desktop Sub-menu (Dropdown) */
 .sub-menu {
@@ -215,15 +207,6 @@ ul, li {
     visibility: visible;
     transform: translateY(0);
 }
-
-/* Desktop arrow animation */
-.main-nav > ul > li:hover > a > .arrow-container {
-    transform: rotate(180deg);
-}
-.sub-menu li:hover > a > .arrow-container {
-    transform: none;
-}
-
 
 .header-right {
     display: flex;
@@ -295,17 +278,6 @@ ul, li {
 }
 
 /* 6. Main Content Area (Article List, Pagination) */
-.carousel-placeholder {
-    background-color: var(--widget-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
 .article-list {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
@@ -559,24 +531,6 @@ ul, li {
 }
 
 /* 10. Responsive Design (Media Queries) */
-@media (max-width: 1199px) and (min-width: 991px) {
-    .container {
-        max-width: 96%;
-    }
-    .main-layout {
-        justify-content: space-between;
-    }
-    .left-column {
-        width: calc(100% - 310px - 20px);
-        max-width: none;
-    }
-    .right-column {
-        width: 310px;
-        max-width: none;
-    }
-}
-
-/* Base styles for screens < 990px */
 @media (max-width: 990px) {
     .site-header {
         padding: 0 15px;
@@ -608,27 +562,23 @@ ul, li {
         display: none;
     }
     
-    /* --- MOBILE NAVIGATION PANEL STYLES --- */
+    /* --- ★★★ START: MOBILE NAVIGATION PANEL STYLES ★★★ --- */
     .main-nav {
-        display: flex;
-        flex-direction: column;
+        display: flex; /* Changed to flex for vertical alignment */
+        flex-direction: column; /* Align items vertically */
         position: fixed;
         top: 0;
         left: 0;
         height: 100%;
-        width: 80%;
+        width: 80%; /* Wider for better view */
         max-width: 320px;
         background: #fff;
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        padding-top: 0;
+        padding-top: 0; /* Remove padding */
     }
-    .main-nav .arrow-container {
-        display: none; /* Hide desktop arrow on mobile */
-    }
-
     body.nav-open .main-nav {
         transform: translateX(0);
     }
@@ -636,6 +586,7 @@ ul, li {
         display: block;
     }
 
+    /* 1. Close Button */
     .main-nav .close-menu-btn {
         display: block;
         position: absolute;
@@ -648,6 +599,7 @@ ul, li {
         z-index: 1001;
     }
 
+    /* 2. Header Image */
     .main-nav .mobile-nav-header {
         display: block;
         width: 100%;
@@ -658,25 +610,30 @@ ul, li {
         display: block;
     }
 
+    /* Main Menu List */
     .main-nav > ul {
         flex-direction: column;
-        overflow-y: auto;
-        flex-grow: 1;
+        overflow-y: auto; /* Allow scrolling for long menus */
+        flex-grow: 1; /* Take available space */
         padding: 15px 0;
     }
     .main-nav li {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: wrap; /* Allow submenu to wrap to the next line */
         align-items: center;
         position: relative;
     }
     .main-nav a {
+        line-height: 50px;
         padding: 0 20px;
         border-bottom: 1px solid #f0f0f0;
-        flex-grow: 1;
+        flex-grow: 1; /* Link takes up the left space */
+        display: flex;
+        align-items: center;
         gap: 10px;
     }
     
+    /* 3. Submenu Arrow Toggle */
     .main-nav .submenu-toggle {
         display: flex;
         align-items: center;
@@ -696,32 +653,34 @@ ul, li {
         transform: rotate(90deg);
     }
 
+    /* Submenu Styles */
     .main-nav .sub-menu {
-        display: none;
+        display: none; /* Hide by default */
         position: static;
         width: 100%;
         box-shadow: none;
-        padding: 0 0 0 20px;
+        padding: 0 0 0 20px; /* Indent submenu */
         opacity: 1;
         visibility: visible;
         transform: none;
         background-color: #f8f9fa;
     }
     .main-nav .sub-menu.open {
-        display: block;
+        display: block; /* Show on click */
     }
     .main-nav .sub-menu a {
         border-color: #e9ecef;
     }
     .main-nav .sub-menu .sub-menu {
-        padding-left: 15px;
+        padding-left: 15px; /* Further indent third-level menu */
         background-color: #f1f3f5;
     }
 
+    /* 4. Login Button Footer */
     .main-nav .mobile-nav-footer {
         display: block;
         padding: 20px;
-        margin-top: auto;
+        margin-top: auto; /* Push to the bottom */
         border-top: 1px solid #f0f0f0;
     }
     .mobile-login-btn {
@@ -742,19 +701,16 @@ ul, li {
         margin-right: 8px;
     }
     
-    /* --- ARTICLE LIST & OTHER LAYOUT STYLES (RESTORED) --- */
-    .right-column,
-    .meta-category {
-        display: none;
-    }
+    /* --- ★★★ END: MOBILE NAVIGATION PANEL STYLES ★★★ --- */
 
+    /* Previous responsive styles for article list */
     .left-column {
         width: 100%;
         max-width: none;
     }
     .article-item-box {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 20px;
     }
     .article-item-image {
@@ -766,7 +722,7 @@ ul, li {
     .article-item-image a {
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%;
         aspect-ratio: 220 / 140;
         overflow: hidden;
         border-radius: 5px;
@@ -781,6 +737,8 @@ ul, li {
         flex: 1 1 60%;
         display: flex;
         flex-direction: column;
+        aspect-ratio: 588 / 140;
+        overflow: hidden;
     }
     .article-item-content h3 {
         font-size: 16px;
