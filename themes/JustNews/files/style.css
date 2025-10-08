@@ -420,7 +420,7 @@ ul, li {
     background-color: var(--widget-bg);
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    padding: 20px;
+    padding: 15px;
     margin-bottom: 20px;
 }
 
