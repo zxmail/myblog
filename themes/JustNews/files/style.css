@@ -147,7 +147,7 @@ ul, li {
 }
 
 .main-nav a {
-    display: flex; /* Use flexbox for alignment */
+    display: flex;
     align-items: center;
     padding: 0 15px;
     line-height: 62px;
@@ -182,7 +182,6 @@ ul, li {
     min-width: 100%;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 5px 0;
     border-radius: 4px;
     z-index: 1000;
     opacity: 0;
@@ -218,7 +217,7 @@ ul, li {
 
 /* Desktop arrow animation - RESTORED */
 .main-nav > ul > li:hover > a > .arrow-container {
-    transform: rotate(180deg);
+    transform: rotate(-90deg);
 }
 .sub-menu li:hover > a > .arrow-container {
     transform: none;
@@ -754,7 +753,7 @@ ul, li {
     }
     .article-item-box {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: stretch; /* Stretch to equal height */
         gap: 20px;
     }
     .article-item-image {
@@ -766,7 +765,7 @@ ul, li {
     .article-item-image a {
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%; /* Fill container */
         aspect-ratio: 220 / 140;
         overflow: hidden;
         border-radius: 5px;
@@ -781,6 +780,8 @@ ul, li {
         flex: 1 1 60%;
         display: flex;
         flex-direction: column;
+        aspect-ratio: 588 / 140;
+        overflow: hidden;
     }
     .article-item-content h3 {
         font-size: 16px;
