@@ -829,6 +829,9 @@ ul, li {
 
 /* 11. Carousel Styles */
 .carousel-container {
+    max-width: 870px;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
     margin-bottom: 20px;
     overflow: hidden;
@@ -846,35 +849,59 @@ ul, li {
 .swiper-slide a {
     display: block;
     width: 100%;
-    aspect-ratio: 870 / 300;
 }
 
 .swiper-slide img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
 }
 
+/* MODIFICATION: Swiper Arrow Styles */
 .swiper-button-next,
 .swiper-button-prev {
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
     width: 40px;
     height: 40px;
+    margin-top: -20px;
+    z-index: 10;
+    cursor: pointer;
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
-    transition: background-color 0.3s;
+    color: #fff;
+    opacity: 0; /* Initially hidden */
+    transform: translateX(0);
+    transition: all .3s ease;
 }
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-}
+
 .swiper-button-next:after,
 .swiper-button-prev:after {
     font-size: 18px;
     font-weight: bold;
 }
 
+.swiper-button-prev {
+    left: 10px;
+    transform: translateX(-60px); /* Start off-screen */
+}
+
+.swiper-button-next {
+    right: 10px;
+    transform: translateX(60px); /* Start off-screen */
+}
+
+.carousel-container:hover .swiper-button-prev,
+.carousel-container:hover .swiper-button-next {
+    opacity: 1;
+    transform: translateX(0); /* Slide in */
+}
+
+
+/* Swiper Pagination Bullets Styling */
 .swiper-pagination-bullet {
     background: #fff;
     opacity: 0.7;
@@ -890,4 +917,18 @@ ul, li {
         margin-right: 3px;
         width: calc(100% - 6px);
     }
+    
+    /* On smaller screens, make arrows permanently visible but smaller */
+    .swiper-button-next, .swiper-button-prev {
+        opacity: 1;
+        transform: translateX(0);
+        width: 30px;
+        height: 30px;
+        margin-top: -15px;
+    }
+    .swiper-button-next:after, .swiper-button-prev:after {
+        font-size: 14px;
+    }
+    .swiper-button-prev { left: 5px; }
+    .swiper-button-next { right: 5px; }
 }
