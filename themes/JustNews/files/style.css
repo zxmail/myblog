@@ -856,6 +856,9 @@ ul, li {
     .article-item-content p {
         -webkit-line-clamp: 1; 
     }
+    .container {
+    font-size: 12px;
+    }
 }
 
 @media (max-width: 580px) {
