@@ -149,7 +149,6 @@ ul, li {
 }
 
 .main-nav a {
-    gap: 3px; /* 新增：调整图标和文字的间距 */
     display: flex;
     align-items: center;
     padding: 0 8px;
@@ -164,7 +163,7 @@ ul, li {
 
 .main-nav a .arrow-container {
     display: inline-block;
-    margin-left: 5px;
+    margin-left: 8px;
     font-weight: 500;
     font-size: 20px;
     transition: transform 0.3s ease;
