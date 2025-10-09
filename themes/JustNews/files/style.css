@@ -244,9 +244,10 @@ ul, li {
 
 .search-box-container {
     display: none;
-    position: absolute;
-    top: 100%;
-    right: 30px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centering */
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     padding: 15px;
@@ -827,12 +828,14 @@ ul, li {
     }
     .article-meta {
         margin-top: auto;
-        padding-top: 8px;
     }
     .main-layout,
     .friend-links {
         margin: 0 auto;
         max-width: 870px;
+    }
+   .hidden-mobile {
+        display: none;
     }
 }
 
