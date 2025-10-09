@@ -829,9 +829,12 @@ ul, li {
     .article-meta {
         margin-top: auto;
     }
-    .main-layout,
+    .main-layout {
+        margin: -10px auto;
+        max-width: 870px;
+    }
     .friend-links {
-        margin: 0 auto;
+        margin: -30px auto;
         max-width: 870px;
     }
    .hidden-mobile {
