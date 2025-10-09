@@ -682,7 +682,7 @@ ul, li {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 50px;
+        height: 41px;
         width: 50px;
         cursor: pointer;
         color: #888;
@@ -691,6 +691,7 @@ ul, li {
         top: 0;
     }
     .submenu-toggle i {
+        font-size: 19px;
         transition: transform 0.3s ease;
     }
     
