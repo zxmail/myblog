@@ -152,7 +152,7 @@ ul, li {
     display: flex;
     align-items: center;
     padding: 0 8px;
-    line-height: 62px;
+    line-height: 40px;
     color: #555;
     transition: color 0.3s;
 }
@@ -663,7 +663,7 @@ ul, li {
         flex-direction: column;
         overflow-y: auto;
         flex-grow: 1;
-        padding: 15px 0;
+        padding: 0px 0;
     }
     .main-nav li {
         display: flex;
