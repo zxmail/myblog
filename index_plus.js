@@ -1,4 +1,4 @@
-// index_plus.js (已修正显示逻辑的最终版)
+// index_plus.js (已集成轮播图数据获取功能)
 
 /**
  * Welcome to cf-blog-plus
@@ -314,11 +314,8 @@ async function render(data, template_path, env) {
         env.XYRJ_CONFIG.get('theme_github_path')
     ]);
 
-    // ======================= 核心修正区域 开始 =======================
-    // 如果从KV读到的值不是null或undefined，就用它；否则，就用一个空字符串 "" 来覆盖默认值。
     site.logo = (logo !== null && logo !== undefined) ? logo : "";
     site.siteName = (siteName !== null && siteName !== undefined) ? siteName : "";
-    // ======================= 核心修正区域 结束 =======================
     
     site.theme_github_path = theme_github_path || site.theme_github_path;
     
@@ -358,6 +355,16 @@ async function getIndexData(request, env) {
 	if (articleList.length > page * pageSize) data["pageOlder"] = { "url": `/page/${page + 1}/`};
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
+	
+    // START: Carousel Data Integration
+    try {
+        data["carousel_slides"] = await env.XYRJ_CAROUSEL_KV.get("slides", { type: "json" }) || [];
+    } catch(e) {
+        console.error("Failed to get/parse carousel slides from KV:", e);
+        data["carousel_slides"] = [];
+    }
+    // END: Carousel Data Integration
+
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
