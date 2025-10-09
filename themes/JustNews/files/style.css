@@ -728,23 +728,14 @@ ul, li {
         margin-top: auto;
         border-top: 1px solid #f0f0f0;
     }
-    .mobile-login-btn {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background-color: var(--theme-color);
-        color: #fff;
-        padding: 12px;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    .mobile-login-btn:hover {
-        background-color: var(--theme-hover);
-        color: #fff;
-    }
-    .mobile-login-btn i {
-        margin-right: 8px;
-    }
+.login-btn-header {
+    border-bottom: 1px solid #999;
+    color: var(--Maincolor);
+    border-radius: var(--border-hd);
+    background: #fff;
+    outline: 0;
+    padding: 5px 13px;
+}
     
     .right-column,
     .meta-category {
