@@ -605,6 +605,7 @@ ul, li {
         transform: translateY(-50%);
     }
     .header-container {
+        height: 50px;
         justify-content: center;
     }
     .header-left {
