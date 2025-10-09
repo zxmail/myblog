@@ -109,7 +109,7 @@
             <div class="left-column">
                 
                 {{#carousel_slides.length}}
-                <div class="swiper carousel-container">
+                <div class="swiper carousel-container hidden-mobile">
                     <div class="swiper-wrapper">
                         {{#carousel_slides}}
                         <div class="swiper-slide">
@@ -148,7 +148,7 @@
                                 <div class="article-meta">
                                     <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
                                     {{#category[]}}
-                                    <span class="meta-category"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                                    <span class="meta-category hidden-mobile"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
                                     {{/category[]}}
                                     <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
                                 </div>
