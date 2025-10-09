@@ -322,7 +322,7 @@ ul, li {
     margin-right: 20px;
     overflow: hidden;
     position: relative;
-  border-radius: 5px;
+    border-radius: 5px;
 }
 
 .article-item-image a {
@@ -401,6 +401,15 @@ ul, li {
 
 .article-meta span {
     margin-right: 15px;
+}
+
+/* MODIFICATION: Change category link color to gray */
+.article-meta .meta-category a {
+    color: #888;
+}
+
+.article-meta .meta-category a:hover {
+    color: #555;
 }
 
 .article-meta .views {
@@ -549,6 +558,12 @@ ul, li {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+/* Hide mobile login button on desktop */
+.login-btn-mobile {
+    display: none;
+}
+
+
 /* 10. Responsive Design (Media Queries) */
 @media (max-width: 1199px) and (min-width: 991px) {
     .container {
@@ -605,6 +620,7 @@ ul, li {
     .logo-area {
         margin-right: 0;
     }
+    /* MODIFICATION: Hide PC login link on mobile */
     .blog-name, .login-link {
         display: none;
     }
@@ -722,6 +738,32 @@ ul, li {
         background-color: #f1f3f5;
         border-left: none;
     }
+    
+    /* MODIFICATION: Style mobile login button */
+    .login-btn-mobile {
+        display: block;
+    }
+
+    .login-btn-mobile a {
+        padding: 0;
+        width: 100%;
+    }
+    
+    .login-btn-header {
+        border: none;
+        background: none;
+        color: #555;
+        font-size: 1em;
+        padding: 0 20px;
+        line-height: 40px;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .login-btn-header:hover {
+        color: #007bff;
+    }
 
     .main-nav .mobile-nav-footer {
         display: block;
@@ -729,17 +771,8 @@ ul, li {
         margin-top: auto;
         border-top: 1px solid #f0f0f0;
     }
-.login-btn-header {
-    
-    border: 1px solid #007aff;
-    color: #007aff;
-    background: #fff;
-    outline: 0;
-    padding: 5px 13px;
-}
-    
-    .right-column,
-    .meta-category {
+
+    .right-column {
         display: none;
     }
 
