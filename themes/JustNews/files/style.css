@@ -730,9 +730,8 @@ ul, li {
     }
 .login-btn-header {
     
-    border: 1px solid #999;
+    border: 1px solid #007aff;
     color: #007aff;
-    border-radius: var(--border-hd);
     background: #fff;
     outline: 0;
     padding: 5px 13px;
