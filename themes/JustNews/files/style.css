@@ -729,8 +729,8 @@ ul, li {
         border-top: 1px solid #f0f0f0;
     }
 .login-btn-header {
-    border-bottom: 1px solid #999;
-    color: var(--Maincolor);
+    border: 1px solid #999;
+    color: #007aff;
     border-radius: var(--border-hd);
     background: #fff;
     outline: 0;
