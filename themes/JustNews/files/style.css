@@ -79,7 +79,6 @@ ul, li {
 
 .main-layout {
     display: flex;
-    gap: 20px;
     justify-content: center;
 }
 
@@ -94,6 +93,7 @@ ul, li {
 }
 
 .right-column {
+    margin-left: 18px;
     width: 100%;
     max-width: 310px;
 }
