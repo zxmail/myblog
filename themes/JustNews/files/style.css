@@ -39,19 +39,12 @@
     padding: 0;
 }
 
-html {
-    height: 100%;
-}
-
 body {
     font-family: var(--theme-font-family);
     background: #f5f5f5;
     color: var(--text-color);
     line-height: 1.6;
     font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* 最小高度为视窗高度 */
 }
 
 a {
@@ -82,7 +75,6 @@ ul, li {
 
 #wrap {
     padding: 20px 0;
-    flex: 1; /* 占据剩余空间 */
 }
 
 .main-layout {
@@ -528,6 +520,8 @@ ul, li {
 
 /* 8. Footer */
 .footer {
+    position: absolute;    /* 相对于父容器底部定位 */
+    bottom: 0;              /* 距离父容器底部0px */
     width: 100%; 
     text-align: center;
     padding: 18px 0;
@@ -972,18 +966,13 @@ ul, li {
         width: calc(100% - 6px);
     }
     
-    /* On smaller screens, make arrows hidden by default, and visible on hover */
+    /* On smaller screens, make arrows permanently visible but smaller */
     .swiper-button-next, .swiper-button-prev {
-        opacity: 0; /* 默认隐藏 */
+        opacity: 1;
         transform: translateX(0);
         width: 30px;
         height: 30px;
         margin-top: -15px;
-        transition: opacity .3s ease; /* 添加渐变效果 */
-    }
-    .carousel-container:hover .swiper-button-next,
-    .carousel-container:hover .swiper-button-prev {
-        opacity: 1; /* 悬停时显示 */
     }
     .swiper-button-next:after, .swiper-button-prev:after {
         font-size: 14px;
