@@ -968,11 +968,16 @@ ul, li {
     
     /* On smaller screens, make arrows permanently visible but smaller */
     .swiper-button-next, .swiper-button-prev {
-        opacity: 1;
+        opacity: 0; /* 默认隐藏 */
         transform: translateX(0);
         width: 30px;
         height: 30px;
         margin-top: -15px;
+        transition: opacity .3s ease; /* 添加渐变效果 */
+    }
+    .carousel-container:hover .swiper-button-next,
+    .carousel-container:hover .swiper-button-prev {
+        opacity: 1; /* 悬停时显示 */
     }
     .swiper-button-next:after, .swiper-button-prev:after {
         font-size: 14px;
