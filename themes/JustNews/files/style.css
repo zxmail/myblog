@@ -877,8 +877,6 @@ ul, li {
     margin-bottom: 20px;
     overflow: hidden;
     border-radius: 5px;
-    background-color: var(--widget-bg);
-    border: 1px solid var(--border-color);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     position: relative;
 }
