@@ -520,10 +520,9 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    position: absolute;    /* 相对于父容器底部定位 */
+    /*position: absolute;     相对于父容器底部定位 */
     bottom: 0;              /* 距离父容器底部0px */
     width: 100%; 
-    height: 100%;
     text-align: center;
     padding: 18px 0;
     /* margin-top: 20px; */
