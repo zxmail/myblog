@@ -958,7 +958,6 @@ ul, li {
     margin-bottom: 15px;
     padding-bottom: 15px; /* 为分隔线留出空间 */
     border-bottom: 1px solid #eee; /* 添加浅灰色分隔线 */
-    gap: 10px; /* 图片和内容之间的间距 */
 }
 
 .recent-article-item-box:last-child {
@@ -986,6 +985,7 @@ ul, li {
 
 /* 3. 调整内容区域（标题和日期）的布局 */
 .recent-article-item-content {
+    margin-left: 10px;
     flex: 1;
     display: flex;
     flex-direction: column; /* 垂直排列 */
