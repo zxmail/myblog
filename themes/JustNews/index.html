@@ -31,7 +31,7 @@
             </div>
             <nav class="main-nav" id="main-nav">
                 <div class="close-menu-btn" id="close-menu-btn">&times;</div>
-                
+
                 <div class="mobile-nav-header">
                     <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="导航背景" class="mobile-nav-header-image">
                 </div>
@@ -80,11 +80,12 @@
                         {{ /children.length }}
                     </li>
                     {{ /OPT.widgetMenuList }}
+                     <li class="login-btn-mobile">
+                        <a href="/admin">
+                            <button class="login-btn-header">登录</button>
+                        </a>
+                    </li>
                 </ul>
-
-                    <a href="/admin">
-                        <button class="login-btn-header">登录</button>
-                    </a>
             </nav>
             </div>
 
@@ -92,7 +93,7 @@
             <div class="search-icon" id="search-toggle">
                 <i class="fal fa-search"></i>
             </div>
-            <a href="/admin" class="login-link">
+             <a href="/admin" class="login-link">
                 <i class="fal fa-user-circle"></i>
             </a>
         </div>
