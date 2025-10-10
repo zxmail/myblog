@@ -39,16 +39,19 @@
     padding: 0;
 }
 
+/* MODIFICATION: Use Table Display for old browser sticky footer */
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
 body {
     font-family: var(--theme-font-family);
     background: #f5f5f5;
     color: var(--text-color);
     line-height: 1.6;
     font-size: 14px;
-    /* MODIFICATION: Apply Flexbox for sticky footer */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    display: table;
 }
 
 a {
@@ -79,8 +82,9 @@ ul, li {
 
 #wrap {
     padding: 20px 0;
-    /* MODIFICATION: Make wrap grow to push footer down */
-    flex: 1;
+    /* MODIFICATION: Set as expanding table-row */
+    display: table-row;
+    height: 100%;
 }
 
 .main-layout {
@@ -110,6 +114,9 @@ ul, li {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 30px;
     position: relative;
+    /* MODIFICATION: Set as table-row */
+    display: table-row;
+    height: 1px; /* Will expand to content height */
 }
 
 .header-container {
@@ -526,11 +533,12 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    /* MODIFICATION: Removed position: absolute and bottom: 0 for Flexbox sticky footer */
+    /* MODIFICATION: Removed absolute positioning, set as table-row */
+    display: table-row;
+    height: 1px; /* Will expand to content height */
     width: 100%; 
     text-align: center;
     padding: 18px 0;
-    /* margin-top: 20px; */ /* This can be used if more space is needed above footer */
     background-color: #2d3236;
     color: #ccc;
 }
@@ -592,6 +600,12 @@ ul, li {
 }
 
 @media (max-width: 990px) {
+    /* On mobile, revert to block display to disable table layout */
+    body, .site-header, #wrap, .footer {
+        display: block;
+        height: auto;
+    }
+
     .logo-image {
     height: 40px;
     margin-top: 7px;
