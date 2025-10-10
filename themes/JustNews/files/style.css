@@ -525,7 +525,7 @@ ul, li {
     width: 100%; 
     text-align: center;
     padding: 18px 0;
-    /* margin-top: 20px; */
+    margin-top: 20px;
     background-color: #2d3236;
     color: #ccc;
 }
