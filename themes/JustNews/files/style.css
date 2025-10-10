@@ -595,6 +595,7 @@ ul, li {
 
     #wrap {
         flex-grow: 1;
+        width: 100%; /* <<< 新增这一行即可 */
     }
     .logo-image {
     height: 40px;
