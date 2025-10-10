@@ -45,6 +45,10 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     font-size: 14px;
+    /* MODIFICATION: Apply Flexbox for sticky footer */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 a {
@@ -75,6 +79,8 @@ ul, li {
 
 #wrap {
     padding: 20px 0;
+    /* MODIFICATION: Make wrap grow to push footer down */
+    flex: 1;
 }
 
 .main-layout {
@@ -520,12 +526,11 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    position: absolute;    /* 相对于父容器底部定位 */
-    bottom: 0;              /* 距离父容器底部0px */
+    /* MODIFICATION: Removed position: absolute and bottom: 0 for Flexbox sticky footer */
     width: 100%; 
     text-align: center;
     padding: 18px 0;
-    /* margin-top: 20px; */
+    /* margin-top: 20px; */ /* This can be used if more space is needed above footer */
     background-color: #2d3236;
     color: #ccc;
 }
@@ -844,29 +849,6 @@ ul, li {
    .hidden-mobile {
         display: none;
     }
-
-    /* --- MODIFICATION: Mobile Sticky Footer Fix --- */
-    body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-
-    #wrap {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .main-layout {
-        flex: 1;
-    }
-
-    .footer {
-        position: static; /* 移除移动端下的绝对定位 */
-    }
-    /* --- End of Mobile Sticky Footer Fix --- */
-
 }
 
 @media (max-width: 800px) {
