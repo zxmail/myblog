@@ -587,6 +587,15 @@ ul, li {
 }
 
 @media (max-width: 990px) {
+    .m-flex {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    #wrap {
+        flex-grow: 1;
+    }
     .logo-image {
     height: 40px;
     margin-top: 7px;
