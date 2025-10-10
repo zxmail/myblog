@@ -453,7 +453,7 @@ ul, li {
 
 .widget-title::before {
     content: "";
-    width: 4px;
+    width: 3px;
     height: 1em;
     background-color: var(--theme-color);
     margin-right: 8px;
