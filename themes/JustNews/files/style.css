@@ -74,7 +74,7 @@ ul, li {
 }
 
 #wrap {
-    padding: 20px 0;
+    padding: 70px 0;
 }
 
 .main-layout {
@@ -103,7 +103,7 @@ ul, li {
     width: 100%;
     background-color: #fff;
     box-shadow: 0 0.5px 0.5px 1px rgba(0,0,0,.1);
-    padding: 0 30px;
+    /* padding: 0 30px; 5. Header & Navigation */
     position: fixed;
     z-index: 99999;
 
@@ -590,12 +590,14 @@ ul, li {
 }
 
 @media (max-width: 990px) {
+    body {
+        background-color: #fff; /* 将移动端背景设为白色 */
+    }
     .m-flex {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
     }
-
     #wrap {
         flex-grow: 1;
         width: 100%; /* <<< 新增这一行即可 */
