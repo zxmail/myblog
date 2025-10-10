@@ -600,10 +600,24 @@ ul, li {
 }
 
 @media (max-width: 990px) {
-    /* On mobile, revert to block display to disable table layout */
-    body, .site-header, #wrap, .footer {
+    /* On mobile, revert to block display and use Flexbox for sticky footer */
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .site-header, #wrap, .footer {
         display: block;
         height: auto;
+    }
+    
+    .site-header, .footer {
+        flex-shrink: 0;
+    }
+    
+    #wrap {
+        flex-grow: 1;
     }
 
     .logo-image {
