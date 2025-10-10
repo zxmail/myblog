@@ -520,7 +520,7 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    /*position: absolute;     相对于父容器底部定位 */
+    position: absolute;    /* 相对于父容器底部定位 */
     bottom: 0;              /* 距离父容器底部0px */
     width: 100%; 
     text-align: center;
@@ -643,7 +643,7 @@ ul, li {
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        /* box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); */
+        /* box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); */ /* <<< MODIFICATION: Removed shadow */
         padding-top: 0;
     }
     
@@ -844,6 +844,29 @@ ul, li {
    .hidden-mobile {
         display: none;
     }
+
+    /* --- MODIFICATION: Mobile Sticky Footer Fix --- */
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    #wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .main-layout {
+        flex: 1;
+    }
+
+    .footer {
+        position: static; /* 移除移动端下的绝对定位 */
+    }
+    /* --- End of Mobile Sticky Footer Fix --- */
+
 }
 
 @media (max-width: 800px) {
