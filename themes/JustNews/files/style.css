@@ -100,10 +100,13 @@ ul, li {
 
 /* 5. Header & Navigation */
 .site-header {
+    width: 100%;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5px 0.5px 1px rgba(0,0,0,.1);
     padding: 0 30px;
-    position: relative;
+    position: fixed;
+    z-index: 99999;
+
 }
 
 .header-container {
