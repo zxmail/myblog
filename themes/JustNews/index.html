@@ -100,9 +100,10 @@
         </div>
     </div>
 
-    <div class="search-box-container" id="search-box">
+	<div class="search-box-container" id="search-box">
         <input type="text" placeholder="输入关键词搜索..." class="search-input">
         <button class="search-button">搜索</button>
+        <i class="far fa-chevron-double-up" id="close-search-btn" title="收起"></i>
     </div>
 </header>
     <div id="wrap" class="container">
@@ -272,6 +273,12 @@
             
             searchBox.addEventListener('click', function(event) {
                 event.stopPropagation();
+            });
+        }
+		        // 新增下面这个 if 代码块
+        if (closeSearchBtn) {
+            closeSearchBtn.addEventListener('click', function() {
+                searchBox.classList.remove('visible');
             });
         }
 
