@@ -527,70 +527,90 @@ ul, li {
     display: none;
 }
 
-/* NEW: Search Popup Styles */
+/* NEW: Search Popup Styles - Top Slide Down Effect */
 .search-popup {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(22, 22, 22, 0.9);
+	background: rgba(0, 0, 0, 0.5);
 	z-index: 99999;
-	display: none;
-	align-items: center;
-	justify-content: center;
-	overflow: auto;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0s 0.3s;
 }
+
 .search-popup.is-visible {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s 0s;
 }
+
+.search-popup .search-popup-container {
+    background: #fff;
+    padding: 20px 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.search-popup.is-visible .search-popup-container {
+    transform: translateY(0);
+}
+
 .search-popup .search-form {
-	position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
-.search-popup .search-form .search-form-input {
-	height: 60px;
-	line-height: 60px;
-	width: 700px;
-	margin: 0 auto;
-	position: relative;
-	display: block;
-	border-bottom: 1px solid #555;
+
+.search-popup .search-icon-inside {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 18px;
+    z-index: 1;
 }
-.search-popup .search-form .search-form-input input {
-	border: 0;
-	width: 100%;
-	height: 60px;
-	line-height: 60px;
-	padding-right: 25px;
-	font-size: 22px;
-	background: none;
-	outline: none;
-	color: #FFF;
+
+.search-popup input[name="q"] {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 0 60px 0 50px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
 }
-.search-popup .search-form .search-form-input input::placeholder {
-    color: #999;
+
+.search-popup input[name="q"]:focus {
+    border-color: var(--theme-color);
 }
+
 .search-popup .search-close {
-	position: absolute;
-	top: 30px;
-	right: 30px;
-	width: 30px;
-	height: 30px;
-	cursor: pointer;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    line-height: 1;
+    color: #ccc;
+    cursor: pointer;
+    font-weight: 300;
+    transition: color 0.3s;
 }
-.search-popup .search-close i {
-	position: absolute;
-	top: 14px;
-	left: 0;
-	width: 100%;
-	height: 2px;
-	background: #FFF;
-	transform: rotate(45deg);
-	transition: all .3s;
+
+.search-popup .search-close:hover {
+    color: #333;
 }
-.search-popup .search-close i:last-child {
-	transform: rotate(-45deg);
-}
+
 
 /* 10. Responsive Design (Media Queries) */
 @media (max-width: 1199px) and (min-width: 991px) {
@@ -909,12 +929,20 @@ ul, li {
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    /* Responsive search popup styles */
-    .search-popup .search-form .search-form-input {
-        width: 90%;
+    /* Responsive adjustments for the new search popup */
+    .search-popup .search-form {
+        padding: 0 10px;
     }
-    .search-popup .search-form .search-form-input input {
-        font-size: 18px;
+    .search-popup .search-icon-inside {
+        left: 25px;
+    }
+    .search-popup input[name="q"] {
+        padding: 0 45px 0 45px;
+        font-size: 14px;
+    }
+    .search-popup .search-close {
+        right: 25px;
+        font-size: 24px;
     }
 }
 
