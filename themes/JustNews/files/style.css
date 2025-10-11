@@ -74,7 +74,7 @@ ul, li {
 }
 
 #wrap {
-    padding: 70px 0;
+    padding: 20px 0;
 }
 
 .main-layout {
@@ -100,13 +100,10 @@ ul, li {
 
 /* 5. Header & Navigation */
 .site-header {
-    width: 100%;
     background-color: #fff;
-    box-shadow: 0 0.5px 0.5px 1px rgba(0,0,0,.1);
-    /* padding: 0 30px; 5. Header & Navigation */
-    position: fixed;
-    z-index: 99999;
-
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 30px;
+    position: relative;
 }
 
 .header-container {
@@ -243,43 +240,6 @@ ul, li {
 
 .search-icon:hover, .login-link:hover {
     color: #007bff;
-}
-
-.search-box-container {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centering */
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    padding: 15px;
-    border-radius: 4px;
-    z-index: 1000;
-}
-
-.search-box-container.visible {
-    display: block;
-}
-
-.search-input {
-    border: 1px solid #ccc;
-    padding: 8px 10px;
-    border-radius: 4px;
-    outline: none;
-}
-
-.search-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.search-button:hover {
-    background-color: #0056b3;
 }
 
 .mobile-menu-toggle {
@@ -453,7 +413,7 @@ ul, li {
 
 .widget-title::before {
     content: "";
-    width: 3px;
+    width: 4px;
     height: 1em;
     background-color: var(--theme-color);
     margin-right: 8px;
@@ -523,12 +483,12 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    /*position: absolute;     相对于父容器底部定位 */
+    position: absolute;    /* 相对于父容器底部定位 */
     bottom: 0;              /* 距离父容器底部0px */
     width: 100%; 
     text-align: center;
     padding: 18px 0;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     background-color: #2d3236;
     color: #ccc;
 }
@@ -590,18 +550,6 @@ ul, li {
 }
 
 @media (max-width: 990px) {
-    body {
-        background-color: #fff; /* 将移动端背景设为白色 */
-    }
-    .m-flex {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-    #wrap {
-        flex-grow: 1;
-        width: 100%; /* <<< 新增这一行即可 */
-    }
     .logo-image {
     height: 40px;
     margin-top: 7px;
@@ -658,7 +606,7 @@ ul, li {
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        /* box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); */
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         padding-top: 0;
     }
     
@@ -1117,4 +1065,78 @@ ul, li {
         /* 这个值决定了文字向左移动的距离，您可以根据需要调整 */
         text-indent: -30px; 
     }
+}
+
+/* --- 全屏搜索框样式 (移植自 ojbk 主题) --- */
+.search-form-wrap {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+}
+
+.search-form-inner {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 90%;
+    max-width: 600px;
+    transform: translate(-50%, -50%);
+}
+
+.search-form {
+    position: relative;
+}
+
+/* 重置我们模板中已有的 .search-input 样式 */
+.search-form-wrap .search-input {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50px;
+    border: 1px solid #fff;
+    background-color: transparent;
+    color: #fff;
+    padding: 0 60px 0 25px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-form-wrap .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-form-wrap .search-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-close {
+    position: absolute;
+    top: -80px;
+    right: 0;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.search-close:hover {
+    transform: rotate(90deg);
 }
