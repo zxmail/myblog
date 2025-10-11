@@ -2,140 +2,319 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{.blog_name}}</title>
-    <link rel="stylesheet" href="/themes/JustNews/files/style.css">
-    <link rel="stylesheet" href="/themes/JustNews/files/swiper.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
+    <title>{{ &title }}</title>
+    <meta name="keywords" content="{{ &keyWords }}" />
+    <meta name="description" content="{{ &OPT.siteDescription }}" />
+
+    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
+	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
+	{{& OPT.codeBeforHead}}
 </head>
-<body class="m-flex">
-
-{{template "header" .}}
-
-<div id="wrap">
-    <div class="container">
-        {{if .articles}}
-        <div class="carousel-container swiper">
-            <div class="swiper-wrapper">
-                {{range .articles}}
-                {{if .Cover}}
-                <div class="swiper-slide">
-                    <a href="/article/{{.ID}}">
-                        <img src="{{.Cover}}" alt="{{.Title}}">
-                    </a>
-                </div>
-                {{end}}
-                {{end}}
-            </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+<body class="m-flex"> 
+	<header class="site-header">
+    <div class="header-container">
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fal fa-bars"></i>
         </div>
-        {{end}}
+        <div class="header-left">
+            <div class="logo-area">
+                {{ #OPT.logo }}
+                <a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>
+                {{ /OPT.logo }}
+                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
+            </div>
+            <nav class="main-nav" id="main-nav">
+                <div class="close-menu-btn" id="close-menu-btn">&times;</div>
 
+                <div class="mobile-nav-header">
+                    <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="导航背景" class="mobile-nav-header-image">
+                </div>
+
+                <ul>
+                    {{ #OPT.widgetMenuList }}
+                    <li>
+                        <a href="{{ &url }}">
+                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                            {{ #children.length }}
+                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
+                            {{ /children.length }}
+                        </a>
+                        {{ #children.length }}
+                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
+                        {{ /children.length }}
+
+                        {{ #children.length }}
+                        <ul class="sub-menu">
+                            {{ #children }}
+                            <li>
+                                <a href="{{ &url }}">
+                                    {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                                    {{ #children.length }}
+                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
+                                    {{ /children.length }}
+                                </a>
+                                {{ #children.length }}
+                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
+                                {{ /children.length }}
+
+                                {{ #children.length }}
+                                <ul class="sub-menu">
+                                    {{ #children }}
+                                    <li>
+                                        <a href="{{ &url }}">
+                                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                                        </a>
+                                    </li>
+                                    {{ /children }}
+                                </ul>
+                                {{ /children.length }}
+                            </li>
+                            {{ /children }}
+                        </ul>
+                        {{ /children.length }}
+                    </li>
+                    {{ /OPT.widgetMenuList }}
+                     <li class="login-btn-mobile">
+                        <a href="/admin">
+                            <button class="login-btn-header">登录</button>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            </div>
+
+        <div class="header-right">
+            <div class="search-icon" id="search-toggle">
+                <i class="fal fa-search"></i>
+            </div>
+             <a href="/admin" class="login-link">
+                <i class="fal fa-user-circle"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="search-box-container" id="search-box">
+        <input type="text" placeholder="输入关键词搜索..." class="search-input">
+        <button class="search-button">搜索</button>
+    </div>
+</header>
+    <div id="wrap" class="container">
         <div class="main-layout">
             <div class="left-column">
-                <div class="article-list">
-                    {{range .articles}}
-                    <div class="article-item-box">
-                        {{if .Cover}}
-                        <div class="article-item-image">
-                            <a href="/article/{{.ID}}">
-                                <img src="{{.Cover}}" alt="{{.Title}}">
+                
+                {{#carousel_slides.length}}
+                <div class="swiper carousel-container">
+                    <div class="swiper-wrapper">
+                        {{#carousel_slides}}
+                        <div class="swiper-slide">
+                            <a href="{{ &linkUrl }}" target="_blank">
+                                <img src="{{ &imageUrl }}" alt="Carousel Image">
                             </a>
-                            <span class="image-category"><a href="/category/{{.Category.ID}}">{{.Category.Name}}</a></span>
                         </div>
-                        {{end}}
-                        <div class="article-item-content">
-                            <h3><a href="/article/{{.ID}}">{{.Title}}</a></h3>
-                            <p>{{.Summary}}</p>
-                            <div class="article-meta">
-                                <span class="meta-date"><i class="far fa-clock"></i> {{.CreatedAt.Format "2006-01-02"}}</span>
-                                <span class="meta-category hidden-mobile"><a href="/category/{{.Category.ID}}"><i class="far fa-folder"></i> {{.Category.Name}}</a></span>
-                                <span class="views"><i class="far fa-eye"></i> {{.Views}}</span>
-                            </div>
-                        </div>
+                        {{/carousel_slides}}
                     </div>
-                    {{else}}
-                    <p>暂无文章</p>
-                    {{end}}
+                    <div class="swiper-pagination"></div>
+
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                 </div>
-                <div class="pagination">
-                    {{if .prev_page}}
-                    <a href="/?page={{.prev_page}}">上一页</a>
-                    {{end}}
-                    {{if .next_page}}
-                    <a href="/?page={{.next_page}}">下一页</a>
-                    {{end}}
+                {{/carousel_slides.length}}
+
+                <div class="article-list">
+					<h3 class="widget-title">文章列表</h3>
+                    <ul>
+                    {{#articleList}}
+                        <li class="article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="article-item-image">
+                                {{#firstCategory}}
+                                <div class="image-category">
+                                    <a href="/category/{{.}}/">{{.}}</a>
+                                </div>
+                                {{/firstCategory}}
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="article-item-content">
+                                <h3><a href="{{url}}">{{title}}</a></h3>
+                                <p>{{contentText}}</p>
+                                <div class="article-meta">
+                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
+                                    {{#category[]}}
+                                    <span class="meta-category hidden-mobile"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
+                                    {{/category[]}}
+                                    <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    {{/articleList}}
+                    </ul>
                 </div>
+
+                <nav class="pagination">
+                    {{#pageNewer}}
+                    <a href="{{url}}" class="prev">← 上一页</a>
+                    {{/pageNewer}}
+                    {{#pageOlder}}
+                    <a href="{{url}}" class="next">下一页 →</a>
+                    {{/pageOlder}}
+                </nav>
             </div>
-            <div class="right-column">
-                {{template "sidebar" .}}
-            </div>
+
+            <aside class="right-column">
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">热门文章</h3>
+                    <ul>
+                        {{#widgetRecentlyList}}
+                        <li class="recent-article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="recent-article-item-image">
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="recent-article-item-content">
+                                <a href="{{url}}">{{title}}</a>
+                                <span class="recent-article-item-date">{{createDate10}}</span>
+                            </div>
+                        </li>
+                        {{/widgetRecentlyList}}
+                    </ul>
+                </div>
+
+                <div class="widget widget-categories">
+                    <h3 class="widget-title">分类目录</h3>
+                    <ul>
+                        {{#widgetCategoryList}}
+                        <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
+                        {{/widgetCategoryList}}
+                    </ul>
+                </div>
+
+                <div class="widget widget-tags">
+                    <h3 class="widget-title">标签</h3>
+                    <div class="tag-cloud">
+                        <a href="#">示例标签</a>
+                        <a href="#">Cloudflare</a>
+                        <a href="#">Workers</a>
+                        <a href="#">Blog</a>
+                    </div>
+                </div>
+
+                <div class="widget widget-comments">
+                    <h3 class="widget-title">最近评论</h3>
+                    <ul>
+                        <li>暂无评论</li>
+                    </ul>
+                </div>
+                </aside>
         </div>
-        {{if .friend_links}}
+
         <div class="friend-links">
-            <h2 class="widget-title">友情链接</h2>
-            <div class="links-container">
-                {{range .friend_links}}
-                <a href="{{.URL}}" target="_blank" title="{{.Description}}">{{.Name}}</a>
-                {{end}}
+             <h3 class="widget-title">友情链接</h3>
+             <div class="links-container">
+                {{#widgetLinkList}}
+                <a href="{{url}}" target="_blank">{{name}}</a>
+                {{/widgetLinkList}}
             </div>
         </div>
-        {{end}}
     </div>
-</div>
 
-<div class="search-form-wrap">
-    <div class="search-form-inner">
-        <form class="search-form" action="/" method="get">
-            <input class="search-input" name="s" type="text" placeholder="输入关键字..." autocomplete="off">
-            <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
-        </form>
-        <div class="search-close"><i class="fas fa-times"></i></div>
+    <footer class="footer">
+        <div class="container">
+            <p>{{ &OPT.copyRight }}</p>
+            <p>Powered by <a href="https://github.com/-A-RA/cf-blog-plus" target="_blank">cf-blog-plus</a>. Theme by JustNews.</p>
+        </div>
+    </footer>
+
+    <div class="action action-style-0 action-color-0 action-pos-0">
+        <div class="action-item gotop j-top">
+            <i class="fal fa-arrow-up action-item-icon"></i>
+        </div>
     </div>
-</div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 
-{{template "footer" .}}
+    <script>
+        // 简单的返回顶部功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const topButton = document.querySelector('.j-top');
+            if(topButton) {
+                topButton.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Header 搜索框控制脚本 ---
+        const searchToggle = document.getElementById('search-toggle');
+        const searchBox = document.getElementById('search-box');
 
-<script src="/themes/JustNews/files/swiper.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const menuToggle = document.querySelector('.mobile-menu-toggle');
-        const closeMenuBtn = document.querySelector('.close-menu-btn');
-        const overlay = document.querySelector('.overlay');
-
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function () {
-                document.body.classList.add('nav-open');
+        if (searchToggle && searchBox) {
+            searchToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                searchBox.classList.toggle('visible');
+            });
+            
+            searchBox.addEventListener('click', function(event) {
+                event.stopPropagation();
             });
         }
 
-        if (closeMenuBtn) {
-            closeMenuBtn.addEventListener('click', function () {
-                document.body.classList.remove('nav-open');
-            });
-        }
+        document.addEventListener('click', function() {
+            if (searchBox && searchBox.classList.contains('visible')) {
+                searchBox.classList.remove('visible');
+            }
+        });
+
+        // --- 移动端菜单控制脚本 ---
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+        const body = document.querySelector('body');
+        const overlay = document.getElementById('overlay');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+
+        const openMenu = function() { body.classList.add('nav-open'); };
+        const closeMenu = function() { body.classList.remove('nav-open'); };
         
-        if (overlay) {
-            overlay.addEventListener('click', function () {
-                document.body.classList.remove('nav-open');
-            });
-        }
+        if (menuToggle) { menuToggle.addEventListener('click', function(event) { event.stopPropagation(); openMenu(); }); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        if (closeMenuBtn) { closeMenuBtn.addEventListener('click', closeMenu); }
+        mainNav.addEventListener('click', function(event){ event.stopPropagation(); });
 
-        const submenuToggles = document.querySelectorAll('.submenu-toggle');
+        const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
         submenuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function () {
-                this.classList.toggle('active');
-                const submenu = this.closest('li').querySelector('.sub-menu');
-                if (submenu) {
-                    submenu.classList.toggle('open');
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active'); // 用于箭头动画
+                const subMenu = this.nextElementSibling;
+                if (subMenu && subMenu.classList.contains('sub-menu')) {
+                    subMenu.classList.toggle('open');
                 }
             });
         });
 
+        // 4. 初始化 Swiper
         const swiper = new Swiper('.swiper', {
+            autoHeight: true, // 高度自适应
             loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -144,37 +323,6 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-        });
-
-        // --- 全屏搜索框控制脚本 ---
-        const searchIcon = document.querySelector('.search-icon');
-        const searchWrap = document.querySelector('.search-form-wrap');
-        const searchClose = document.querySelector('.search-close');
-        const searchInput = searchWrap.querySelector('.search-input');
-
-        // 点击顶部搜索图标
-        searchIcon.addEventListener('click', function() {
-            searchWrap.style.display = 'block';
-            // 使用一个小的延时来确保元素已显示，从而让焦点生效
-            setTimeout(() => {
-                searchInput.focus();
-            }, 100);
-        });
-
-        // 点击关闭按钮
-        searchClose.addEventListener('click', function() {
-            searchWrap.style.display = 'none';
-        });
-
-        // 按下 ESC 键也可以关闭
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && searchWrap.style.display === 'block') {
-                searchWrap.style.display = 'none';
-            }
         });
     });
 </script>
