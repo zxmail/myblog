@@ -11,9 +11,9 @@
   6.  Main Content Area (Article List, Pagination)
   7.  Sidebar & Widgets
   8.  Footer
-  9.  Utility & Components (Back to Top)
+  9.  Utility & Components (Back to Top, Search Popup)
   10. Responsive Design (Media Queries)
-  11. Carousel Styles (NEW)
+  11. Carousel Styles
 ================================================================*/
 
 /* 1. Font Awesome Icons Import */
@@ -103,7 +103,6 @@ ul, li {
     width: 100%;
     background-color: #fff;
     box-shadow: 0 0.5px 0.5px 1px rgba(0,0,0,.1);
-    /* padding: 0 30px; 5. Header & Navigation */
     position: fixed;
     z-index: 99999;
 
@@ -126,7 +125,6 @@ ul, li {
 .logo-area {
     display: flex;
     align-items: center;
-    /* margin-right: 30px;*/
 }
 
 .logo-image {
@@ -213,7 +211,6 @@ ul, li {
     left: 100%;
     transform: translateX(-10px);
     border-top: none;
-    /*border-left: 1px solid #f0f0f0; 边框 */
 }
 
 .main-nav li:hover > .sub-menu {
@@ -243,43 +240,6 @@ ul, li {
 
 .search-icon:hover, .login-link:hover {
     color: #007bff;
-}
-
-.search-box-container {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centering */
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    padding: 15px;
-    border-radius: 4px;
-    z-index: 1000;
-}
-
-.search-box-container.visible {
-    display: block;
-}
-
-.search-input {
-    border: 1px solid #ccc;
-    padding: 8px 10px;
-    border-radius: 4px;
-    outline: none;
-}
-
-.search-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.search-button:hover {
-    background-color: #0056b3;
 }
 
 .mobile-menu-toggle {
@@ -407,7 +367,6 @@ ul, li {
     margin-right: 15px;
 }
 
-/* MODIFICATION: Change category link color to gray */
 .article-meta .meta-category a {
     color: #888;
 }
@@ -523,8 +482,7 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    /*position: absolute;     相对于父容器底部定位 */
-    bottom: 0;              /* 距离父容器底部0px */
+    bottom: 0;
     width: 100%; 
     text-align: center;
     padding: 18px 0;
@@ -541,7 +499,7 @@ ul, li {
     color: var(--theme-hover);
 }
 
-/* 9. Utility & Components (Back to Top) */
+/* 9. Utility & Components (Back to Top, Search Popup) */
 .action {
     position: fixed;
     right: 20px;
@@ -568,6 +526,71 @@ ul, li {
 /* Hide mobile login button on desktop */
 .login-btn-mobile {
     display: none;
+}
+
+/* MODIFIED: Search Popup Styles */
+.search-popup {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(22, 22, 22, 0.9); /* 半透明黑色背景实现遮罩 */
+	z-index: 99999;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	overflow: auto;
+}
+.search-popup.is-visible {
+    display: flex; /* 使用 is-visible 类来控制显示 */
+}
+.search-popup .search-form {
+	position: relative;
+}
+.search-popup .search-form .search-form-input {
+	height: 60px;
+	line-height: 60px;
+	width: 700px; /* 加宽输入框 */
+	margin: 0 auto;
+	position: relative;
+	display: block;
+	border-bottom: 1px solid #555;
+}
+.search-popup .search-form .search-form-input input {
+	border: 0;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	padding-right: 25px;
+	font-size: 22px;
+	background: none;
+	outline: none;
+	color: #FFF; /* 输入文字为白色 */
+}
+.search-popup .search-form .search-form-input input::placeholder {
+    color: #999; /* placeholder颜色 */
+}
+.search-popup .search-close {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
+.search-popup .search-close i {
+	position: absolute;
+	top: 14px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: #FFF; /* 关闭按钮为白色 */
+	transform: rotate(45deg);
+	transition: all .3s;
+}
+.search-popup .search-close i:last-child {
+	transform: rotate(-45deg);
 }
 
 
@@ -600,18 +623,18 @@ ul, li {
     }
     #wrap {
         flex-grow: 1;
-        width: 100%; /* <<< 新增这一行即可 */
+        width: 100%;
     }
     .logo-image {
-    height: 40px;
-    margin-top: 7px;
-    margin-right: 5px;
+        height: 40px;
+        margin-top: 7px;
+        margin-right: 5px;
     }
     .search-icon {
-    font-size: 18px;
-    color: #555;
-    cursor: pointer;
-    margin-left: 8px
+        font-size: 18px;
+        color: #555;
+        cursor: pointer;
+        margin-left: 8px
     }
     .site-header {
         padding: 0 15px;
@@ -640,7 +663,6 @@ ul, li {
     .logo-area {
         margin-right: 0;
     }
-    /* MODIFICATION: Hide PC login link on mobile */
     .blog-name, .login-link {
         display: none;
     }
@@ -658,7 +680,6 @@ ul, li {
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        /* box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); */
         padding-top: 0;
     }
     
@@ -759,7 +780,6 @@ ul, li {
         border-left: none;
     }
     
-    /* MODIFICATION: Style mobile login button */
     .login-btn-mobile {
         display: block;
     }
@@ -891,6 +911,13 @@ ul, li {
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    /* ADDED: Responsive search popup styles */
+    .search-popup .search-form .search-form-input {
+        width: 90%; /* 小屏幕上搜索框宽度为90% */
+    }
+    .search-popup .search-form .search-form-input input {
+        font-size: 18px; /* 减小字体 */
+    }
 }
 
 /* 11. Carousel Styles */
@@ -921,7 +948,6 @@ ul, li {
     display: block;
 }
 
-/* MODIFICATION: Swiper Arrow Styles */
 .swiper-button-next,
 .swiper-button-prev {
     position: absolute;
@@ -965,7 +991,6 @@ ul, li {
 }
 
 
-/* Swiper Pagination Bullets Styling */
 .swiper-pagination-bullet {
     background: #fff;
     opacity: 0.7;
@@ -982,7 +1007,6 @@ ul, li {
         width: calc(100% - 6px);
     }
     
-    /* On smaller screens, make arrows permanently visible but smaller */
     .swiper-button-next, .swiper-button-prev {
         opacity: 0; /* 默认隐藏 */
         transform: translateX(0);
@@ -1004,27 +1028,24 @@ ul, li {
 
 /* --- 热门文章模块样式修改 --- */
 
-/* 1. 修改整体布局和添加分隔线 */
 .recent-article-item-box {
     display: flex;
-    align-items: flex-start; /* 顶部对齐 */
+    align-items: flex-start;
     margin-bottom: 15px;
-    padding-bottom: 15px; /* 为分隔线留出空间 */
-    border-bottom: 1px solid #eee; /* 添加浅灰色分隔线 */
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
 }
 
 .recent-article-item-box:last-child {
-    border-bottom: none; /* 最后一篇文章不需要分隔线 */
+    border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-
-/* 2. 设置图片宽高比为 100:63 */
 .recent-article-item-image {
-    flex: 0 0 100px; /* 固定宽度为100px */
+    flex: 0 0 100px;
     width: 100px;
-    height: 63px; /* 根据100:63的比例计算高度 */
+    height: 63px;
     margin-right: 0;
 }
 
@@ -1036,21 +1057,19 @@ ul, li {
     border-radius: 4px;
 }
 
-/* 3. 调整内容区域（标题和日期）的布局 */
 .recent-article-item-content {
     margin-left: 10px;
     flex: 1;
     display: flex;
-    flex-direction: column; /* 垂直排列 */
-    justify-content: space-between; /* 两端对齐，标题在顶部，日期在底部 */
-    align-self: stretch; /* 确保内容区域和图片一样高 */
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: stretch;
 }
 
 .recent-article-item-content a {
     color: #555;
     line-height: 1.4;
-    margin: 0; /* 移除默认的margin */
-    /* 限制标题最多显示两行 */
+    margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -1062,59 +1081,46 @@ ul, li {
     color: var(--theme-hover);
 }
 
-/* 4. 添加日期样式 */
 .recent-article-item-date {
     font-size: 12px;
     color: #999;
-    margin-top: auto; /* 将日期推到底部 */
+    margin-top: auto;
 }
 
-/* --- 标签云样式修改 (Tags Widget Style Modification) --- */
+/* --- 标签云样式修改 --- */
 
-/* 1. 设置网格布局容器，实现三等分水平排列 */
 .widget .tag-cloud {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 平等的三份水平排列 */
-    gap: 4px; /* 设置模块之间的间距 */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
     padding: 0;
 }
 
-/* 2. 重置标签模块的默认外边距，以适应新的网格布局 */
 .widget .tag-cloud a {
     margin: 0;
-}
-
-/* 3. 设置标签小模块的默认样式 (白底黑字) */
-.widget .tag-cloud a {
     display: block;
-    border: 1px solid rgba(100, 100, 100, .3); /* 设置边框 */
-    background-color: #fff; /* 白底 */
-    color: #000; /* 黑字 */
-    font-size: 12px !important; /* 设置字体大小 */
-    text-align: center; /* 文本居中 */
-    /*padding: 8px 5px; 文本居中 */
+    border: 1px solid rgba(100, 100, 100, .3);
+    background-color: #fff;
+    color: #000;
+    font-size: 12px !important;
+    text-align: center;
     border-radius: 2px;
-    transition: background-color 0.3s, color 0.3s; /* 平滑过渡效果 */
-    white-space: nowrap; /* 强制文本不换行 */
-    overflow: hidden; /* 隐藏溢出的文本 */
+    transition: background-color 0.3s, color 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-/* 4. 设置鼠标悬停时的样式 (蓝底白字) */
 .widget .tag-cloud a:hover {
-    background-color: #07c; /* 蓝底 */
-    color: #fff; /* 白字 */
-    
-    /* 悬停时为长文字添加左右往复显示动画 */
+    background-color: #07c;
+    color: #fff;
     animation: marquee-text 1s linear infinite alternate;
 }
 
-/* 5. 定义文本左右往复显示的动画 */
 @keyframes marquee-text {
     from {
         text-indent: 5px;
     }
     to {
-        /* 这个值决定了文字向左移动的距离，您可以根据需要调整 */
         text-indent: -30px; 
     }
 }
