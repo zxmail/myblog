@@ -95,15 +95,15 @@
     <div class="overlay"></div>
 
     <div class="search-popup">
-        <div class="search-form">
-            <div class="search-form-input">
-                <form id="search-form" action="/search" method="get" accept-charset="utf-8" target="_blank">
-                    <input name="q" type="text" placeholder="输入关键词搜索..." autocomplete="off">
-                </form>
-            </div>
+        <div class="search-popup-container">
+            <form class="search-form" id="search-form" action="/search" method="get" accept-charset="utf-8" target="_blank">
+                <i class="fas fa-search search-icon-inside"></i>
+                <input name="q" type="text" placeholder="输入关键词搜索..." autocomplete="off">
+                <div class="search-close">&times;</div>
+            </form>
         </div>
-        <div class="search-close"><i></i><i></i></div>
     </div>
+
 
     <script>
     $(document).ready(function() {
@@ -132,6 +132,7 @@
             $('.main-nav .submenu-toggle').removeClass('active');
         });
 
+        // 多级菜单
         $('.main-nav .submenu-toggle').click(function(e) {
             e.preventDefault();
             $(this).toggleClass('active');
@@ -164,11 +165,13 @@
             }, 100);
         });
 
-        $('.search-close').on('click', function(e) {
+        // 关闭按钮现在是form的一部分，所以事件绑定略有不同
+        $('.search-popup').on('click', '.search-close', function(e) {
             e.preventDefault();
             $('.search-popup').removeClass('is-visible');
         });
 
+        // 按 ESC 键关闭
         $(document).on('keyup', function(e) {
             if (e.key === "Escape") {
                 $('.search-popup').removeClass('is-visible');
