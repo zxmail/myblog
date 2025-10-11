@@ -11,9 +11,9 @@
   6.  Main Content Area (Article List, Pagination)
   7.  Sidebar & Widgets
   8.  Footer
-  9.  Utility & Components (Back to Top, Search Popup)
+  9.  Utility & Components (Back to Top)
   10. Responsive Design (Media Queries)
-  11. Carousel Styles
+  11. Carousel Styles (NEW)
 ================================================================*/
 
 /* 1. Font Awesome Icons Import */
@@ -103,8 +103,10 @@ ul, li {
     width: 100%;
     background-color: #fff;
     box-shadow: 0 0.5px 0.5px 1px rgba(0,0,0,.1);
+    /* padding: 0 30px; 5. Header & Navigation */
     position: fixed;
-    z-index: 999;
+    z-index: 99999;
+
 }
 
 .header-container {
@@ -124,6 +126,7 @@ ul, li {
 .logo-area {
     display: flex;
     align-items: center;
+    /* margin-right: 30px;*/
 }
 
 .logo-image {
@@ -210,6 +213,7 @@ ul, li {
     left: 100%;
     transform: translateX(-10px);
     border-top: none;
+    /*border-left: 1px solid #f0f0f0; 边框 */
 }
 
 .main-nav li:hover > .sub-menu {
@@ -239,6 +243,43 @@ ul, li {
 
 .search-icon:hover, .login-link:hover {
     color: #007bff;
+}
+
+.search-box-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centering */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.search-box-container.visible {
+    display: block;
+}
+
+.search-input {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
 }
 
 .mobile-menu-toggle {
@@ -366,6 +407,7 @@ ul, li {
     margin-right: 15px;
 }
 
+/* MODIFICATION: Change category link color to gray */
 .article-meta .meta-category a {
     color: #888;
 }
@@ -481,7 +523,8 @@ ul, li {
 
 /* 8. Footer */
 .footer {
-    bottom: 0;
+    /*position: absolute;     相对于父容器底部定位 */
+    bottom: 0;              /* 距离父容器底部0px */
     width: 100%; 
     text-align: center;
     padding: 18px 0;
@@ -498,12 +541,11 @@ ul, li {
     color: var(--theme-hover);
 }
 
-/* 9. Utility & Components (Back to Top, Search Popup) */
+/* 9. Utility & Components (Back to Top) */
 .action {
     position: fixed;
     right: 20px;
     bottom: 20%;
-    z-index: 99;
 }
 
 .action-item.gotop {
@@ -523,92 +565,9 @@ ul, li {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+/* Hide mobile login button on desktop */
 .login-btn-mobile {
     display: none;
-}
-
-/* NEW: Search Popup Styles - Top Slide Down Effect */
-.search-popup {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	z-index: 99999;
-	opacity: 0;
-	visibility: hidden;
-	transition: opacity 0.3s ease, visibility 0s 0.3s;
-}
-
-.search-popup.is-visible {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0s 0s;
-}
-
-.search-popup .search-popup-container {
-    background: #fff;
-    padding: 20px 0;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
-}
-
-.search-popup.is-visible .search-popup-container {
-    transform: translateY(0);
-}
-
-.search-popup .search-form {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 15px;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.search-popup .search-icon-inside {
-    position: absolute;
-    left: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #aaa;
-    font-size: 18px;
-    z-index: 1;
-}
-
-.search-popup input[name="q"] {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 0 60px 0 50px;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.search-popup input[name="q"]:focus {
-    border-color: var(--theme-color);
-}
-
-.search-popup .search-close {
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 28px;
-    line-height: 1;
-    color: #ccc;
-    cursor: pointer;
-    font-weight: 300;
-    transition: color 0.3s;
-}
-
-.search-popup .search-close:hover {
-    color: #333;
 }
 
 
@@ -632,7 +591,7 @@ ul, li {
 
 @media (max-width: 990px) {
     body {
-        background-color: #fff;
+        background-color: #fff; /* 将移动端背景设为白色 */
     }
     .m-flex {
         display: flex;
@@ -641,18 +600,18 @@ ul, li {
     }
     #wrap {
         flex-grow: 1;
-        width: 100%;
+        width: 100%; /* <<< 新增这一行即可 */
     }
     .logo-image {
-        height: 40px;
-        margin-top: 7px;
-        margin-right: 5px;
+    height: 40px;
+    margin-top: 7px;
+    margin-right: 5px;
     }
     .search-icon {
-        font-size: 18px;
-        color: #555;
-        cursor: pointer;
-        margin-left: 8px
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+    margin-left: 8px
     }
     .site-header {
         padding: 0 15px;
@@ -681,6 +640,7 @@ ul, li {
     .logo-area {
         margin-right: 0;
     }
+    /* MODIFICATION: Hide PC login link on mobile */
     .blog-name, .login-link {
         display: none;
     }
@@ -698,6 +658,7 @@ ul, li {
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
+        /* box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); */
         padding-top: 0;
     }
     
@@ -798,6 +759,7 @@ ul, li {
         border-left: none;
     }
     
+    /* MODIFICATION: Style mobile login button */
     .login-btn-mobile {
         display: block;
     }
@@ -929,21 +891,6 @@ ul, li {
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    /* Responsive adjustments for the new search popup */
-    .search-popup .search-form {
-        padding: 0 10px;
-    }
-    .search-popup .search-icon-inside {
-        left: 25px;
-    }
-    .search-popup input[name="q"] {
-        padding: 0 45px 0 45px;
-        font-size: 14px;
-    }
-    .search-popup .search-close {
-        right: 25px;
-        font-size: 24px;
-    }
 }
 
 /* 11. Carousel Styles */
@@ -974,6 +921,7 @@ ul, li {
     display: block;
 }
 
+/* MODIFICATION: Swiper Arrow Styles */
 .swiper-button-next,
 .swiper-button-prev {
     position: absolute;
@@ -989,7 +937,7 @@ ul, li {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     color: #fff;
-    opacity: 0;
+    opacity: 0; /* Initially hidden */
     transform: translateX(0);
     transition: all .3s ease;
 }
@@ -1002,21 +950,22 @@ ul, li {
 
 .swiper-button-prev {
     left: 10px;
-    transform: translateX(-60px);
+    transform: translateX(-60px); /* Start off-screen */
 }
 
 .swiper-button-next {
     right: 10px;
-    transform: translateX(60px);
+    transform: translateX(60px); /* Start off-screen */
 }
 
 .carousel-container:hover .swiper-button-prev,
 .carousel-container:hover .swiper-button-next {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0); /* Slide in */
 }
 
 
+/* Swiper Pagination Bullets Styling */
 .swiper-pagination-bullet {
     background: #fff;
     opacity: 0.7;
@@ -1033,17 +982,18 @@ ul, li {
         width: calc(100% - 6px);
     }
     
+    /* On smaller screens, make arrows permanently visible but smaller */
     .swiper-button-next, .swiper-button-prev {
-        opacity: 0;
+        opacity: 0; /* 默认隐藏 */
         transform: translateX(0);
         width: 30px;
         height: 30px;
         margin-top: -15px;
-        transition: opacity .3s ease;
+        transition: opacity .3s ease; /* 添加渐变效果 */
     }
     .carousel-container:hover .swiper-button-next,
     .carousel-container:hover .swiper-button-prev {
-        opacity: 1;
+        opacity: 1; /* 悬停时显示 */
     }
     .swiper-button-next:after, .swiper-button-prev:after {
         font-size: 14px;
@@ -1054,24 +1004,27 @@ ul, li {
 
 /* --- 热门文章模块样式修改 --- */
 
+/* 1. 修改整体布局和添加分隔线 */
 .recent-article-item-box {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start; /* 顶部对齐 */
     margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 15px; /* 为分隔线留出空间 */
+    border-bottom: 1px solid #eee; /* 添加浅灰色分隔线 */
 }
 
 .recent-article-item-box:last-child {
-    border-bottom: none;
+    border-bottom: none; /* 最后一篇文章不需要分隔线 */
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
+
+/* 2. 设置图片宽高比为 100:63 */
 .recent-article-item-image {
-    flex: 0 0 100px;
+    flex: 0 0 100px; /* 固定宽度为100px */
     width: 100px;
-    height: 63px;
+    height: 63px; /* 根据100:63的比例计算高度 */
     margin-right: 0;
 }
 
@@ -1083,19 +1036,21 @@ ul, li {
     border-radius: 4px;
 }
 
+/* 3. 调整内容区域（标题和日期）的布局 */
 .recent-article-item-content {
     margin-left: 10px;
     flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-self: stretch;
+    flex-direction: column; /* 垂直排列 */
+    justify-content: space-between; /* 两端对齐，标题在顶部，日期在底部 */
+    align-self: stretch; /* 确保内容区域和图片一样高 */
 }
 
 .recent-article-item-content a {
     color: #555;
     line-height: 1.4;
-    margin: 0;
+    margin: 0; /* 移除默认的margin */
+    /* 限制标题最多显示两行 */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -1107,46 +1062,59 @@ ul, li {
     color: var(--theme-hover);
 }
 
+/* 4. 添加日期样式 */
 .recent-article-item-date {
     font-size: 12px;
     color: #999;
-    margin-top: auto;
+    margin-top: auto; /* 将日期推到底部 */
 }
 
-/* --- 标签云样式修改 --- */
+/* --- 标签云样式修改 (Tags Widget Style Modification) --- */
 
+/* 1. 设置网格布局容器，实现三等分水平排列 */
 .widget .tag-cloud {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
+    grid-template-columns: repeat(3, 1fr); /* 平等的三份水平排列 */
+    gap: 4px; /* 设置模块之间的间距 */
     padding: 0;
 }
 
+/* 2. 重置标签模块的默认外边距，以适应新的网格布局 */
 .widget .tag-cloud a {
     margin: 0;
-    display: block;
-    border: 1px solid rgba(100, 100, 100, .3);
-    background-color: #fff;
-    color: #000;
-    font-size: 12px !important;
-    text-align: center;
-    border-radius: 2px;
-    transition: background-color 0.3s, color 0.3s;
-    white-space: nowrap;
-    overflow: hidden;
 }
 
+/* 3. 设置标签小模块的默认样式 (白底黑字) */
+.widget .tag-cloud a {
+    display: block;
+    border: 1px solid rgba(100, 100, 100, .3); /* 设置边框 */
+    background-color: #fff; /* 白底 */
+    color: #000; /* 黑字 */
+    font-size: 12px !important; /* 设置字体大小 */
+    text-align: center; /* 文本居中 */
+    /*padding: 8px 5px; 文本居中 */
+    border-radius: 2px;
+    transition: background-color 0.3s, color 0.3s; /* 平滑过渡效果 */
+    white-space: nowrap; /* 强制文本不换行 */
+    overflow: hidden; /* 隐藏溢出的文本 */
+}
+
+/* 4. 设置鼠标悬停时的样式 (蓝底白字) */
 .widget .tag-cloud a:hover {
-    background-color: #07c;
-    color: #fff;
+    background-color: #07c; /* 蓝底 */
+    color: #fff; /* 白字 */
+    
+    /* 悬停时为长文字添加左右往复显示动画 */
     animation: marquee-text 1s linear infinite alternate;
 }
 
+/* 5. 定义文本左右往复显示的动画 */
 @keyframes marquee-text {
     from {
         text-indent: 5px;
     }
     to {
+        /* 这个值决定了文字向左移动的距离，您可以根据需要调整 */
         text-indent: -30px; 
     }
 }
