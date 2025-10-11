@@ -275,13 +275,11 @@
                 event.stopPropagation();
             });
         }
-		        // 新增下面这个 if 代码块
         if (closeSearchBtn) {
             closeSearchBtn.addEventListener('click', function() {
                 searchBox.classList.remove('visible');
             });
         }
-
         document.addEventListener('click', function() {
             if (searchBox && searchBox.classList.contains('visible')) {
                 searchBox.classList.remove('visible');
