@@ -264,22 +264,27 @@
         // --- Header 搜索框控制脚本 ---
         const searchToggle = document.getElementById('search-toggle');
         const searchBox = document.getElementById('search-box');
+        const closeSearchBtn = document.getElementById('close-search-btn'); // **修正：在这里获取收起按钮元素**
 
         if (searchToggle && searchBox) {
             searchToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
+                event.stopPropagation(); // 阻止事件冒泡，防止触发 document 的点击事件
                 searchBox.classList.toggle('visible');
             });
             
             searchBox.addEventListener('click', function(event) {
-                event.stopPropagation();
+                event.stopPropagation(); // 阻止在搜索框内部的点击导致其关闭
             });
         }
+
+        // **修正：为收起按钮添加事件监听**
         if (closeSearchBtn) {
             closeSearchBtn.addEventListener('click', function() {
-                searchBox.classList.remove('visible');
+                searchBox.classList.remove('visible'); // 点击时移除 'visible' 类来关闭搜索框
             });
         }
+        
+        // **修正：恢复点击外部区域关闭搜索框的功能**
         document.addEventListener('click', function() {
             if (searchBox && searchBox.classList.contains('visible')) {
                 searchBox.classList.remove('visible');
