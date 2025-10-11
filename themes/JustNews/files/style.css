@@ -104,8 +104,7 @@ ul, li {
     background-color: #fff;
     box-shadow: 0 0.5px 0.5px 1px rgba(0,0,0,.1);
     position: fixed;
-    z-index: 99999;
-
+    z-index: 999;
 }
 
 .header-container {
@@ -504,6 +503,7 @@ ul, li {
     position: fixed;
     right: 20px;
     bottom: 20%;
+    z-index: 99;
 }
 
 .action-item.gotop {
@@ -523,19 +523,18 @@ ul, li {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* Hide mobile login button on desktop */
 .login-btn-mobile {
     display: none;
 }
 
-/* MODIFIED: Search Popup Styles */
+/* NEW: Search Popup Styles */
 .search-popup {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(22, 22, 22, 0.9); /* 半透明黑色背景实现遮罩 */
+	background: rgba(22, 22, 22, 0.9);
 	z-index: 99999;
 	display: none;
 	align-items: center;
@@ -543,7 +542,7 @@ ul, li {
 	overflow: auto;
 }
 .search-popup.is-visible {
-    display: flex; /* 使用 is-visible 类来控制显示 */
+    display: flex;
 }
 .search-popup .search-form {
 	position: relative;
@@ -551,7 +550,7 @@ ul, li {
 .search-popup .search-form .search-form-input {
 	height: 60px;
 	line-height: 60px;
-	width: 700px; /* 加宽输入框 */
+	width: 700px;
 	margin: 0 auto;
 	position: relative;
 	display: block;
@@ -566,10 +565,10 @@ ul, li {
 	font-size: 22px;
 	background: none;
 	outline: none;
-	color: #FFF; /* 输入文字为白色 */
+	color: #FFF;
 }
 .search-popup .search-form .search-form-input input::placeholder {
-    color: #999; /* placeholder颜色 */
+    color: #999;
 }
 .search-popup .search-close {
 	position: absolute;
@@ -585,14 +584,13 @@ ul, li {
 	left: 0;
 	width: 100%;
 	height: 2px;
-	background: #FFF; /* 关闭按钮为白色 */
+	background: #FFF;
 	transform: rotate(45deg);
 	transition: all .3s;
 }
 .search-popup .search-close i:last-child {
 	transform: rotate(-45deg);
 }
-
 
 /* 10. Responsive Design (Media Queries) */
 @media (max-width: 1199px) and (min-width: 991px) {
@@ -614,7 +612,7 @@ ul, li {
 
 @media (max-width: 990px) {
     body {
-        background-color: #fff; /* 将移动端背景设为白色 */
+        background-color: #fff;
     }
     .m-flex {
         display: flex;
@@ -911,12 +909,12 @@ ul, li {
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    /* ADDED: Responsive search popup styles */
+    /* Responsive search popup styles */
     .search-popup .search-form .search-form-input {
-        width: 90%; /* 小屏幕上搜索框宽度为90% */
+        width: 90%;
     }
     .search-popup .search-form .search-form-input input {
-        font-size: 18px; /* 减小字体 */
+        font-size: 18px;
     }
 }
 
@@ -963,7 +961,7 @@ ul, li {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     color: #fff;
-    opacity: 0; /* Initially hidden */
+    opacity: 0;
     transform: translateX(0);
     transition: all .3s ease;
 }
@@ -976,18 +974,18 @@ ul, li {
 
 .swiper-button-prev {
     left: 10px;
-    transform: translateX(-60px); /* Start off-screen */
+    transform: translateX(-60px);
 }
 
 .swiper-button-next {
     right: 10px;
-    transform: translateX(60px); /* Start off-screen */
+    transform: translateX(60px);
 }
 
 .carousel-container:hover .swiper-button-prev,
 .carousel-container:hover .swiper-button-next {
     opacity: 1;
-    transform: translateX(0); /* Slide in */
+    transform: translateX(0);
 }
 
 
@@ -1008,16 +1006,16 @@ ul, li {
     }
     
     .swiper-button-next, .swiper-button-prev {
-        opacity: 0; /* 默认隐藏 */
+        opacity: 0;
         transform: translateX(0);
         width: 30px;
         height: 30px;
         margin-top: -15px;
-        transition: opacity .3s ease; /* 添加渐变效果 */
+        transition: opacity .3s ease;
     }
     .carousel-container:hover .swiper-button-next,
     .carousel-container:hover .swiper-button-prev {
-        opacity: 1; /* 悬停时显示 */
+        opacity: 1;
     }
     .swiper-button-next:after, .swiper-button-prev:after {
         font-size: 14px;
