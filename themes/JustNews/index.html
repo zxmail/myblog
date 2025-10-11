@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="{{- meta_description -}}">
     <title>{{- meta_title -}}</title>
-    <link rel="stylesheet" href="/themes/JustNews/files/style.css?v=1.3.9">
-    <link rel="stylesheet" href="/themes/JustNews/files/swiper.min.css">
-    <link rel="stylesheet" href="/themes/JustNews/files/fonts/fontawesome5pro-all.min.css">
-    <link rel="shortcut icon" href="/themes/JustNews/admin/files/favicon.ico">
-    <script src="/themes/JustNews/admin/files/jquery.min.js"></script>
-    <script src="/themes/JustNews/files/swiper.min.js"></script>
+    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/style.css?v=1.3.9">
+    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css">
+    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css">
+    <link rel="shortcut icon" href="{{ &OPT.theme_github_path }}JustNews/admin/files/favicon.ico">
+    <script src="{{ &OPT.theme_github_path }}JustNews/admin/files/jquery.min.js"></script>
+    <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
     {{- head_html -}}
 </head>
 
@@ -22,14 +22,14 @@
             <div class="header-left">
                 <div class="logo-area">
                     <a href="/" class="logo-link">
-                        <img src="/themes/JustNews/files/logo.png" alt="{{- blog_name -}}" class="logo-image">
+                        <img src="{{ &OPT.theme_github_path }}JustNews/files/logo.png" alt="{{- blog_name -}}" class="logo-image">
                         <span class="blog-name">{{- blog_name -}}</span>
                     </a>
                 </div>
             </div>
             <nav class="main-nav">
                 <div class="mobile-nav-header">
-                    <img src="/themes/JustNews/files/mobile-header.svg" alt="Mobile Menu Header" class="mobile-nav-header-image">
+                    <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="Mobile Menu Header" class="mobile-nav-header-image">
                 </div>
                 <div class="close-menu-btn">&times;</div>
                 {{- navigation_html -}}
@@ -155,24 +155,20 @@
             },
         });
         
-        // NEW: Search Popup Control (搜索弹出层控制)
-        // 点击头部“放大镜”图标的操作
+        // 搜索弹出层控制
         $('.search-icon').on('click', function(e) {
             e.preventDefault();
             $('.search-popup').addClass('is-visible');
-            // 弹出后立即聚焦到输入框
             setTimeout(function() {
                 $('.search-popup input[name="q"]').focus();
             }, 100);
         });
 
-        // 点击弹出层里的“关闭”按钮的操作
         $('.search-close').on('click', function(e) {
             e.preventDefault();
             $('.search-popup').removeClass('is-visible');
         });
 
-        // 按 ESC 键关闭
         $(document).on('keyup', function(e) {
             if (e.key === "Escape") {
                 $('.search-popup').removeClass('is-visible');
