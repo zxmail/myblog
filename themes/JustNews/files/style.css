@@ -287,6 +287,17 @@ ul, li {
 .search-button:hover {
     background-color: #0056b3;
 }
+#close-search-btn {
+    font-size: 22px;
+    color: #999;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: color 0.3s;
+}
+
+#close-search-btn:hover {
+    color: #333;
+}
 
 .mobile-menu-toggle {
     display: none;
