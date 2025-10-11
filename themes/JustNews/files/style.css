@@ -246,27 +246,33 @@ ul, li {
 }
 
 .search-box-container {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centering */
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(-150%); /* 初始状态，完全隐藏在视口上方 */
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    padding: 15px;
-    border-radius: 4px;
-    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 15px;
+    z-index: 9999; /* z-index需要低于header，但高于页面其他内容 */
+    transition: transform 0.4s ease-in-out; /* 添加平滑的过渡动画 */
 }
 
 .search-box-container.visible {
-    display: block;
+    transform: translateY(0); /* 点击后，滑入到视口顶部 */
 }
 
 .search-input {
     border: 1px solid #ccc;
-    padding: 8px 10px;
+    padding: 10px 15px;
     border-radius: 4px;
     outline: none;
+    width: 500px; /* 设置更宽的宽度 */
+    max-width: 70%; /* 在小屏幕上也不会过宽 */
+    margin-right: 10px; /* 与搜索按钮之间增加一些间距 */
 }
 
 .search-button {
