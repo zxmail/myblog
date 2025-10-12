@@ -481,7 +481,7 @@ ul, li {
     color: var(--text-color);
 }
 
-/* --- 友情链接样式 (最终版) --- */
+/* --- 友情链接样式 (左对齐版) --- */
 .friend-links {
     margin-top: 20px;
     background: #fff;
@@ -498,7 +498,7 @@ ul, li {
 }
 
 .friend-links .links-container {
-    text-align: center; /* 水平居中 */
+    text-align: left; /* 水平靠左对齐 */
     font-size: 0; /* 消除inline-block元素间的间隙 */
     padding: 10px 0;
 }
