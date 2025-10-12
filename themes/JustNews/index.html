@@ -225,14 +225,16 @@
              <h3 class="widget-title">友情链接</h3>
              <div class="links-container">
                 {{#widgetLinkList}}
+                <div class="link-item">
                     {{#img}}
                         <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}" style="max-width: 120px; margin: 5px;">
+                            <img src="{{img}}" alt="{{name}}">
                         </a>
                     {{/img}}
                     {{^img}}
                         <a href="{{url}}" target="_blank">{{name}}</a>
                     {{/img}}
+                </div>
                 {{/widgetLinkList}}
             </div>
         </div>
@@ -271,27 +273,25 @@
         // --- Header 搜索框控制脚本 ---
         const searchToggle = document.getElementById('search-toggle');
         const searchBox = document.getElementById('search-box');
-        const closeSearchBtn = document.getElementById('close-search-btn'); // **修正：在这里获取收起按钮元素**
+        const closeSearchBtn = document.getElementById('close-search-btn');
 
         if (searchToggle && searchBox) {
             searchToggle.addEventListener('click', function(event) {
-                event.stopPropagation(); // 阻止事件冒泡，防止触发 document 的点击事件
+                event.stopPropagation();
                 searchBox.classList.toggle('visible');
             });
             
             searchBox.addEventListener('click', function(event) {
-                event.stopPropagation(); // 阻止在搜索框内部的点击导致其关闭
+                event.stopPropagation();
             });
         }
 
-        // **修正：为收起按钮添加事件监听**
         if (closeSearchBtn) {
             closeSearchBtn.addEventListener('click', function() {
-                searchBox.classList.remove('visible'); // 点击时移除 'visible' 类来关闭搜索框
+                searchBox.classList.remove('visible');
             });
         }
         
-        // **修正：恢复点击外部区域关闭搜索框的功能**
         document.addEventListener('click', function() {
             if (searchBox && searchBox.classList.contains('visible')) {
                 searchBox.classList.remove('visible');
@@ -316,7 +316,7 @@
         const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
         submenuToggles.forEach(toggle => {
             toggle.addEventListener('click', function() {
-                this.classList.toggle('active'); // 用于箭头动画
+                this.classList.toggle('active');
                 const subMenu = this.nextElementSibling;
                 if (subMenu && subMenu.classList.contains('sub-menu')) {
                     subMenu.classList.toggle('open');
@@ -326,7 +326,7 @@
 
         // 4. 初始化 Swiper
         const swiper = new Swiper('.swiper', {
-            autoHeight: true, // 高度自适应
+            autoHeight: true,
             loop: true,
             autoplay: {
                 delay: 3000,
