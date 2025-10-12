@@ -492,7 +492,7 @@ ul, li {
 
 .friend-links .widget-title {
     margin-bottom: 15px;
-    font-size: 18px;
+    /* font-size: 18px; */
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
 }
