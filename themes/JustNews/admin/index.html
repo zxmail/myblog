@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+	<meta charset="utf-g">
 	<title>CF-blog后台</title>
 	<link rel="icon" type="image/x-icon" href="{{ &OPT.theme_github_path }}JustNews/admin/files/favicon.ico" />
 	<link rel="shortcut icon" type="image/x-icon" href="{{ &OPT.theme_github_path }}JustNews/admin/files/favicon.ico"/>
@@ -194,8 +194,28 @@
 						</div>
 						<hr/>
 						<div class="form-group">
-							<label for="WidgetLink">友情链接 (JSON格式)</label>
-							<textarea class="form-control" id="WidgetLink" name="WidgetLink" rows="5"></textarea>
+							<label>友情链接</label>
+							<div class="panel panel-default">
+								<div class="panel-heading">图片链接</div>
+								<div class="panel-body" id="image-links-container">
+									</div>
+								<div class="panel-footer">
+									<button type="button" class="btn btn-success btn-sm" onclick="addLink('image')">
+										<i class="fas fa-plus"></i> 添加图片链接
+									</button>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">文字链接</div>
+								<div class="panel-body" id="text-links-container">
+									</div>
+								<div class="panel-footer">
+									<button type="button" class="btn btn-success btn-sm" onclick="addLink('text')">
+										<i class="fas fa-plus"></i> 添加文字链接
+									</button>
+								</div>
+							</div>
+							<textarea id="WidgetLink" name="WidgetLink" style="display: none;"></textarea>
 						</div>
 						<a tabindex="0" role="button" type="button" class="btn btn-primary" onclick="saveSiteSettings()">
 							<i class="fas fa-save"></i> 保存网站设置
@@ -346,7 +366,16 @@
 
 			renderCategories(initialCategories);
 			renderMenu(initialMenu, $('#menu-list'));
-			$('#WidgetLink').val(JSON.stringify(initialLink, null, 2));
+
+			if (initialLink && Array.isArray(initialLink)) {
+                initialLink.forEach(function(link) {
+                    if (link.type === 'image' || link.img) { // 兼容旧数据
+                        addLink('image', link);
+                    } else {
+                        addLink('text', link);
+                    }
+                });
+            }
 			
 			updateCategoryDropdown(initialCategories);
 			$("#loadmore").click();
@@ -611,16 +640,75 @@
 		});
 	}
 
+	function addLink(type, data = {}) {
+        const containerId = type === 'image' ? '#image-links-container' : '#text-links-container';
+        const container = $(containerId);
+        let linkHtml = '';
+
+        if (type === 'image') {
+            linkHtml = `
+                <div class="form-group link-item" data-type="image">
+                    <div class="input-group">
+                        <span class="input-group-addon">图片URL</span>
+                        <input type="url" class="form-control" value="${data.img || ''}" placeholder="https://example.com/image.png">
+                        <span class="input-group-addon">链接URL</span>
+                        <input type="url" class="form-control" value="${data.url || ''}" placeholder="https://example.com/link">
+						<span class="input-group-addon">悬停文字</span>
+                        <input type="text" class="form-control" value="${data.name || ''}" placeholder="可选, 鼠标悬停时显示">
+                        <div class="input-group-btn">
+                            <button class="btn btn-danger" type="button" onclick="removeLink(this)"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+        } else { // text
+            linkHtml = `
+                <div class="form-group link-item" data-type="text">
+                    <div class="input-group">
+                        <span class="input-group-addon">文字</span>
+                        <input type="text" class="form-control" value="${data.name || ''}" placeholder="我的博客">
+                        <span class="input-group-addon">链接URL</span>
+                        <input type="url" class="form-control" value="${data.url || ''}" placeholder="https://example.com/link">
+                        <div class="input-group-btn">
+                            <button class="btn btn-danger" type="button" onclick="removeLink(this)"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        container.append(linkHtml);
+    }
+
+    function removeLink(button) {
+        $(button).closest('.link-item').remove();
+    }
+
 	function saveSiteSettings(){
+		var links = [];
+        $('.link-item').each(function() {
+            var type = $(this).data('type');
+            var inputs = $(this).find('input');
+            if (type === 'image') {
+                var imgUrl = inputs.eq(0).val();
+                var linkUrl = inputs.eq(1).val();
+				var nameText = inputs.eq(2).val();
+                if (imgUrl && linkUrl) {
+                    links.push({ type: 'image', img: imgUrl, url: linkUrl, name: nameText });
+                }
+            } else { // text
+                var nameText = inputs.eq(0).val();
+                var linkUrl = inputs.eq(1).val();
+                if (nameText && linkUrl) {
+                    links.push({ type: 'text', name: nameText, url: linkUrl });
+                }
+            }
+        });
+
+		$('#WidgetLink').val(JSON.stringify(links));
+
 		var configData = [
 			{ name: 'siteName', value: $('#siteName').val() },
 			{ name: 'logo', value: $('#logo').val() },
-			{ name: 'WidgetLink', value: $('#WidgetLink').val() }
+			{ name: 'WidgetLink', value: $('#WidgetLink').val() } // 从隐藏的textarea获取JSON字符串
 		];
-		
-		if (!isJSON(configData[2].value) && configData[2].value.trim() !== "") {
-			alert("“友情链接”的JSON格式错误！"); return false;
-		}
 
 		$.ajax({
 			type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
