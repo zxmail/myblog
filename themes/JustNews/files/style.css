@@ -512,7 +512,7 @@ ul, li {
 
 .friend-links .link-item a {
     display: inline-flex;
-    min-height: 22px
+    min-height: 22px;
     align-items: center;
     text-decoration: none;
     color: #666; /* 默认文字颜色为灰色 */
