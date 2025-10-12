@@ -533,8 +533,8 @@ ul, li {
     bottom: 0;
     width: 100%; 
     text-align: center;
-    padding: 18px 0;
-    margin-top: 20px;
+    padding: 25px 0 30px 0;
+    /* margin-top: 20px;  */
     background-color: #2d3236;
     color: #ccc;
 }
