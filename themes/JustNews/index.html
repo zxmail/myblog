@@ -225,7 +225,14 @@
              <h3 class="widget-title">友情链接</h3>
              <div class="links-container">
                 {{#widgetLinkList}}
-                <a href="{{url}}" target="_blank">{{name}}</a>
+                    {{#img}}
+                        <a href="{{url}}" target="_blank" title="{{name}}">
+                            <img src="{{img}}" alt="{{name}}" style="max-width: 120px; margin: 5px;">
+                        </a>
+                    {{/img}}
+                    {{^img}}
+                        <a href="{{url}}" target="_blank">{{name}}</a>
+                    {{/img}}
                 {{/widgetLinkList}}
             </div>
         </div>
