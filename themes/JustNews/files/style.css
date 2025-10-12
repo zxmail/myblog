@@ -876,6 +876,13 @@ ul, li {
     .container {
     font-size: 12px;
     }
+    .footer {
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0 15px 0;
+    margin-top: 20px;
+    }
 }
 
 @media (max-width: 580px) {
