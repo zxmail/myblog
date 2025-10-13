@@ -877,9 +877,6 @@ ul, li {
     .container {
     font-size: 12px;
     }
-    .carousel-container {
-    margin-bottom: 0px;
-    }
     .footer {
     bottom: 0;
     width: 100%;
@@ -986,11 +983,12 @@ ul, li {
 
 @media (max-width: 870px) {
     .carousel-container {
+        margin-bottom: 0px;
         margin-left: 3px;
         margin-right: 3px;
         width: calc(100% - 6px);
     }
-    
+
     .swiper-button-next, .swiper-button-prev {
         opacity: 0;
         transform: translateX(0);
