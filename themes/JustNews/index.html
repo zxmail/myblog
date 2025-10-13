@@ -6,31 +6,31 @@
 	<meta name="renderer" content="webkit">
 	<meta name="force-rendering" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>{{& site.title }} - {{& site.subtitle }}</title>
-	<meta name="description" content="{{& site.description }}">
-	<meta name="keywords" content="{{& site.keywords }}">
-	<link rel="stylesheet" id="font-awesome-css" href="{{& site.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css" type="text/css" media="all">
-	<link rel="stylesheet" id="JustNews-style-css" href="{{& site.theme_github_path }}JustNews/files/style.css" type="text/css" media="all">
-	<link rel="stylesheet" id="JustNews-style-css" href="{{& site.theme_github_path }}JustNews/files/noto+serif.css" type="text/css" media="all">
-	<link rel="stylesheet" id="swiper-css" href="{{& site.theme_github_path }}JustNews/files/swiper.min.css" type="text/css" media="all">
-	<script type="text/javascript" src="{{& site.theme_github_path }}JustNews/admin/files/jquery.min.js"></script>
-	<script type="text/javascript" src="{{& site.theme_github_path }}JustNews/files/swiper.min.js"></script>
+	<title>{{& OPT.siteName }}</title>
+	<meta name="description" content="{{& OPT.siteDescription }}">
+	<meta name="keywords" content="{{& OPT.keyWords }}">
+	<link rel="stylesheet" id="font-awesome-css" href="{{& OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css" type="text/css" media="all">
+	<link rel="stylesheet" id="JustNews-style-css" href="{{& OPT.theme_github_path }}JustNews/files/style.css" type="text/css" media="all">
+	<link rel="stylesheet" id="JustNews-style-css" href="{{& OPT.theme_github_path }}JustNews/files/noto+serif.css" type="text/css" media="all">
+	<link rel="stylesheet" id="swiper-css" href="{{& OPT.theme_github_path }}JustNews/files/swiper.min.css" type="text/css" media="all">
+	<script type="text/javascript" src="{{& OPT.theme_github_path }}JustNews/admin/files/jquery.min.js"></script>
+	<script type="text/javascript" src="{{& OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 </head>
 <body class="home blog">
 	<header class="header">
 		<div class="container">
 			<div class="logo">
-				<a href="/" title="{{& site.title }}">
-					<img src="{{& site.logo }}" alt="{{& site.title }}">
+				<a href="/" title="{{& OPT.siteName }}">
+					<img src="{{& OPT.logo }}" alt="{{& OPT.siteName }}">
 				</a>
 			</div>
 			<div class="brand">
-				<h1><a href="/" title="{{& site.title }}">{{& site.title }}</a></h1>
-				<p>{{& site.subtitle }}</p>
+				<h1><a href="/" title="{{& OPT.siteName }}">{{& OPT.siteName }}</a></h1>
+				<p>{{& OPT.siteDescription }}</p>
 			</div>
 			<nav class="navbar">
 				<ul>
-					{{# site.menu }}
+					{{# OPT.widgetMenuList }}
 					<li class="menu-item {{# children}}menu-item-has-children{{/children}}">
 						<a href="{{& url }}"><i class="{{& icon }}"></i> {{& name }}</a>
 						{{# children}}
@@ -50,7 +50,7 @@
 						</ul>
 						{{/ children}}
 					</li>
-					{{/ site.menu }}
+					{{/ OPT.widgetMenuList }}
 				</ul>
 			</nav>
 			<div class="search-form">
@@ -73,7 +73,7 @@
 				</div>
 				<nav class="mobile-nav">
 					<ul>
-						{{# site.menu }}
+						{{# OPT.widgetMenuList }}
 						<li class="menu-item {{# children}}menu-item-has-children{{/children}}">
 							<a href="{{& url }}"><i class="{{& icon }}"></i> {{& name }}</a>
 							{{# children}}
@@ -93,7 +93,7 @@
 							</ul>
 							{{/ children}}
 						</li>
-						{{/ site.menu }}
+						{{/ OPT.widgetMenuList }}
 					</ul>
 				</nav>
 			</div>
@@ -102,70 +102,69 @@
 
 	<div class="main">
 		<div class="container">
-			{{# site.carousel }}
+			{{# carousel_slides }}
 			<div class="swiper-container carousel">
 				<div class="swiper-wrapper">
-					{{# site.carousel }}
+					{{# carousel_slides }}
 					<div class="swiper-slide">
 						<a href="{{& linkUrl }}" target="_blank">
 							<img src="{{& imageUrl }}" alt="">
 						</a>
 					</div>
-					{{/ site.carousel }}
+					{{/ carousel_slides }}
 				</div>
 				<div class="swiper-pagination"></div>
 				<div class="swiper-button-prev"></div>
 				<div class="swiper-button-next"></div>
 			</div>
-			{{/ site.carousel }}
+			{{/ carousel_slides }}
 			<div class="content-wrap">
 				<div class="content">
-					{{# posts }}
+					{{# articleList }}
 					<article class="post">
 						<div class="post-header">
-							<h2 class="post-title"><a href="/post/{{& link }}/">{{& title }}</a></h2>
+							<h2 class="post-title"><a href="{{& url }}">{{& title }}</a></h2>
 						</div>
 						<div class="post-content">
-							<p>{{& description }}</p>
+							<p>{{& contentText }}</p>
 						</div>
 						<div class="post-meta">
 							<span><i class="fas fa-user"></i> {{& author }}</span>
-							<span><i class="fas fa-calendar-alt"></i> {{& createDate }}</span>
+							<span><i class="fas fa-calendar-alt"></i> {{& createDate10 }}</span>
 							<span><i class="fas fa-folder"></i> 
-								{{# category}}
-								<a href="/category/{{& . }}/">{{& . }}</a>
-								{{/ category}}
+								<a href="/category/{{& firstCategory }}/">{{& firstCategory }}</a>
 							</span>
 						</div>
 					</article>
-					{{/ posts }}
+					{{/ articleList }}
 					<div class="pagination">
-						{{& paginator }}
+						{{# pageNewer }}<a href="{{& url }}">« Newer</a>{{/ pageNewer}}
+						{{# pageOlder }}<a href="{{& url }}">Older »</a>{{/ pageOlder}}
 					</div>
 				</div>
 				<div class="sidebar">
 					<div class="widget">
 						<h3 class="widget-title">分类</h3>
 						<ul class="widget-list">
-							{{# site.category }}
+							{{# widgetCategoryList }}
 							<li><a href="/category/{{& name }}/"><i class="{{& icon }}"></i> {{& name }}</a></li>
-							{{/ site.category }}
+							{{/ widgetCategoryList }}
 						</ul>
 					</div>
 					<div class="widget">
 						<h3 class="widget-title">最新文章</h3>
 						<ul class="widget-list">
-							{{# site.recent_posts }}
-							<li><a href="/post/{{& link }}/">{{& title }}</a></li>
-							{{/ site.recent_posts }}
+							{{# widgetRecentlyList }}
+							<li><a href="{{& url }}">{{& title }}</a></li>
+							{{/ widgetRecentlyList }}
 						</ul>
 					</div>
 					<div class="widget">
 						<h3 class="widget-title">友情链接</h3>
 						<ul class="widget-list">
-							{{# site.links }}
+							{{# widgetLinkList }}
 							<li><a href="{{& url }}" target="_blank">{{& name }}</a></li>
-							{{/ site.links }}
+							{{/ widgetLinkList }}
 						</ul>
 					</div>
 				</div>
@@ -177,9 +176,9 @@
 		<div class="container">
 			<div class="footer-meta">
 				<div class="footer-links">
-					{{ footer_links }}
+					{{{ footer_links }}}
 				</div>
-				<p>{{ site_footer_copyright }}</p>
+				<p>{{{ site_footer_copyright }}}</p>
 			</div>
 			<div class="copyright">
 				<p>Powered by <a href="https://github.com/Air-L/cf-pages-blog-template" target="_blank">cf-pages-blog-template</a>. Theme by <a href="https://www.lovestu.com/" target="_blank">LoveStu</a>.</p>
@@ -187,26 +186,17 @@
 		</div>
 	</footer>
 	<script>
-		// mobile menu
 		$('.burger').click(function() {
 			$('.mobile-menu').toggleClass('active');
 		});
-
-		// carousel
-		var mySwiper = new Swiper('.carousel', {
-			loop: true,
-			autoplay: {
-				delay: 5000,
-			},
-			pagination: {
-				el: '.swiper-pagination',
-				clickable: true,
-			},
-			navigation: {
-				nextEl: '.swiper-button-next',
-				prevEl: '.swiper-button-prev',
-			},
-		})
+		if ($('.swiper-container').length) {
+			new Swiper('.carousel', {
+				loop: true,
+				autoplay: { delay: 5000 },
+				pagination: { el: '.swiper-pagination', clickable: true },
+				navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+			});
+		}
 	</script>
 </body>
 </html>
