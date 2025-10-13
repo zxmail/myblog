@@ -188,6 +188,13 @@
 							<label for="siteName">博客名称 (可选, 用于登录页)</label>
 							<input type="text" class="form-control" id="siteName" name="siteName" placeholder="例如：我的博客">
 						</div>
+                        <div class="form-group">
+                            <label for="showSiteNameInHeader">页头显示博客名称</label>
+                            <select class="form-control" id="showSiteNameInHeader" name="showSiteNameInHeader">
+                                <option value="true" {{#showSiteNameInHeader_true}}selected{{/showSiteNameInHeader_true}}>显示</option>
+                                <option value="false" {{#showSiteNameInHeader_false}}selected{{/showSiteNameInHeader_false}}>隐藏</option>
+                            </select>
+                        </div>
 						<div class="form-group">
 							<label for="logo">Logo图片地址 (可选)</label>
 							<input type="url" class="form-control" id="logo" name="logo" placeholder="https://example.com/logo.png">
@@ -798,7 +805,8 @@
 			{ name: 'site_keywords', value: $('#site_keywords').val() },
 			{ name: 'site_footer_copyright', value: $('#site_footer_copyright').val() },
 			{ name: 'footer_links', value: JSON.stringify(footerLinks) },
-			{ name: 'WidgetLink', value: JSON.stringify(links) }
+			{ name: 'WidgetLink', value: JSON.stringify(links) },
+			{ name: 'showSiteNameInHeader', value: $('#showSiteNameInHeader').val() }
 		];
 
 		$.ajax({
