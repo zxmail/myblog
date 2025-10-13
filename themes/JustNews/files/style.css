@@ -377,6 +377,9 @@ ul, li {
 
 .image-category a {
     color: #fff;
+    display: inline;
+    width: auto;    /* 修正宽度 */
+    height: auto;   /* 修正高度 */
 }
 
 .article-item-content {
