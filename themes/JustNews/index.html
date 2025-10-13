@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
     <title>{{ &title }}</title>
-    <meta name="keywords" content="{{ &OPT.keyWords }}" />
+    <meta name="keywords" content="{{ &OPT.siteKeywords }}" />
     <meta name="description" content="{{ &OPT.siteDescription }}" />
 
     <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
@@ -28,7 +28,9 @@
                 {{ #OPT.logo }}
                 <a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>
                 {{ /OPT.logo }}
+                {{ #OPT.showSiteNameInHeader }}
                 <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
+                {{ /OPT.showSiteNameInHeader }}
             </div>
             <nav class="main-nav" id="main-nav">
                 <div class="close-menu-btn" id="close-menu-btn">&times;</div>
@@ -262,7 +264,6 @@
     <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 
     <script>
-        // 简单的返回顶部功能
         document.addEventListener('DOMContentLoaded', function() {
             const topButton = document.querySelector('.j-top');
             if(topButton) {
@@ -274,7 +275,6 @@
     </script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- Header 搜索框控制脚本 ---
         const searchToggle = document.getElementById('search-toggle');
         const searchBox = document.getElementById('search-box');
         const closeSearchBtn = document.getElementById('close-search-btn');
@@ -302,7 +302,6 @@
             }
         });
 
-        // --- 移动端菜单控制脚本 ---
         const menuToggle = document.getElementById('mobile-menu-toggle');
         const mainNav = document.getElementById('main-nav');
         const body = document.querySelector('body');
@@ -328,7 +327,6 @@
             });
         });
 
-        // 4. 初始化 Swiper
         const swiper = new Swiper('.swiper', {
             autoHeight: true,
             loop: true,
