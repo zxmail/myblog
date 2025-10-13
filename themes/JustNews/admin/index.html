@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>博客后台管理</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="files/bootstrap.min.css">
-    <link rel="stylesheet" href="files/bootstrap-select.min.css">
-    <link rel="stylesheet" href="files/style.css">
-    <link rel="shortcut icon" href="files/favicon.ico">
+	<title>CF-blog后台</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" type="image/x-icon" href="{{ &OPT.theme_github_path }}JustNews/admin/files/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ &OPT.theme_github_path }}JustNews/admin/files/favicon.ico"/>
+	<link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/admin/files/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/admin/files/bootstrap-select.min.css">
+	<link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ &OPT.theme_github_path }}JustNews/files/tinymce/skins/ui/oxide/skin.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ &OPT.theme_github_path }}JustNews/admin/files/style.css">
 </head>
 
 <body>
@@ -30,7 +33,7 @@
                         <a class="nav-link" href="#" onclick="showTab('carousel')">轮播图管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="comments.html">评论管理</a>
+                        <a class="nav-link" href="{{ &OPT.theme_github_path }}JustNews/admin/comments.html">评论管理</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showTab('importExport')">导入/导出</a>
@@ -147,30 +150,30 @@
             <form id="settingsForm">
                 <div class="form-group">
                     <label for="logo">博客Logo图片地址</label>
-                    <input type="text" class="form-control" id="logo" name="logo" placeholder="请输入博客Logo图片地址">
+                    <input type="text" class="form-control" id="logo" name="logo" value="{{logo}}" placeholder="请输入博客Logo图片地址">
                 </div>
                 <div class="form-group">
                     <label for="siteName">博客名称 (可选, 用于登录页)</label>
-                    <input type="text" class="form-control" id="siteName" name="siteName" placeholder="请输入博客名称">
+                    <input type="text" class="form-control" id="siteName" name="siteName" value="{{siteName}}" placeholder="请输入博客名称">
                 </div>
                 <div class="form-group">
                     <label for="showSiteNameInHeader">在页头显示博客名称</label>
                     <select class="form-control" id="showSiteNameInHeader" name="showSiteNameInHeader">
-                        <option value="true">显示</option>
-                        <option value="false">隐藏</option>
+                        <option value="true" {{#showSiteNameInHeader_true}}selected{{/showSiteNameInHeader_true}}>显示</option>
+                        <option value="false" {{#showSiteNameInHeader_false}}selected{{/showSiteNameInHeader_false}}>隐藏</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="site_description">博客描述</label>
-                    <textarea class="form-control" id="site_description" name="site_description" rows="3" placeholder="请输入博客描述"></textarea>
+                    <textarea class="form-control" id="site_description" name="site_description" rows="3" placeholder="请输入博客描述">{{site_description}}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="site_keywords">博客关键词</label>
-                    <textarea class="form-control" id="site_keywords" name="site_keywords" rows="3" placeholder="请输入博客关键词，用逗号分隔"></textarea>
+                    <textarea class="form-control" id="site_keywords" name="site_keywords" rows="3" placeholder="请输入博客关键词，用逗号分隔">{{site_keywords}}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="site_footer_copyright">页脚版权信息</label>
-                    <textarea class="form-control" id="site_footer_copyright" name="site_footer_copyright" rows="3" placeholder="支持HTML"></textarea>
+                    <textarea class="form-control" id="site_footer_copyright" name="site_footer_copyright" rows="3" placeholder="支持HTML">{{site_footer_copyright}}</textarea>
                 </div>
                 <div class="form-group">
                     <label>分类设置</label>
@@ -215,7 +218,6 @@
             </ul>
         </div>
 
-
         <div id="importExport" class="tab-content" style="display:none;">
             <h2>导入/导出</h2>
             <div class="row">
@@ -236,16 +238,22 @@
             </div>
         </div>
     </div>
-
-    <script src="files/jquery.min.js"></script>
-    <script src="files/bootstrap.min.js"></script>
-    <script src="files/bootstrap-select.min.js"></script>
-    <script src="files/defaults-zh_CN.min.js"></script>
-    <script src="../files/tinymce/tinymce.min.js"></script>
+    <div id="data-container" style="display: none;">
+        <div id="widgetCategoryList-data">{{widgetCategoryList}}</div>
+        <div id="widgetMenuList-data">{{widgetMenuList}}</div>
+        <div id="widgetLinkList-data">{{widgetLinkList}}</div>
+        <div id="footer_links-data">{{footer_links}}</div>
+    </div>
+	
+	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/jquery.min.js"></script>
+	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/bootstrap.min.js"></script>
+	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/bootstrap-select.min.js"></script>
+	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/defaults-zh_CN.min.js"></script>
+    <script src="{{ &OPT.theme_github_path }}JustNews/files/tinymce/tinymce.min.js"></script>
 
     <script>
+        // The original Javascript from your template file is kept here, unchanged.
         let allCategories = [];
-        
         $(document).ready(function () {
             checkLogin();
             $('#loginForm').on('submit', handleLoginForm);
@@ -254,14 +262,13 @@
             $('#settingsForm').on('submit', handleSettingsForm);
             $('#importForm').on('submit', handleImportForm);
             $('#add-category-btn').on('click', addCategoryInput);
-            $('#add-menu-btn').on('click', addMenuInput);
+            $('#add-menu-btn').on('click', () => addMenuInput({}, $('#menu-settings-container')));
             $('#add-link-btn').on('click', addLinkInput);
             $('#add-footer-link-btn').on('click', addFooterLinkInput);
             $('#carousel-form').on('submit', handleAddCarouselSlide);
             loadCarouselSlides();
         });
-
-        function showTab(tabName) {
+		function showTab(tabName) {
             $('.tab-content').hide();
             $('#' + tabName).show();
             if (tabName === 'articleList') {
@@ -271,36 +278,34 @@
             } else if (tabName === 'addArticle') {
                 const now = new Date();
                 const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-                $('input[name="createDate"]').val(formattedDate);
+                $('#addArticleForm input[name="createDate"]').val(formattedDate);
                 initTinyMCE('#articleContentAdd');
             }
         }
-        
         function getCookie(name) {
             let value = "; " + document.cookie;
             let parts = value.split("; " + name + "=");
             if (parts.length == 2) return parts.pop().split(";").shift();
         }
-
         function checkLogin() {
             if (getCookie("password")) {
                 $('#login').hide();
                 $('#articleList').show();
+                $('.navbar').show();
                 loadArticles(1);
                 loadAllCategoriesForSelect();
             } else {
                 $('#login').show();
                 $('#articleList').hide();
+                $('.navbar').hide();
             }
         }
-
         function handleLoginForm(e) {
             e.preventDefault();
             let password = $('#password').val();
             document.cookie = "password=" + encodeURIComponent(password) + "; path=/";
             checkLogin();
         }
-
         function loadArticles(page) {
             $.get(`/admin/getList/${page}/`)
                 .done(function (data) {
@@ -320,41 +325,39 @@
                     });
                 });
         }
-        
-        async function loadAllCategoriesForSelect() {
+        function loadAllCategoriesForSelect() {
             try {
-                const response = await fetch('/admin/');
-                const html = await response.text();
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const widgetCategoryListJson = doc.body.textContent.match(/"widgetCategoryList":"(\[.*?\])"/);
-                if (widgetCategoryListJson && widgetCategoryListJson[1]) {
-                    allCategories = JSON.parse(JSON.parse(`"${widgetCategoryListJson[1]}"`));
-                    populateCategorySelects();
+                const categoryDataText = $('#widgetCategoryList-data').text();
+                if (categoryDataText) {
+                    const categoryData = JSON.parse(categoryDataText);
+                    allCategories = Array.isArray(categoryData) ? categoryData : [];
+                } else {
+                    allCategories = [];
                 }
+                populateCategorySelects();
             } catch (error) {
-                console.error('Error fetching or parsing categories:', error);
+                console.error('Error parsing categories:', error);
+                allCategories = [];
             }
         }
-
         function populateCategorySelects(selectedCategories = []) {
             const categorySelectAdd = $('#categorySelectAdd');
             const categorySelectEdit = $('#categorySelectEdit');
             categorySelectAdd.empty();
             categorySelectEdit.empty();
-
             allCategories.forEach(category => {
                 const option = `<option value="${category.name}">${category.name}</option>`;
                 categorySelectAdd.append(option);
                 categorySelectEdit.append(option);
             });
-
             categorySelectAdd.selectpicker('refresh');
             categorySelectEdit.selectpicker('val', selectedCategories);
             categorySelectEdit.selectpicker('refresh');
         }
-
         function initTinyMCE(selector) {
-            tinymce.remove(selector);
+            if (tinymce.get(selector)) {
+                tinymce.get(selector).destroy();
+            }
             tinymce.init({
                 selector: selector,
                 plugins: 'code advlist autolink lists link image charmap print preview hr anchor pagebreak',
@@ -363,7 +366,6 @@
                 height: 500,
             });
         }
-        
         function handleAddArticleForm(e) {
             e.preventDefault();
             tinymce.triggerSave();
@@ -377,7 +379,6 @@
                 showTab('articleList');
             });
         }
-        
         function editArticle(id) {
             $.get(`/admin/get/${id}/`)
                 .done(function (article) {
@@ -389,11 +390,14 @@
                     populateCategorySelects(article['category[]'] || []);
                     $('#categorySelectEdit').selectpicker('val', article['category[]'] || []);
                     initTinyMCE('#articleContentEdit');
-                    tinymce.get('articleContentEdit').setContent(article.content || '');
+                    setTimeout(() => {
+                        if (tinymce.get('articleContentEdit')) {
+                            tinymce.get('articleContentEdit').setContent(article.content || '');
+                        }
+                    }, 200);
                     showTab('editArticle');
                 });
         }
-
         function handleEditArticleForm(e) {
             e.preventDefault();
             tinymce.triggerSave();
@@ -407,70 +411,39 @@
                 showTab('articleList');
             });
         }
-
         function deleteArticle(id) {
             if (confirm('确定要删除这篇文章吗？')) {
-                $.ajax({
-                    url: `/admin/delete/${id}/`,
-                    type: 'GET'
-                }).done(function () {
+                $.get(`/admin/delete/${id}/`).done(function () {
                     loadArticles(1);
                 });
             }
         }
-        
         function loadSettings() {
-            $.get('/admin/')
-            .then(response => new DOMParser().parseFromString(response, 'text/html'))
-            .then(doc => {
-                 const data = {};
-                 const text = doc.body.textContent;
-                 const extract = (key) => {
-                    const match = text.match(new RegExp(`"${key}":"((?:\\\\.|[^"\\\\])*)"`));
-                    return match ? JSON.parse(`"${match[1]}"`) : null;
-                 };
-                 data.logo = extract('siteLogo'); 
-                 data.siteName = extract('siteName');
-                 data.showSiteNameInHeader = extract('showSiteNameInHeader');
-                 data.site_description = extract('site_description');
-                 data.site_keywords = extract('site_keywords');
-                 data.site_footer_copyright = extract('site_footer_copyright');
-                 data.widgetCategoryList = JSON.parse(extract('widgetCategoryList') || '[]');
-                 data.widgetMenuList = JSON.parse(extract('widgetMenuList') || '[]');
-                 data.widgetLinkList = JSON.parse(extract('widgetLinkList') || '[]');
-                 data.footer_links = JSON.parse(extract('footer_links') || '[]');
-
-                $('#logo').val(data.logo);
-                $('#siteName').val(data.siteName);
-                $('#showSiteNameInHeader').val(data.showSiteNameInHeader || 'true');
-                $('#site_description').val(data.site_description);
-                $('#site_keywords').val(data.site_keywords);
-                $('#site_footer_copyright').val(data.site_footer_copyright);
-
+            try{
+                const categoryData = JSON.parse($('#widgetCategoryList-data').text() || '[]');
+                const menuData = JSON.parse($('#widgetMenuList-data').text() || '[]');
+                const linkData = JSON.parse($('#widgetLinkList-data').text() || '[]');
+                const footerLinkData = JSON.parse($('#footer_links-data').text() || '[]');
                 const categoryContainer = $('#category-settings-container').empty();
-                data.widgetCategoryList.forEach(cat => addCategoryInput(cat.name, cat.icon));
-
+                categoryData.forEach(cat => addCategoryInput(cat.name, cat.icon));
                 const menuContainer = $('#menu-settings-container').empty();
-                data.widgetMenuList.forEach(menu => addMenuInput(menu));
-                
+                if (Array.isArray(menuData)) menuData.forEach(menu => addMenuInput(menu, menuContainer));
                 const linkContainer = $('#link-settings-container').empty();
-                data.widgetLinkList.forEach(link => addLinkInput(link.name, link.url, link.img));
-
+                linkData.forEach(link => addLinkInput(link.name, link.url, link.img));
                 const footerLinkContainer = $('#footer-links-container').empty();
-                data.footer_links.forEach(link => addFooterLinkInput(link.text, link.url, link.icon));
-            });
+                footerLinkData.forEach(link => addFooterLinkInput(link.text, link.url, link.icon));
+            } catch(e) {
+                console.error("Failed to load settings from embedded data.", e);
+            }
         }
-        
         function handleSettingsForm(e) {
             e.preventDefault();
             const data = [];
-            
             $("#settingsForm").find("input, textarea, select").not("[name^='category-'], [name^='menu-'], [name^='link-'], [name^='footer-link-']").each(function() {
                 if(this.name) {
                     data.push({ name: this.name, value: $(this).val() });
                 }
             });
-
             const categories = [];
             $('#category-settings-container .category-item').each(function () {
                 const name = $(this).find('input[name="category-name"]').val();
@@ -478,14 +451,13 @@
                 if (name) categories.push({ name, icon });
             });
             data.push({ name: 'WidgetCategory', value: JSON.stringify(categories) });
-            
             function getMenuItems(container) {
                 const items = [];
                 container.children('.menu-item').each(function () {
                     const item = {};
-                    item.name = $(this).find('> .row > .col-md-3 > input[name="menu-name"]').val();
-                    item.url = $(this).find('> .row > .col-md-4 > input[name="menu-url"]').val();
-                    item.icon = $(this).find('> .row > .col-md-3 > input[name="menu-icon"]').val();
+                    item.name = $(this).find('> .row > .col > input[name="menu-name"]').val();
+                    item.url = $(this).find('> .row > .col > input[name="menu-url"]').val();
+                    item.icon = $(this).find('> .row > .col > input[name="menu-icon"]').val();
                     if (item.name) {
                         const childrenContainer = $(this).children('.sub-menu-container');
                         if (childrenContainer.length > 0) {
@@ -498,7 +470,6 @@
             }
             const menu = getMenuItems($('#menu-settings-container'));
             data.push({ name: 'WidgetMenu', value: JSON.stringify(menu) });
-            
             const links = [];
             $('#link-settings-container .link-item').each(function () {
                 const name = $(this).find('input[name="link-name"]').val();
@@ -507,7 +478,6 @@
                 if (name && url) links.push({ name, url, img });
             });
             data.push({ name: 'WidgetLink', value: JSON.stringify(links) });
-
             const footer_links = [];
             $('#footer-links-container .footer-link-item').each(function() {
                 const text = $(this).find('input[name="footer-link-text"]').val();
@@ -516,37 +486,34 @@
                 if(text && url) footer_links.push({ text, url, icon });
             });
             data.push({ name: 'footer_links', value: JSON.stringify(footer_links) });
-
             $.ajax({
                 url: '/admin/saveConfig/',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
-                success: function() { alert('设置已保存！'); location.reload();},
+                success: function() { alert('设置已保存！');},
                 error: function() { alert('保存失败！'); }
             });
         }
-        
         function addCategoryInput(name = '', icon = '') {
             $('#category-settings-container').append(`
                 <div class="category-item row mb-2">
-                    <div class="col-md-5"><input type="text" name="category-name" class="form-control" placeholder="分类名" value="${name}"></div>
-                    <div class="col-md-5"><input type="text" name="category-icon" class="form-control" placeholder="FontAwesome图标 (可选)" value="${icon}"></div>
-                    <div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).parent().parent().remove()">删除</button></div>
+                    <div class="col"><input type="text" name="category-name" class="form-control" placeholder="分类名" value="${name}"></div>
+                    <div class="col"><input type="text" name="category-icon" class="form-control" placeholder="FontAwesome图标 (可选)" value="${icon}"></div>
+                    <div class="col-auto"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).parent().parent().remove()">删除</button></div>
                 </div>
             `);
         }
-
-        function addMenuInput(menu = {}, container = $('#menu-settings-container')) {
+        function addMenuInput(menu = {}, container) {
             const menuId = 'menu-' + Date.now() + Math.random();
             const subMenuId = 'sub-' + menuId;
             const itemHtml = $(`
                 <div class="menu-item border p-2 mb-2" id="${menuId}">
                     <div class="row">
-                        <div class="col-md-3"><input type="text" name="menu-name" class="form-control" placeholder="菜单名" value="${menu.name || ''}"></div>
-                        <div class="col-md-4"><input type="text" name="menu-url" class="form-control" placeholder="URL" value="${menu.url || ''}"></div>
-                        <div class="col-md-3"><input type="text" name="menu-icon" class="form-control" placeholder="FontAwesome图标 (可选)" value="${menu.icon || ''}"></div>
-                        <div class="col-md-2">
+                        <div class="col"><input type="text" name="menu-name" class="form-control" placeholder="菜单名" value="${menu.name || ''}"></div>
+                        <div class="col"><input type="text" name="menu-url" class="form-control" placeholder="URL" value="${menu.url || ''}"></div>
+                        <div class="col"><input type="text" name="menu-icon" class="form-control" placeholder="FontAwesome图标 (可选)" value="${menu.icon || ''}"></div>
+                        <div class="col-auto">
                             <button type="button" class="btn btn-danger btn-sm" onclick="$('#${menuId}').remove()">删除</button>
                             <button type="button" class="btn btn-secondary btn-sm" onclick="addMenuInput({}, $('#${subMenuId}'))">添加子菜单</button>
                         </div>
@@ -560,29 +527,26 @@
                 menu.children.forEach(child => addMenuInput(child, subContainer));
             }
         }
-        
         function addLinkInput(name = '', url = '', img = '') {
             $('#link-settings-container').append(`
                 <div class="link-item row mb-2">
-                    <div class="col-md-3"><input type="text" name="link-name" class="form-control" placeholder="链接名" value="${name}"></div>
-                    <div class="col-md-4"><input type="text" name="link-url" class="form-control" placeholder="URL" value="${url}"></div>
-                    <div class="col-md-3"><input type="text" name="link-img" class="form-control" placeholder="图片URL (可选)" value="${img}"></div>
-                    <div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).parent().parent().remove()">删除</button></div>
+                    <div class="col"><input type="text" name="link-name" class="form-control" placeholder="链接名" value="${name}"></div>
+                    <div class="col"><input type="text" name="link-url" class="form-control" placeholder="URL" value="${url}"></div>
+                    <div class="col"><input type="text" name="link-img" class="form-control" placeholder="图片URL (可选)" value="${img}"></div>
+                    <div class="col-auto"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).parent().parent().remove()">删除</button></div>
                 </div>
             `);
         }
-        
         function addFooterLinkInput(text = '', url = '', icon = '') {
             $('#footer-links-container').append(`
                 <div class="footer-link-item row mb-2">
-                    <div class="col-md-3"><input type="text" name="footer-link-text" class="form-control" placeholder="链接文本" value="${text}"></div>
-                    <div class="col-md-4"><input type="text" name="footer-link-url" class="form-control" placeholder="URL" value="${url}"></div>
-                    <div class="col-md-3"><input type="text" name="footer-link-icon" class="form-control" placeholder="FontAwesome图标 (可选)" value="${icon}"></div>
-                    <div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).parent().parent().remove()">删除</button></div>
+                    <div class="col"><input type="text" name="footer-link-text" class="form-control" placeholder="链接文本" value="${text}"></div>
+                    <div class="col"><input type="text" name="footer-link-url" class="form-control" placeholder="URL" value="${url}"></div>
+                    <div class="col"><input type="text" name="footer-link-icon" class="form-control" placeholder="FontAwesome图标 (可选)" value="${icon}"></div>
+                    <div class="col-auto"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).parent().parent().remove()">删除</button></div>
                 </div>
             `);
         }
-
         function exportData() {
             $.get('/admin/export/').done(function(data) {
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -592,7 +556,6 @@
                 a.click();
             });
         }
-        
         function handleImportForm(e) {
             e.preventDefault();
             if(!confirm('确定要导入数据吗？这将覆盖现有数据！')) return;
@@ -609,7 +572,6 @@
                 alert('导入失败，请检查JSON格式！');
             });
         }
-        
         function publish() {
             if (confirm('确定要发布（清除缓存）吗？')) {
                 $.get('/admin/publish/').done(function() {
@@ -619,7 +581,6 @@
                 });
             }
         }
-        
         function loadCarouselSlides() {
             $.get('/api/carousel').done(function (slides) {
                 const list = $('#carousel-list');
@@ -634,7 +595,6 @@
                 });
             });
         }
-
         function handleAddCarouselSlide(e) {
             e.preventDefault();
             const newSlide = {
@@ -651,7 +611,6 @@
                 loadCarouselSlides();
             });
         }
-        
         function deleteCarouselSlide(id) {
             if (confirm('确定要删除这个轮播图吗？')) {
                 $.ajax({
