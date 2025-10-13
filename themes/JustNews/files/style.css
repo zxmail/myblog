@@ -366,7 +366,7 @@ ul, li {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: rgba(32, 107, 231, 0.85);
+    background: rgba(0,0,0,.6);
     color: #fff;
     padding: 3px 8px;
     font-size: 12px;
