@@ -9,7 +9,7 @@
  */
 
 // --- BEGIN: Mustache.js v4.1.0 ---
-const Mustache = (function () {
+const mustache = (function () {
 	'use strict';
 	var objectToString = Object.prototype.toString;
 	var isArray = Array.isArray || function isArrayPolyfill (object) { return objectToString.call(object) === '[object Array]'; };
@@ -100,6 +100,10 @@ async function handleRequest({ request, env, ctx }) {
 				data["widgetCategoryList"] = JSON.stringify(categories);
 				data["widgetMenuList"] = await env.XYRJ_CONFIG.get("WidgetMenu") || '[]';
 				data["widgetLinkList"] = await env.XYRJ_CONFIG.get("WidgetLink") || '[]';
+                data["footer_links"] = await env.XYRJ_CONFIG.get("footer_links") || '[]';
+                data["site_footer_copyright"] = await env.XYRJ_CONFIG.get("site_footer_copyright") || '';
+                data["site_description"] = await env.XYRJ_CONFIG.get("site_description") || '';
+                data["site_keywords"] = await env.XYRJ_CONFIG.get("site_keywords") || '';
 				return await renderHTML(request, data, theme + "/admin/index.html", 200, env, ctx);
 			}
 			else if (checkPass(request)) {
@@ -302,32 +306,77 @@ async function render(data, template_path, env) {
 	let templateResponse = await fetch(templateUrl);
 	let template = await templateResponse.text();
     
+    // --- START: FIX ---
+    // This block prepares data for BOTH frontend and backend templates.
+    // The logic has been corrected to avoid conflicts.
     const [
         logo,
         siteName,
         widgetMenuList,
-        theme_github_path
+        theme_github_path,
+        site_description,
+        site_keywords,
+        site_footer_copyright,
+        footer_links_json // Use a unique name to avoid conflicts
     ] = await Promise.all([
         env.XYRJ_CONFIG.get('logo'),
         env.XYRJ_CONFIG.get('siteName'),
         env.XYRJ_CONFIG.get('WidgetMenu'),
-        env.XYRJ_CONFIG.get('theme_github_path')
+        env.XYRJ_CONFIG.get('theme_github_path'),
+        env.XYRJ_CONFIG.get('site_description'),
+        env.XYRJ_CONFIG.get('site_keywords'),
+        env.XYRJ_CONFIG.get('site_footer_copyright'),
+        env.XYRJ_CONFIG.get('footer_links')
     ]);
 
-    site.logo = (logo !== null && logo !== undefined) ? logo : "";
-    site.siteName = (siteName !== null && siteName !== undefined) ? siteName : "";
-    
+    site.logo = logo || "";
+    site.siteName = siteName || "";
     site.theme_github_path = theme_github_path || site.theme_github_path;
-    
+    site.siteDescription = site_description || "";
+    site.keyWords = site_keywords || "";
+
     try {
         site.widgetMenuList = JSON.parse(widgetMenuList || "[]");
     } catch (e) {
         site.widgetMenuList = [];
     }
 
-    let renderData = { ...data, OPT: site };
-	return Mustache.render(template, renderData);
+    // This is the combined data object for rendering.
+    let renderData = { 
+        ...data, 
+        OPT: site,
+    };
+
+    // If we are rendering the admin page, the `data` object already contains
+    // the raw `footer_links` JSON string. We don't need to do anything.
+    
+    // If we are rendering a frontend page, `data.footer_links` will be undefined.
+    // In that case, we generate the footer HTML from the data we fetched (`footer_links_json`).
+    if (typeof data.footer_links === 'undefined') {
+        let footer_links_html = '';
+        if (footer_links_json) {
+            try {
+                const links = JSON.parse(footer_links_json);
+                if (Array.isArray(links)) {
+                    links.forEach((link, index) => {
+                        const icon_html = link.icon ? `<i class="${link.icon}"></i> ` : '';
+                        footer_links_html += `<a href="${link.url}" target="_blank">${icon_html}${link.text}</a>`;
+                        if (index < links.length - 1) {
+                            footer_links_html += '<span class="split">|</span>';
+                        }
+                    });
+                }
+            } catch (e) { /* ignore */ }
+        }
+        // Add the generated HTML to the render data for the frontend template to use.
+        renderData.footer_links = footer_links_html;
+        renderData.site_footer_copyright = site_footer_copyright || '';
+    }
+    // --- END: FIX ---
+
+	return mustache.render(template, renderData);
 }
+
 
 async function getIndexData(request, env) {
 	let url = new URL(request.url);
@@ -356,14 +405,12 @@ async function getIndexData(request, env) {
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	
-    // START: Carousel Data Integration
     try {
         data["carousel_slides"] = await env.XYRJ_CAROUSEL_KV.get("slides", { type: "json" }) || [];
     } catch(e) {
         console.error("Failed to get/parse carousel slides from KV:", e);
         data["carousel_slides"] = [];
     }
-    // END: Carousel Data Integration
 
 	let widgetRecentlyList = articleList.slice(0, 5);
 	for (const item of widgetRecentlyList) {
