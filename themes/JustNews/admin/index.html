@@ -208,7 +208,6 @@
 								<i class="fas fa-plus"></i> 添加链接
 							</button>
 						</div>
-
 						<div class="form-group">
 							<label for="site_footer_copyright">页脚版权信息</label>
 							<textarea class="form-control" id="site_footer_copyright" rows="3" placeholder="例如：© 2025 Your Blog. All Rights Reserved."></textarea>
@@ -379,15 +378,14 @@
 
 			$('#createDate').val(new Date().toISOString().slice(0, 16));
 			
-			$('#siteName').val(`{{& siteName }}`);
-			$('#logo').val(`{{& logo }}`);
-			
-            // --- 新增开始 ---
+			$('#siteName').val(`{{& OPT.siteName }}`);
+			$('#logo').val(`{{& OPT.logo }}`);
+
+            // --- START: Modified for Footer ---
 			$('#site_description').val(`{{& site_description }}`);
 			$('#site_keywords').val(`{{& site_keywords }}`);
 			$('#site_footer_copyright').val(`{{& site_footer_copyright }}`);
 
-			// 动态加载并显示页脚链接
 			const footerLinksContainer = $('#footer-links-container');
 			footerLinksContainer.empty();
 			try {
@@ -407,8 +405,8 @@
 						footerLinksContainer.append(linkHtml);
 					});
 				}
-			} catch(e) { /* 如果解析失败则不执行任何操作 */ }
-			// --- 新增结束 ---
+			} catch(e) { /* ignore */ }
+            // --- END: Modified for Footer ---
 
 			var initialCategories = JSON.parse(`{{& widgetCategoryList }}`);
 			var initialMenu = JSON.parse(`{{& widgetMenuList }}`);
@@ -419,7 +417,7 @@
 
 			if (initialLink && Array.isArray(initialLink)) {
                 initialLink.forEach(function(link) {
-                    if (link.type === 'image' || link.img) { // 兼容旧数据
+                    if (link.type === 'image' || link.img) {
                         addLink('image', link);
                     } else {
                         addLink('text', link);
@@ -731,8 +729,7 @@
         $(button).closest('.link-item').remove();
     }
 	
-	// --- 新增开始 ---
-	// 添加一个新的页脚链接输入框
+	// --- START: Modified for Footer ---
 	$(document).on('click', '#add-footer-link', function() {
 		const linksContainer = $('#footer-links-container');
 		const linkHtml = `
@@ -748,14 +745,12 @@
 		linksContainer.append(linkHtml);
 	});
 
-	// 删除一个页脚链接输入框
 	$(document).on('click', '.remove-footer-link', function() {
 		$(this).closest('.input-group').remove();
 	});
-	// --- 新增结束 ---
+	// --- END: Modified for Footer ---
 
 	function saveSiteSettings(){
-		// 收集友情链接
 		var links = [];
         $('.link-item').each(function() {
             var type = $(this).data('type');
@@ -767,7 +762,7 @@
                 if (imgUrl && linkUrl) {
                     links.push({ type: 'image', img: imgUrl, url: linkUrl, name: nameText });
                 }
-            } else { // text
+            } else { 
                 var nameText = inputs.eq(0).val();
                 var linkUrl = inputs.eq(1).val();
                 if (nameText && linkUrl) {
@@ -776,8 +771,7 @@
             }
         });
 
-		// --- 新增开始 ---
-		// 收集页脚链接
+		// --- START: Modified for Footer ---
 		const footerLinks = [];
 		$('#footer-links-container .input-group').each(function() {
 			const text = $(this).find('input').eq(0).val();
@@ -786,18 +780,17 @@
 				footerLinks.push({ text: text, url: url });
 			}
 		});
-		// --- 新增结束 ---
 
-		// 组合所有配置数据
 		var configData = [
 			{ name: 'siteName', value: $('#siteName').val() },
 			{ name: 'logo', value: $('#logo').val() },
 			{ name: 'site_description', value: $('#site_description').val() },
 			{ name: 'site_keywords', value: $('#site_keywords').val() },
 			{ name: 'site_footer_copyright', value: $('#site_footer_copyright').val() },
-			{ name: 'footer_links', value: JSON.stringify(footerLinks) }, // 页脚链接
-			{ name: 'WidgetLink', value: JSON.stringify(links) } // 友情链接
+			{ name: 'footer_links', value: JSON.stringify(footerLinks) },
+			{ name: 'WidgetLink', value: JSON.stringify(links) }
 		];
+        // --- END: Modified for Footer ---
 
 		$.ajax({
 			type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
