@@ -877,6 +877,9 @@ ul, li {
     .container {
     font-size: 12px;
     }
+    .carousel-container {
+    margin-bottom: 0px;
+    }
     .footer {
     bottom: 0;
     width: 100%;
