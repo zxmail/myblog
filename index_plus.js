@@ -1,10 +1,10 @@
-// index_plus.js (已集成轮播图数据获取功能)
+// index_plus.js (已修正render函数，并集成所有功能)
 
 /**
  * Welcome to cf-blog-plus
  * @license Apache-2.0
  * @website https://github.com/-A-RA/cf-blog-plus
- * @version 2.0.0
+ * @version 2.0.2
  * @modified_for_cloudflare_pages_with_auth_fix
  */
 
@@ -40,7 +40,7 @@ const theme = "JustNews";
 const cdn = "https://myblog-1dt.pages.dev/themes";
 
 let site = {
-	"title": "cf-blog", "logo": cdn + "/" + theme + "/files/logo.png", "siteName": "CF-BLOG", "siteDescription": "cf-blog", "copyRight": "Copyright © 2022", "keyWords": "cf-blog", "github": "-A-RA/cf-blog-plus", "theme_github_path": cdn + "/", "codeBeforHead": "", "codeBeforBody": "", "commentCode": "", "widgetOther": "",
+	"title": "cf-blog", "logo": cdn + "/" + theme + "/files/logo.png", "siteName": "CF-BLOG", "siteDescription": "cf-blog", "copyRight": "Copyright © 2022", "siteKeywords": "cf-blog", "github": "-A-RA/cf-blog-plus", "theme_github_path": cdn + "/", "codeBeforHead": "", "codeBeforBody": "", "commentCode": "", "widgetOther": "",
 };
 
 export default {
@@ -83,30 +83,29 @@ async function handleRequest({ request, env, ctx }) {
 		else if (pathname.startsWith("/admin")) {
 			if (pathname === "/admin" || pathname === "/admin/" || pathname.endsWith("/admin/index.html")) {
 				let data = {};
-				let rawCategories = await env.XYRJ_CONFIG.get("WidgetCategory");
-				let categories = [];
-				if (rawCategories) {
-					try {
-						let parsedCategories = JSON.parse(rawCategories);
-						if (Array.isArray(parsedCategories) && parsedCategories.length > 0 && typeof parsedCategories[0] === 'string') {
-							categories = parsedCategories.map(name => ({ name: name, icon: '' }));
-						} else {
-							categories = parsedCategories;
-						}
-					} catch (e) {
-						categories = [];
-					}
-				}
-				data["widgetCategoryList"] = JSON.stringify(categories);
-				data["widgetMenuList"] = await env.XYRJ_CONFIG.get("WidgetMenu") || '[]';
-				data["widgetLinkList"] = await env.XYRJ_CONFIG.get("WidgetLink") || '[]';
+                // Pass fetched data directly to the admin template for rendering
+                data["widgetCategoryList"] = await env.XYRJ_CONFIG.get("WidgetCategory") || '[]';
+                data["widgetMenuList"] = await env.XYRJ_CONFIG.get("WidgetMenu") || '[]';
+                data["widgetLinkList"] = await env.XYRJ_CONFIG.get("WidgetLink") || '[]';
                 data["footer_links"] = await env.XYRJ_CONFIG.get("footer_links") || '[]';
                 data["site_footer_copyright"] = await env.XYRJ_CONFIG.get("site_footer_copyright") || '';
                 data["site_description"] = await env.XYRJ_CONFIG.get("site_description") || '';
                 data["site_keywords"] = await env.XYRJ_CONFIG.get("site_keywords") || '';
+                data["siteName"] = await env.XYRJ_CONFIG.get("siteName") || '';
+                data["logo"] = await env.XYRJ_CONFIG.get("logo") || '';
+                const showSiteNameInHeader = await env.XYRJ_CONFIG.get("showSiteNameInHeader");
+                
+                // Logic to pass boolean flags to mustache for the select dropdown
+                if (showSiteNameInHeader === 'false') {
+                    data["showSiteNameInHeader_false"] = true;
+                } else {
+                    data["showSiteNameInHeader_true"] = true;
+                }
+                
 				return await renderHTML(request, data, theme + "/admin/index.html", 200, env, ctx);
 			}
 			else if (checkPass(request)) {
+				// ... (The rest of the admin routes remain unchanged)
 				if (pathname.startsWith("/admin/saveAddNew/")) {
 					let jsonA = await request.json();
 					let article = {};
@@ -205,6 +204,7 @@ async function handleRequest({ request, env, ctx }) {
 				return new Response("Unauthorized", { status: 401 });
 			}
 		}
+		// ... (The rest of the routes remain unchanged)
 		else if (pathname.startsWith("/sitemap.xml")) {
 			let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
 			let xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
@@ -306,9 +306,7 @@ async function render(data, template_path, env) {
 	let templateResponse = await fetch(templateUrl);
 	let template = await templateResponse.text();
     
-    // --- START: FIX ---
-    // This block prepares data for BOTH frontend and backend templates.
-    // The logic has been corrected to avoid conflicts.
+    // Fetch global site settings for all templates
     const [
         logo,
         siteName,
@@ -317,7 +315,8 @@ async function render(data, template_path, env) {
         site_description,
         site_keywords,
         site_footer_copyright,
-        footer_links_json // Use a unique name to avoid conflicts
+        footer_links_json,
+        showSiteNameInHeader
     ] = await Promise.all([
         env.XYRJ_CONFIG.get('logo'),
         env.XYRJ_CONFIG.get('siteName'),
@@ -326,14 +325,16 @@ async function render(data, template_path, env) {
         env.XYRJ_CONFIG.get('site_description'),
         env.XYRJ_CONFIG.get('site_keywords'),
         env.XYRJ_CONFIG.get('site_footer_copyright'),
-        env.XYRJ_CONFIG.get('footer_links')
+        env.XYRJ_CONFIG.get('footer_links'),
+        env.XYRJ_CONFIG.get('showSiteNameInHeader')
     ]);
 
     site.logo = logo || "";
     site.siteName = siteName || "";
     site.theme_github_path = theme_github_path || site.theme_github_path;
     site.siteDescription = site_description || "";
-    site.keyWords = site_keywords || "";
+    site.siteKeywords = site_keywords || "";
+    site.showSiteNameInHeader = showSiteNameInHeader === 'true';
 
     try {
         site.widgetMenuList = JSON.parse(widgetMenuList || "[]");
@@ -341,18 +342,14 @@ async function render(data, template_path, env) {
         site.widgetMenuList = [];
     }
 
-    // This is the combined data object for rendering.
+    // Combine page-specific data with global site data
     let renderData = { 
         ...data, 
         OPT: site,
     };
 
-    // If we are rendering the admin page, the `data` object already contains
-    // the raw `footer_links` JSON string. We don't need to do anything.
-    
-    // If we are rendering a frontend page, `data.footer_links` will be undefined.
-    // In that case, we generate the footer HTML from the data we fetched (`footer_links_json`).
-    if (typeof data.footer_links === 'undefined') {
+    // Special handling for frontend footer links
+    if (!template_path.includes('admin')) {
         let footer_links_html = '';
         if (footer_links_json) {
             try {
@@ -368,16 +365,14 @@ async function render(data, template_path, env) {
                 }
             } catch (e) { /* ignore */ }
         }
-        // Add the generated HTML to the render data for the frontend template to use.
         renderData.footer_links = footer_links_html;
         renderData.site_footer_copyright = site_footer_copyright || '';
     }
-    // --- END: FIX ---
-
+    
 	return mustache.render(template, renderData);
 }
 
-
+// ... (The rest of the functions getIndexData, getArticleData, etc. remain unchanged)
 async function getIndexData(request, env) {
 	let url = new URL(request.url);
 	let page = 1;
@@ -418,6 +413,8 @@ async function getIndexData(request, env) {
         item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
+    const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
+    data["title"] = siteName;
 	return data;
 }
 
@@ -456,6 +453,7 @@ async function getArticleData(request, id, env) {
         item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
+    data["title"] = articleSingle.title;
 	return data;
 }
 
@@ -499,5 +497,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
         item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
+    const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
+    data["title"] = `${decodedKey} - ${siteName}`;
 	return data;
 }
