@@ -387,25 +387,35 @@
 			const footerLinksContainer = $('#footer-links-container');
 			footerLinksContainer.empty();
 			try {
-				const footerLinks = JSON.parse(`{{& footer_links }}`);
-				if (footerLinks && Array.isArray(footerLinks)) {
-					footerLinks.forEach(link => {
-						const linkHtml = `
-							<div class="input-group" style="margin-top: 5px;">
-								<span class="input-group-addon">图标</span>
-								<input type="text" class="form-control" placeholder="例: fas fa-link" value="${link.icon || ''}">
-								<span class="input-group-addon">名称</span>
-								<input type="text" class="form-control" placeholder="链接名称" value="${link.text || ''}">
-								<span class="input-group-addon">URL</span>
-								<input type="text" class="form-control" placeholder="https://..." value="${link.url || ''}">
-								<div class="input-group-btn">
-									<button class="btn btn-danger remove-footer-link" type="button"><i class="fas fa-trash"></i></button>
-								</div>
-							</div>`;
-						footerLinksContainer.append(linkHtml);
-					});
-				}
-			} catch(e) { /* ignore */ }
+                // --- 关键修改：创建一个临时div来解码HTML实体 ---
+                var tempDiv = $('<div>');
+                tempDiv.html(`{{& footer_links }}`);
+                var decodedJsonString = tempDiv.text();
+                // --- 修改结束 ---
+
+				if (decodedJsonString.trim()) {
+                    const footerLinks = JSON.parse(decodedJsonString);
+                    if (footerLinks && Array.isArray(footerLinks)) {
+                        footerLinks.forEach(link => {
+                            const linkHtml = `
+                                <div class="input-group" style="margin-top: 5px;">
+                                    <span class="input-group-addon">图标</span>
+                                    <input type="text" class="form-control" placeholder="例: fas fa-link" value="${link.icon || ''}">
+                                    <span class="input-group-addon">名称</span>
+                                    <input type="text" class="form-control" placeholder="链接名称" value="${link.text || ''}">
+                                    <span class="input-group-addon">URL</span>
+                                    <input type="text" class="form-control" placeholder="https://..." value="${link.url || ''}">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-danger remove-footer-link" type="button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>`;
+                            footerLinksContainer.append(linkHtml);
+                        });
+                    }
+                }
+			} catch(e) { 
+                console.error("解析页脚链接失败:", e, "原始数据:", `{{& footer_links }}`);
+            }
 
 			var initialCategories = JSON.parse(`{{& widgetCategoryList }}`);
 			var initialMenu = JSON.parse(`{{& widgetMenuList }}`);
