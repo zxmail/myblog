@@ -109,7 +109,16 @@ async function handleRequest({ request, env, ctx }) {
 				if (pathname.startsWith("/admin/saveAddNew/")) {
 					let jsonA = await request.json();
 					let article = {};
-					jsonA.forEach(function (item) { article[item.name] = item.value; });
+                    // --- Start of modification ---
+                    article['category[]'] = []; 
+                    jsonA.forEach(function (item) {
+                        if (item.name === 'category[]') {
+                            article[item.name].push(item.value);
+                        } else {
+                            article[item.name] = item.value;
+                        }
+                    });
+                    // --- End of modification ---
 					let id = Date.now().toString();
 					article.id = id;
                     article.contentHtml = article.content;
@@ -122,7 +131,16 @@ async function handleRequest({ request, env, ctx }) {
 				else if (pathname.startsWith("/admin/saveEdit/")) {
 					let jsonA = await request.json();
 					let article = {};
-					jsonA.forEach(function (item) { article[item.name] = item.value; });
+                    // --- Start of modification ---
+                    article['category[]'] = [];
+                    jsonA.forEach(function (item) {
+                        if (item.name === 'category[]') {
+                            article[item.name].push(item.value);
+                        } else {
+                            article[item.name] = item.value;
+                        }
+                    });
+                    // --- End of modification ---
                     article.contentHtml = article.content;
                     delete article.content;
 					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
