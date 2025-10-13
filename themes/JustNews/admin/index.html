@@ -775,7 +775,8 @@
 			const icon = $(this).find('input').eq(0).val();
 			const text = $(this).find('input').eq(1).val();
 			const url = $(this).find('input').eq(2).val();
-			if (text && url) {
+            // --- 关键修改：只要三项中任意一项有值，就保存 ---
+			if (icon || text || url) {
 				footerLinks.push({ icon: icon, text: text, url: url });
 			}
 		});
