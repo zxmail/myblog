@@ -203,7 +203,7 @@
 						<div class="form-group">
 							<label>页脚链接管理</label>
 							<div id="footer-links-container">
-								</div>
+							</div>
 							<button type="button" class="btn btn-info mt-2" id="add-footer-link" style="margin-top: 5px;">
 								<i class="fas fa-plus"></i> 添加链接
 							</button>
@@ -380,8 +380,6 @@
 			
 			$('#siteName').val(`{{& OPT.siteName }}`);
 			$('#logo').val(`{{& OPT.logo }}`);
-
-            // --- START: Modified for Footer ---
 			$('#site_description').val(`{{& site_description }}`);
 			$('#site_keywords').val(`{{& site_keywords }}`);
 			$('#site_footer_copyright').val(`{{& site_footer_copyright }}`);
@@ -394,6 +392,8 @@
 					footerLinks.forEach(link => {
 						const linkHtml = `
 							<div class="input-group" style="margin-top: 5px;">
+								<span class="input-group-addon">图标</span>
+								<input type="text" class="form-control" placeholder="例: fas fa-link" value="${link.icon || ''}">
 								<span class="input-group-addon">名称</span>
 								<input type="text" class="form-control" placeholder="链接名称" value="${link.text || ''}">
 								<span class="input-group-addon">URL</span>
@@ -406,7 +406,6 @@
 					});
 				}
 			} catch(e) { /* ignore */ }
-            // --- END: Modified for Footer ---
 
 			var initialCategories = JSON.parse(`{{& widgetCategoryList }}`);
 			var initialMenu = JSON.parse(`{{& widgetMenuList }}`);
@@ -729,11 +728,12 @@
         $(button).closest('.link-item').remove();
     }
 	
-	// --- START: Modified for Footer ---
 	$(document).on('click', '#add-footer-link', function() {
 		const linksContainer = $('#footer-links-container');
 		const linkHtml = `
 			<div class="input-group" style="margin-top: 5px;">
+				<span class="input-group-addon">图标</span>
+				<input type="text" class="form-control" placeholder="例: fas fa-link">
 				<span class="input-group-addon">名称</span>
 				<input type="text" class="form-control" placeholder="链接名称">
 				<span class="input-group-addon">URL</span>
@@ -748,7 +748,6 @@
 	$(document).on('click', '.remove-footer-link', function() {
 		$(this).closest('.input-group').remove();
 	});
-	// --- END: Modified for Footer ---
 
 	function saveSiteSettings(){
 		var links = [];
@@ -771,13 +770,13 @@
             }
         });
 
-		// --- START: Modified for Footer ---
 		const footerLinks = [];
 		$('#footer-links-container .input-group').each(function() {
-			const text = $(this).find('input').eq(0).val();
-			const url = $(this).find('input').eq(1).val();
+			const icon = $(this).find('input').eq(0).val();
+			const text = $(this).find('input').eq(1).val();
+			const url = $(this).find('input').eq(2).val();
 			if (text && url) {
-				footerLinks.push({ text: text, url: url });
+				footerLinks.push({ icon: icon, text: text, url: url });
 			}
 		});
 
@@ -790,7 +789,6 @@
 			{ name: 'footer_links', value: JSON.stringify(footerLinks) },
 			{ name: 'WidgetLink', value: JSON.stringify(links) }
 		];
-        // --- END: Modified for Footer ---
 
 		$.ajax({
 			type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
