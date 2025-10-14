@@ -1114,3 +1114,222 @@ ul, li {
         text-indent: -30px; 
     }
 }
+
+/* zxmail/myblog/myblog-a17ca243855b0252cc3830671093a6fc0cf10920/themes/JustNews/files/style.css */
+
+/* --- Article Page Enhancement --- */
+
+/* Replace original article selector */
+.post-article {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Featured Image */
+.article-featured-image {
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    margin-bottom: -60px; /* Overlap with the card */
+    position: relative;
+    z-index: 1;
+}
+
+/* Card style for article content and comments */
+.entry-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    position: relative;
+    z-index: 2;
+}
+
+.entry-head {
+    text-align: center;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 25px;
+}
+
+.entry-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.entry-info {
+    font-size: 13px;
+    color: #888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.entry-info .dot {
+    margin: 0 12px;
+}
+
+.entry-info span {
+    display: flex;
+    align-items: center;
+}
+
+.entry-info i {
+    margin-right: 6px;
+    color: #aaa;
+}
+.entry-info a {
+    color: #888;
+    margin: 0 3px;
+}
+.entry-info a:hover {
+    color: var(--theme-hover);
+}
+.entry-category a:not(:last-child)::after {
+    content: ',';
+}
+
+/* Article Content Typography */
+.entry-content {
+    line-height: 1.8;
+    font-size: 16px;
+}
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5 {
+    font-weight: 700;
+    margin: 30px 0 15px;
+    color: #333;
+}
+.entry-content p {
+    margin-bottom: 1.2em;
+}
+.entry-content img {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+.entry-content blockquote {
+    border-left: 3px solid var(--theme-color);
+    padding: 15px 20px;
+    margin: 20px 0;
+    background: #f9f9f9;
+    color: #666;
+}
+.entry-content pre, .entry-content code {
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+}
+.entry-content pre {
+    padding: 15px;
+    overflow: auto;
+}
+
+/* Article Footer */
+.entry-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.entry-tag {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.entry-tag i {
+    color: #aaa;
+    margin-right: 10px;
+}
+.entry-tag a {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    margin-right: 8px;
+    color: #777;
+    font-size: 13px;
+    transition: all .3s;
+}
+.entry-tag a:hover {
+    background: var(--theme-color);
+    color: #fff;
+}
+
+/* Prev/Next Post Navigation */
+.entry-page {
+    display: flex;
+    justify-content: space-between;
+    background: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.entry-page a {
+    display: block;
+    padding: 15px 20px;
+    width: 50%;
+    color: #666;
+    transition: background .3s;
+}
+.entry-page a:hover {
+    background: #f0f0f0;
+    color: var(--theme-hover);
+}
+.entry-page-next {
+    text-align: right;
+    border-left: 1px solid #eee;
+}
+.entry-page .page-arrow {
+    font-size: 13px;
+    color: #999;
+    display: block;
+    margin-bottom: 5px;
+}
+.entry-page .page-title {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Comments Section */
+#comments.entry-card {
+    margin-top: 20px;
+}
+
+
+/* Responsive Adjustments for Article */
+@media (max-width: 990px) {
+    .article-featured-image {
+        height: 250px;
+        margin-left: -15px;
+        margin-right: -15px;
+        border-radius: 0;
+        margin-bottom: -50px;
+    }
+    .post-article {
+        width: 100%;
+        max-width: none;
+    }
+    .entry-card {
+        padding: 20px;
+    }
+    .entry-title {
+        font-size: 24px;
+    }
+    .entry-content {
+        font-size: 15px;
+    }
+    .entry-page {
+        flex-direction: column;
+    }
+    .entry-page a {
+        width: 100%;
+    }
+    .entry-page-next {
+        border-left: none;
+        border-top: 1px solid #eee;
+    }
+}
