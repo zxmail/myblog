@@ -865,6 +865,12 @@ ul, li {
    .hidden-mobile {
         display: none;
     }
+    .image-category a {
+    color: #fff;
+    display: inline;
+    width: auto;    /* 修正宽度 */
+    height: auto;   /* 修正高度 */
+    }
 }
 
 @media (max-width: 800px) {
