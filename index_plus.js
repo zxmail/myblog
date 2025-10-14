@@ -408,6 +408,7 @@ async function getIndexData(request, env) {
         item.views = Math.floor(Math.random() * 1000) + 50;
 	}
 	let data = {};
+	data["listTitle"] = "文章列表"; // 新增
 	data["articleList"] = result;
 	if (page > 1) data["pageNewer"] = { "url": `/page/${page - 1}/`};
 	if (articleList.length > page * pageSize) data["pageOlder"] = { "url": `/page/${page + 1}/`};
@@ -500,6 +501,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
         item.createDate10 = item.createDate.substring(0, 10); // <-- Modification
 	}
 	let data = {};
+    data["listTitle"] = decodedKey; // 新增
 	data["articleList"] = resultPage;
 	if (page > 1) data["pageNewer"] = { "url": `/${type}/${key}/page/${page - 1}/`};
 	if (result.length > page * pageSize) data["pageOlder"] = { "url": `/${type}/${key}/page/${page + 1}/`};
