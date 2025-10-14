@@ -113,7 +113,12 @@
             <article id="post-{{ &articleSingle.id }}" class="post-article">
                 <div class="entry-card">
                     <div class="entry-head">
+                        
+                        <div class="breadcrumb" style="margin-bottom: 15px; font-size: 14px; color: #888;">
+                            {{{ articleBreadcrumb }}}
+                        </div>
                         <h1 class="entry-title">{{ &articleSingle.title }}</h1>
+                        
                         <div class="entry-info">
                             <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
                             <span class="dot">•</span>
