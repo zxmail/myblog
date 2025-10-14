@@ -109,7 +109,6 @@ async function handleRequest({ request, env, ctx }) {
 				if (pathname.startsWith("/admin/saveAddNew/")) {
 					let jsonA = await request.json();
 					let article = {};
-                    // --- Start of modification ---
                     article['category[]'] = []; 
                     jsonA.forEach(function (item) {
                         if (item.name === 'category[]') {
@@ -118,7 +117,6 @@ async function handleRequest({ request, env, ctx }) {
                             article[item.name] = item.value;
                         }
                     });
-                    // --- End of modification ---
 					let id = Date.now().toString();
 					article.id = id;
                     article.contentHtml = article.content;
@@ -131,7 +129,6 @@ async function handleRequest({ request, env, ctx }) {
 				else if (pathname.startsWith("/admin/saveEdit/")) {
 					let jsonA = await request.json();
 					let article = {};
-                    // --- Start of modification ---
                     article['category[]'] = [];
                     jsonA.forEach(function (item) {
                         if (item.name === 'category[]') {
@@ -140,7 +137,6 @@ async function handleRequest({ request, env, ctx }) {
                             article[item.name] = item.value;
                         }
                     });
-                    // --- End of modification ---
                     article.contentHtml = article.content;
                     delete article.content;
 					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
@@ -501,6 +497,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
             item.firstCategory = item['category[]'][0];
         }
         item.views = Math.floor(Math.random() * 1000) + 50;
+        item.createDate10 = item.createDate.substring(0, 10); // <-- Modification
 	}
 	let data = {};
 	data["articleList"] = resultPage;
@@ -513,6 +510,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
         item.firstImageUrl = getFirstImageUrl(item.contentHtml);
+        item.createDate10 = item.createDate.substring(0, 10); // <-- Modification
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
     const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
