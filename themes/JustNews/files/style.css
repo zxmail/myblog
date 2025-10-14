@@ -1141,7 +1141,7 @@ ul, li {
     background: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    /* box-shadow: 0 4px 12px rgba(0,0,0,.08); */
     position: relative;
     z-index: 2;
 }
