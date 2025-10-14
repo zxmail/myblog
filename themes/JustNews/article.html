@@ -16,68 +16,6 @@
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
-    <style>
-        /* 新增的面包屑导航样式 */
-        .breadcrumbs {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        .breadcrumbs a {
-            color: #999;
-            text-decoration: none;
-        }
-        .breadcrumbs a:hover {
-            color: #1a73e8;
-        }
-
-        /* 新增的上一页/下一页文章样式 */
-        .entry-page {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 20px;
-            width: 100%; /* 确保容器宽度正确 */
-        }
-        .entry-page-prev, .entry-page-next {
-            width: 48%;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        .entry-page-prev:hover, .entry-page-next:hover {
-            border-color: #1a73e8;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
-        .entry-page-prev a, .entry-page-next a {
-            display: block;
-            padding: 15px 20px;
-            text-decoration: none;
-            color: #333;
-        }
-        .entry-page-next {
-            text-align: right;
-        }
-        .entry-page .page-arrow {
-            font-size: 12px;
-            color: #999;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .entry-page .page-title {
-            margin: 0;
-            font-size: 16px;
-            font-weight: normal;
-            color: #333;
-            /* 多行文本溢出显示省略号 */
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-height: 48px; /* 保证高度一致 */
-        }
-    </style>
 </head>
 <body class="m-flex"> 
 	<header class="site-header">
@@ -175,7 +113,6 @@
             <article id="post-{{ &articleSingle.id }}" class="post-article">
                 <div class="entry-card">
                     <div class="entry-head">
-                        <div class="breadcrumbs">{{{ breadcrumb }}}</div>
                         <h1 class="entry-title">{{ &articleSingle.title }}</h1>
                         <div class="entry-info">
                             <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
@@ -209,8 +146,8 @@
                             {{ #articleNewer }}	
                             <div class="entry-page-prev">
                                 <a href="{{ &url }}" title="{{ &title }}" rel="prev">
-                                    <span class="page-arrow">上一篇</span>
-                                    <h4 class="page-title">{{ &title }}</h4>
+                                    <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
+                                    <span class="page-title">{{ &title }}</span>
                                 </a>
                             </div>
                             {{ /articleNewer }}
@@ -218,8 +155,8 @@
                             {{ #articleOlder }}
                             <div class="entry-page-next">
                                 <a href="{{ &url }}" title="{{ &title }}" rel="next">
-                                     <span class="page-arrow">下一篇</span>
-                                     <h4 class="page-title">{{ &title }}</h4>
+                                     <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
+                                    <span class="page-title">{{ &title }}</span>
                                 </a>
                             </div>
                             {{ /articleOlder }}
