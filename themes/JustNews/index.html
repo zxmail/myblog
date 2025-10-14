@@ -110,68 +110,63 @@
 </header>
     <div id="wrap" class="container">
         <div class="main-layout">
-            <div class="left-column">
-                
-                {{#carousel_slides.length}}
-                <div class="swiper carousel-container">
-                    <div class="swiper-wrapper">
-                        {{#carousel_slides}}
-                        <div class="swiper-slide">
-                            <a href="{{ &linkUrl }}" target="_blank">
-                                <img src="{{ &imageUrl }}" alt="Carousel Image">
-                            </a>
+            <article id="post-{{ &articleSingle.id }}" class="post-article">
+                <div class="entry-card">
+                    <div class="entry-head">
+                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
+                        <div class="entry-info">
+                            <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
+                            <span class="dot">•</span>
+                             <span class="entry-category">
+                                <i class="fal fa-folder-open"></i>
+                                {{ #articleSingle.categories }}
+                                    <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
+                                {{ /articleSingle.categories }}
+                            </span>
+                            <span class="dot">•</span>
+                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
+                                <i class="fal fa-eye"></i>
+                                <em>{{ &OPT.otherCodeA }}</em>
+                                <i class="leancloud-visitors-count"></i> 100
+                            </span>
                         </div>
-                        {{/carousel_slides}}
                     </div>
-                    <div class="swiper-pagination"></div>
+                    <div class="entry-content">
+                        {{{ articleSingle.contentHtml }}}
+                    </div>
+                    <div class="entry-footer">
+                        <div class="entry-tag">
+                             <i class="fal fa-tags"></i>
+                            {{ #articleSingle.tags }}
+                                <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
+                            {{ /articleSingle.tags }}
+                        </div>
 
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
-                {{/carousel_slides.length}}
-
-                <div class="article-list">
-					<h3 class="widget-title">{{listTitle}}</h3>
-                    <ul>
-                    {{#articleList}}
-                        <li class="article-item-box">
-                            {{#firstImageUrl}}
-                            <div class="article-item-image">
-                                {{#firstCategory}}
-                                <div class="image-category">
-                                    <a href="/category/{{.}}/">{{.}}</a>
-                                </div>
-                                {{/firstCategory}}
-                                <a href="{{url}}">
-                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                        <div class="entry-page">
+                            {{ #articleNewer }}	
+                            <div class="entry-page-prev">
+                                <a href="{{ &url }}" title="{{ &title }}" rel="prev">
+                                    <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
+                                    <span class="page-title">{{ &title }}</span>
                                 </a>
                             </div>
-                            {{/firstImageUrl}}
-                            <div class="article-item-content">
-                                <h3><a href="{{url}}">{{title}}</a></h3>
-                                <p>{{contentText}}</p>
-                                <div class="article-meta">
-                                    <span><i class="fal fa-calendar-alt"></i> {{createDate10}}</span>
-                                    {{#category[]}}
-                                    <span class="meta-category hidden-mobile"><i class="fal fa-folder"></i> <a href="/category/{{.}}/">{{.}}</a></span>
-                                    {{/category[]}}
-                                    <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
-                                </div>
-                            </div>
-                        </li>
-                    {{/articleList}}
-                    </ul>
-                </div>
+                            {{ /articleNewer }}
 
-                <nav class="pagination">
-                    {{#pageNewer}}
-                    <a href="{{url}}" class="prev">← 上一页</a>
-                    {{/pageNewer}}
-                    {{#pageOlder}}
-                    <a href="{{url}}" class="next">下一页 →</a>
-                    {{/pageOlder}}
-                </nav>
-            </div>
+                            {{ #articleOlder }}
+                            <div class="entry-page-next">
+                                <a href="{{ &url }}" title="{{ &title }}" rel="next">
+                                     <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
+                                    <span class="page-title">{{ &title }}</span>
+                                </a>
+                            </div>
+                            {{ /articleOlder }}
+                        </div>
+                    </div>
+                </div>
+                <div id="comments" class="entry-comments entry-card">
+                    {{ &OPT.commentCode }}
+                </div>
+            </article>
 
             <aside class="right-column">
                 <div class="widget widget-recent-posts">
