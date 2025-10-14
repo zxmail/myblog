@@ -540,15 +540,15 @@ ul, li {
     padding: 25px 0 30px 0;
     /* margin-top: 20px;  */
     background-color: #2d3236;
-    color: #ccc;
+    color: #868689;
 }
 
 .footer a {
-    color: #fff;
+    color: #c1c1c1;
 }
 
 .footer a:hover {
-    color: var(--theme-hover);
+    color: #fff;;
 }
 
 /* 9. Utility & Components (Back to Top) */
