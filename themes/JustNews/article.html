@@ -16,7 +16,16 @@
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
-</head>
+
+    <style>
+        .breadcrumb a {
+            color: #888; /* 设置面包屑导航中链接的颜色为灰色 */
+        }
+        .breadcrumb a:hover {
+            color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
+        }
+    </style>
+    </head>
 <body class="m-flex"> 
 	<header class="site-header">
     <div class="header-container">
@@ -113,7 +122,13 @@
             <article id="post-{{ &articleSingle.id }}" class="post-article">
                 <div class="entry-card">
                     <div class="entry-head">
+                        
+                        <div class="breadcrumb" style="margin-bottom: 15px; font-size: 14px; color: #888;">
+                            {{{ articleBreadcrumb }}}
+                        </div>
+
                         <h1 class="entry-title">{{ &articleSingle.title }}</h1>
+                        
                         <div class="entry-info">
                             <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
                             <span class="dot">•</span>
