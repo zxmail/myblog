@@ -486,13 +486,13 @@ ul, li {
     color: var(--text-color);
 }
 /* 为分类链接文本的左侧留出空间 */
-.widget_categories ul li a {
+.widget-categories ul li a {
     position: relative;
     padding-left: 15px;
 }
 
 /* 使用“边框技巧”创建并定位三角形 */
-.widget_categories ul li a:before {
+.widget-categories ul li a:before {
     content: "";
     position: absolute;
     left: 0; /* 定位到 a 元素的左侧 */
