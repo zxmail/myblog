@@ -227,6 +227,10 @@ ul, li {
 .sub-menu li:hover > a > .arrow-container {
     transform: none;
 }
+.main-nav .sub-menu li a {
+    display: flex;
+    align-items: center;
+}
 
 .header-right {
     display: flex;
