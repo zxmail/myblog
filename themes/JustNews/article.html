@@ -16,17 +16,8 @@
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
-
-    <style>
-        .breadcrumb a {
-            color: #888; /* 设置面包屑导航中链接的颜色为灰色 */
-        }
-        .breadcrumb a:hover {
-            color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
-        }
-    </style>
-    </head>
-<body class="m-flex"> 
+</head>
+<body class="m-flex">
 	<header class="site-header">
     <div class="header-container">
         <div class="mobile-menu-toggle" id="mobile-menu-toggle">
@@ -53,29 +44,30 @@
                     <li>
                         <a href="{{ &url }}">
                             {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                            {{ #children.length }}
+                            {{! 使用我们新的、清晰无误的 hasChildren 标记来判断 }}
+                            {{ #hasChildren }}
                             <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /children.length }}
+                            {{ /hasChildren }}
                         </a>
-                        {{ #children.length }}
+                        {{ #hasChildren }}
                         <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /children.length }}
+                        {{ /hasChildren }}
 
-                        {{ #children.length }}
+                        {{ #hasChildren }}
                         <ul class="sub-menu">
                             {{ #children }}
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #children.length }}
+                                    {{ #hasChildren }}
                                     <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /children.length }}
+                                    {{ /hasChildren }}
                                 </a>
-                                {{ #children.length }}
+                                {{ #hasChildren }}
                                 <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /children.length }}
+                                {{ /hasChildren }}
 
-                                {{ #children.length }}
+                                {{ #hasChildren }}
                                 <ul class="sub-menu">
                                     {{ #children }}
                                     <li>
@@ -85,18 +77,18 @@
                                     </li>
                                     {{ /children }}
                                 </ul>
-                                {{ /children.length }}
+                                {{ /hasChildren }}
                             </li>
                             {{ /children }}
                         </ul>
-                        {{ /children.length }}
+                        {{ /hasChildren }}
                     </li>
                     {{ /OPT.widgetMenuList }}
                      <li class="login-btn-mobile">
-                        <a href="/admin">
-                            <button class="login-btn-header">登录</button>
-                        </a>
-                    </li>
+                         <a href="/admin">
+                             <button class="login-btn-header">登录</button>
+                         </a>
+                     </li>
                 </ul>
             </nav>
             </div>
@@ -106,8 +98,8 @@
                 <i class="fal fa-search"></i>
             </div>
              <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
+                 <i class="fal fa-user-circle"></i>
+             </a>
         </div>
     </div>
 
@@ -119,68 +111,59 @@
 </header>
     <div id="wrap" class="container">
         <div class="main-layout">
-            <article id="post-{{ &articleSingle.id }}" class="post-article">
-                <div class="entry-card">
-					<div class="breadcrumb" style="margin-bottom: 23px; font-size: 14px; color: #888;">
-						{{{ articleBreadcrumb }}}
-					</div>
-
-                    <div class="entry-head">
-                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
-                        
-                        <div class="entry-info">
-                            <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
-                            <span class="dot">•</span>
-                             <span class="entry-category">
-                                <i class="fal fa-folder-open"></i>
-                                {{ #articleSingle.categories }}
-                                    <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
-                                {{ /articleSingle.categories }}
-                            </span>
-                            <span class="dot">•</span>
-                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
-                                <i class="fal fa-eye"></i>
-                                <em>{{ &OPT.otherCodeA }}</em>
-                                <i class="leancloud-visitors-count"></i> 100
-                            </span>
+            <div class="left-column">
+                
+                <article class="article-content">
+                    <header class="article-header">
+                        <h1>{{articleSingle.title}}</h1>
+                        <div class="article-meta">
+                            <span><i class="fal fa-calendar-alt"></i> {{articleSingle.createDate}}</span>
+                            {{#articleSingle.categories}}
+                            <span class="meta-category"><i class="fal fa-folder"></i> <a href="/category/{{name}}/">{{name}}</a></span>
+                            {{/articleSingle.categories}}
+                            <span class="views"><i class="fal fa-eye"></i> {{views}}</span>
                         </div>
-                    </div>
+                    </header>
                     <div class="entry-content">
-                        {{{ articleSingle.contentHtml }}}
+                        {{{articleSingle.content}}}
                     </div>
-                    <div class="entry-footer">
-                        <div class="entry-tag">
-                             <i class="fal fa-tags"></i>
-                            {{ #articleSingle.tags }}
-                                <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
-                            {{ /articleSingle.tags }}
-                        </div>
+                </article>
 
-                        <div class="entry-page">
-                            {{ #articleNewer }}	
-                            <div class="entry-page-prev">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="prev">
-                                    <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
-                            </div>
-                            {{ /articleNewer }}
-
-                            {{ #articleOlder }}
-                            <div class="entry-page-next">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="next">
-                                     <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
-                            </div>
-                            {{ /articleOlder }}
-                        </div>
+                <nav class="post-navigation">
+                    {{#articleNewer}}
+                    <div class="nav-previous">
+                        <a href="{{url}}" rel="prev"><span>上一篇</span>{{title}}</a>
                     </div>
+                    {{/articleNewer}}
+                    {{#articleOlder}}
+                    <div class="nav-next">
+                        <a href="{{url}}" rel="next"><span>下一篇</span>{{title}}</a>
+                    </div>
+                    {{/articleOlder}}
+                </nav>
+
+                <div id="comments" class="comments-area">
+                    <h3 class="comments-title">评论</h3>
+                    <div id="comment-form-container">
+                        <form id="comment-form">
+                            <p class="comment-form-author">
+                                <label for="author">昵称</label>
+                                <input id="author" name="author" type="text" value="" size="30" required>
+                            </p>
+                            <p class="comment-form-comment">
+                                <label for="comment">评论</label>
+                                <textarea id="comment" name="comment" cols="45" rows="8" required></textarea>
+                            </p>
+                            <p class="form-submit">
+                                <input name="submit" type="submit" id="submit" class="submit" value="发表评论">
+                            </p>
+                        </form>
+                    </div>
+                    <ul id="comment-list" class="comment-list">
+                        </ul>
                 </div>
-                <div id="comments" class="entry-comments entry-card">
-                    {{ &OPT.commentCode }}
-                </div>
-            </article>
+
+            </div>
 
             <aside class="right-column">
                 <div class="widget widget-recent-posts">
@@ -229,25 +212,7 @@
                         <li>暂无评论</li>
                     </ul>
                 </div>
-                </aside>
-        </div>
-
-        <div class="friend-links">
-             <h3 class="widget-title">友情链接</h3>
-             <div class="links-container">
-                {{#widgetLinkList}}
-                <div class="link-item">
-                    {{#img}}
-                        <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}">
-                        </a>
-                    {{/img}}
-                    {{^img}}
-                        <a href="{{url}}" target="_blank">{{name}}</a>
-                    {{/img}}
-                </div>
-                {{/widgetLinkList}}
-            </div>
+            </aside>
         </div>
     </div>
 
