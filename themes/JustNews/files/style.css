@@ -495,13 +495,13 @@ ul, li {
 .widget-categories ul li a:before {
     content: "";
     position: absolute;
-    left: 0; /* 定位到 a 元素的左侧 */
-    top: 50%; /* 垂直方向上先移动到一半的位置 */
-    transform: translateY(-50%); /* 再向上微调自身高度的50%，实现完美垂直居中 */
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 0;
     height: 0;
-    border: 5px solid transparent; /* 四个方向的透明边框 */
-    border-left: 6px solid #e85555; /* 单独给左边框上色，形成指向右的三角形 */
+    border: 4px solid transparent;
+    border-left: 5px solid #ccc;
 }
 
 /* --- 友情链接样式 (左对齐版) --- */
