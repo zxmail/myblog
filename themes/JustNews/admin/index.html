@@ -377,16 +377,11 @@
 			isDataLoaded = true;
 
 tinymce.init({
-  selector: '#content', // 编辑器的选择器，指定在哪个元素上启用 TinyMCE
-  language: 'zh_CN', // 设置语言为中文
-  height: 640, // 设置编辑器的高度
-  plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table directionality emoticons template paste', // 启用插件
-  toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons', // 工具栏配置
-  entity_encoding: 'raw', // 设置为原始HTML，不转义HTML实体
-  valid_elements: 'table,th,td,tr,tbody,tfoot,thead,caption,colgroup,col', // 允许的HTML元素
-  paste_as_text: true, // 粘贴时以纯文本方式粘贴
-  source_code_dialog_width: 800, // 调整源代码窗口宽度
-  source_code_dialog_height: 600, // 调整源代码窗口高度
+    selector: '#content',
+    language: 'zh_CN',
+    height: 640,
+    plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table directionality emoticons template paste',
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons | code', // 在这里添加了 "code"
 });
 
 			$('#createDate').val(new Date().toISOString().slice(0, 16));
