@@ -56,22 +56,19 @@
                         <ul class="sub-menu">
                             {{ #children }}
                             <li>
-                                {{! 创建一个明确指向当前二级菜单项的上下文 }}
-                                {{#.}}
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{! 在这个上下文中判断，就不会向上查找了 }}
-                                    {{ #children.length }}
+                                    {{! 我们现在只判断当前菜单项自己有没有 children 这个属性 }}
+                                    {{ #children }}
                                     <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /children.length }}
+                                    {{ /children }}
                                 </a>
-                                {{! 同样，为展开按钮创建独立的上下文 }}
-                                {{ #children.length }}
+                                {{! 同样，为其他部分做相同的判断 }}
+                                {{ #children }}
                                 <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /children.length }}
+                                {{ /children }}
 
-                                {{! 为三级菜单的<ul>本身创建独立的上下文 }}
-                                {{ #children.length }}
+                                {{ #children }}
                                 <ul class="sub-menu">
                                     {{ #children }}
                                     <li>
@@ -81,8 +78,7 @@
                                     </li>
                                     {{ /children }}
                                 </ul>
-                                {{ /children.length }}
-                                {{/.}}
+                                {{ /children }}
                             </li>
                             {{ /children }}
                         </ul>
