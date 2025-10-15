@@ -58,30 +58,36 @@
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #this.children.length }}
-                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /this.children.length }}
+                                    {{#.}}
+                                        {{ #children.length }}
+                                        <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
+                                        {{ /children.length }}
+                                    {{/.}}
                                 </a>
-                                {{ #this.children.length }}
-                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /this.children.length }}
+                                {{#.}}
+                                    {{ #children.length }}
+                                    <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
+                                    {{ /children.length }}
+                                {{/.}}
 
-                                {{ #this.children.length }}
-                                <ul class="sub-menu">
-                                    {{ #children }}
-                                    <li>
-                                        <a href="{{ &url }}">
-                                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                        </a>
-                                    </li>
-                                    {{ /children }}
-                                </ul>
-                                {{ /this.children.length }}
+                                {{#.}}
+                                    {{ #children.length }}
+                                    <ul class="sub-menu">
+                                        {{ #children }}
+                                        <li>
+                                            <a href="{{ &url }}">
+                                                {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                                            </a>
+                                        </li>
+                                        {{ /children }}
+                                    </ul>
+                                    {{ /children.length }}
+                                {{/.}}
                             </li>
                             {{ /children }}
                         </ul>
                         {{ /children.length }}
-                    </li>
+                        </li>
                     {{ /OPT.widgetMenuList }}
                      <li class="login-btn-mobile">
                          <a href="/admin">
