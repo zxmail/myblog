@@ -227,9 +227,24 @@ ul, li {
 .sub-menu li:hover > a > .arrow-container {
     transform: none;
 }
-.main-nav .sub-menu li a {
+/* --- 修复菜单项垂直对齐 (最终版) --- */
+
+/* 1. 对所有二级和三级菜单的链接应用 Flexbox */
+.main-nav ul .sub-menu li a {
     display: flex;
     align-items: center;
+    /* 确保所有菜单项有统一的高度 */
+    min-height: 35px; 
+}
+
+/* 2. 精确控制图标的样式，防止它影响布局 */
+.main-nav ul .sub-menu li a > i {
+    /* 确保图标不会有额外的外边距影响对齐 */
+    margin-top: 0;
+    margin-bottom: 0;
+    /* 如果图标大小不一，可以固定其宽度 */
+    width: 20px; 
+    text-align: center;
 }
 
 .header-right {
