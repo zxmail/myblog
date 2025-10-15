@@ -58,19 +58,19 @@
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{#.}}
-                                        {{ #children.length }}
+                                    {{#.}} {{! 创建一个明确指向当前二级菜单项的上下文 }}
+                                        {{ #children.length }} {{! 在这个上下文中判断，就不会向上查找了 }}
                                         <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
                                         {{ /children.length }}
                                     {{/.}}
                                 </a>
-                                {{#.}}
+                                {{#.}} {{! 同样，为展开按钮创建独立的上下文 }}
                                     {{ #children.length }}
                                     <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
                                     {{ /children.length }}
                                 {{/.}}
 
-                                {{#.}}
+                                {{#.}} {{! 为三级菜单的<ul>本身创建独立的上下文 }}
                                     {{ #children.length }}
                                     <ul class="sub-menu">
                                         {{ #children }}
