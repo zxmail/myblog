@@ -140,7 +140,7 @@ ul, li {
     color: #333;
 }
 
-.main-nav ul {
+.main-nav > ul {
     margin: 0;
     padding: 0;
     display: flex;
