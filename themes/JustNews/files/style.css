@@ -191,7 +191,7 @@ ul, li {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
-    border-top: 1px solid #f0f0f0;
+    /* border-top: 1px solid #f0f0f0; */
 }
 
 .sub-menu a {
