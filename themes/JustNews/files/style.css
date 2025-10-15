@@ -485,6 +485,24 @@ ul, li {
 .widget ul li a {
     color: var(--text-color);
 }
+/* 为分类链接文本的左侧留出空间 */
+.widget_categories ul li a {
+    position: relative;
+    padding-left: 15px;
+}
+
+/* 使用“边框技巧”创建并定位三角形 */
+.widget_categories ul li a:before {
+    content: "";
+    position: absolute;
+    left: 0; /* 定位到 a 元素的左侧 */
+    top: 50%; /* 垂直方向上先移动到一半的位置 */
+    transform: translateY(-50%); /* 再向上微调自身高度的50%，实现完美垂直居中 */
+    width: 0;
+    height: 0;
+    border: 5px solid transparent; /* 四个方向的透明边框 */
+    border-left: 6px solid #e85555; /* 单独给左边框上色，形成指向右的三角形 */
+}
 
 /* --- 友情链接样式 (左对齐版) --- */
 .friend-links {
