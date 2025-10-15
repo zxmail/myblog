@@ -44,29 +44,29 @@
                     <li>
                         <a href="{{ &url }}">
                             {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                            {{ #children.length }}
-                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /children.length }}
+{{ #children }}
+<span class="arrow-container"><i class="fal fa-angle-down"></i></span>
+{{ /children }}
                         </a>
-                        {{ #children.length }}
-                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /children.length }}
+{{ #children }}
+<span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
+{{ /children }}
 
-                        {{ #children.length }}
+                        {{ #children }}
                         <ul class="sub-menu">
                             {{ #children }}
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #children.length }}
-                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /children.length }}
+{{ #children }}
+<span class="arrow-container"><i class="fal fa-angle-right"></i></span>
+{{ /children }}
                                 </a>
-                                {{ #children.length }}
+                                {{ #children }}
                                 <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /children.length }}
+                                {{ /children }}
 
-                                {{ #children.length }}
+                                {{ #children }}
                                 <ul class="sub-menu">
                                     {{ #children }}
                                     <li>
@@ -76,11 +76,11 @@
                                     </li>
                                     {{ /children }}
                                 </ul>
-                                {{ /children.length }}
+                                {{ /children }}
                             </li>
                             {{ /children }}
                         </ul>
-                        {{ /children.length }}
+                        {{ /children }}
                     </li>
                     {{ /OPT.widgetMenuList }}
                      <li class="login-btn-mobile">
