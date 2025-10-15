@@ -203,6 +203,7 @@ ul, li {
 }
 
 .sub-menu li {
+    display: block;
     width: 100%;
     position: relative;
 }
