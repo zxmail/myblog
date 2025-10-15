@@ -44,31 +44,30 @@
                     <li>
                         <a href="{{ &url }}">
                             {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                            {{ #children.length }}
+                            {{! 使用我们新的、清晰无误的 hasChildren 标记来判断 }}
+                            {{ #hasChildren }}
                             <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /children.length }}
+                            {{ /hasChildren }}
                         </a>
-                        {{ #children.length }}
+                        {{ #hasChildren }}
                         <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /children.length }}
+                        {{ /hasChildren }}
 
-                        {{ #children.length }}
+                        {{ #hasChildren }}
                         <ul class="sub-menu">
                             {{ #children }}
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{! 我们现在只判断当前菜单项自己有没有 children 这个属性 }}
-                                    {{ #children }}
+                                    {{ #hasChildren }}
                                     <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /children }}
+                                    {{ /hasChildren }}
                                 </a>
-                                {{! 同样，为其他部分做相同的判断 }}
-                                {{ #children }}
+                                {{ #hasChildren }}
                                 <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /children }}
+                                {{ /hasChildren }}
 
-                                {{ #children }}
+                                {{ #hasChildren }}
                                 <ul class="sub-menu">
                                     {{ #children }}
                                     <li>
@@ -78,12 +77,12 @@
                                     </li>
                                     {{ /children }}
                                 </ul>
-                                {{ /children }}
+                                {{ /hasChildren }}
                             </li>
                             {{ /children }}
                         </ul>
-                        {{ /children.length }}
-                        </li>
+                        {{ /hasChildren }}
+                    </li>
                     {{ /OPT.widgetMenuList }}
                      <li class="login-btn-mobile">
                          <a href="/admin">
