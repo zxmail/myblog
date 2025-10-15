@@ -17,7 +17,7 @@
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
 </head>
-<body class="m-flex"> 
+<body class="m-flex">
 	<header class="site-header">
     <div class="header-container">
         <div class="mobile-menu-toggle" id="mobile-menu-toggle">
@@ -58,15 +58,15 @@
                             <li>
                                 <a href="{{ &url }}">
                                     {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #children.length }}
+                                    {{ #this.children.length }}
                                     <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /children.length }}
+                                    {{ /this.children.length }}
                                 </a>
-                                {{ #children.length }}
+                                {{ #this.children.length }}
                                 <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /children.length }}
+                                {{ /this.children.length }}
 
-                                {{ #children.length }}
+                                {{ #this.children.length }}
                                 <ul class="sub-menu">
                                     {{ #children }}
                                     <li>
@@ -76,7 +76,7 @@
                                     </li>
                                     {{ /children }}
                                 </ul>
-                                {{ /children.length }}
+                                {{ /this.children.length }}
                             </li>
                             {{ /children }}
                         </ul>
@@ -84,10 +84,10 @@
                     </li>
                     {{ /OPT.widgetMenuList }}
                      <li class="login-btn-mobile">
-                        <a href="/admin">
-                            <button class="login-btn-header">登录</button>
-                        </a>
-                    </li>
+                         <a href="/admin">
+                             <button class="login-btn-header">登录</button>
+                         </a>
+                     </li>
                 </ul>
             </nav>
             </div>
@@ -97,8 +97,8 @@
                 <i class="fal fa-search"></i>
             </div>
              <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
+                 <i class="fal fa-user-circle"></i>
+             </a>
         </div>
     </div>
 
@@ -226,19 +226,19 @@
         <div class="friend-links">
              <h3 class="widget-title">友情链接</h3>
              <div class="links-container">
-                {{#widgetLinkList}}
-                <div class="link-item">
-                    {{#img}}
-                        <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}">
-                        </a>
-                    {{/img}}
-                    {{^img}}
-                        <a href="{{url}}" target="_blank">{{name}}</a>
-                    {{/img}}
-                </div>
-                {{/widgetLinkList}}
-            </div>
+                 {{#widgetLinkList}}
+                 <div class="link-item">
+                     {{#img}}
+                         <a href="{{url}}" target="_blank" title="{{name}}">
+                             <img src="{{img}}" alt="{{name}}">
+                         </a>
+                     {{/img}}
+                     {{^img}}
+                         <a href="{{url}}" target="_blank">{{name}}</a>
+                     {{/img}}
+                 </div>
+                 {{/widgetLinkList}}
+             </div>
         </div>
     </div>
 
