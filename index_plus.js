@@ -460,6 +460,15 @@ async function getArticleData(request, id, env) {
 		data["articleOlder"] = { ...articleList[index + 1], url: `/article/${articleList[index + 1].id}/${articleList[index + 1].link}/` };
 	}
 
+	// ==================== BEGIN: BREADCRUMB MODIFICATION ====================
+	let breadcrumb_html = `<a href="/"><i class="fas fa-home"></i> 主页</a>`;
+	if (Array.isArray(articleSingle['category[]']) && articleSingle['category[]'].length > 0) {
+		const firstCategoryName = articleSingle['category[]'][0];
+		breadcrumb_html += ` / <a href="/category/${encodeURIComponent(firstCategoryName)}/">${firstCategoryName}</a>`;
+	}
+	data["articleBreadcrumb"] = breadcrumb_html;
+	// ===================== END: BREADCRUMB MODIFICATION =====================
+
 	data["widgetCategoryList"] = allCategories;
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	let widgetRecentlyList = articleList.slice(0, 5);
