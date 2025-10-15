@@ -1,11 +1,11 @@
-// index_plus.js (已修正render函数，并集成所有功能)
+// index_plus.js (已修正图片逻辑，并集成所有功能)
 
 /**
  * Welcome to cf-blog-plus
  * @license Apache-2.0
  * @website https://github.com/-A-RA/cf-blog-plus
- * @version 2.0.2
- * @modified_for_cloudflare_pages_with_auth_fix
+ * @version 2.1.1
+ * @modified_for_kv_optimization_and_image_fix
  */
 
 // --- BEGIN: Mustache.js v4.1.0 ---
@@ -83,7 +83,6 @@ async function handleRequest({ request, env, ctx }) {
 		else if (pathname.startsWith("/admin")) {
 			if (pathname === "/admin" || pathname === "/admin/" || pathname.endsWith("/admin/index.html")) {
 				let data = {};
-                // Pass fetched data directly to the admin template for rendering
                 data["widgetCategoryList"] = await env.XYRJ_CONFIG.get("WidgetCategory") || '[]';
                 data["widgetMenuList"] = await env.XYRJ_CONFIG.get("WidgetMenu") || '[]';
                 data["widgetLinkList"] = await env.XYRJ_CONFIG.get("WidgetLink") || '[]';
@@ -95,7 +94,6 @@ async function handleRequest({ request, env, ctx }) {
                 data["logo"] = await env.XYRJ_CONFIG.get("logo") || '';
                 const showSiteNameInHeader = await env.XYRJ_CONFIG.get("showSiteNameInHeader");
                 
-                // Logic to pass boolean flags to mustache for the select dropdown
                 if (showSiteNameInHeader === 'false') {
                     data["showSiteNameInHeader_false"] = true;
                 } else {
@@ -105,7 +103,6 @@ async function handleRequest({ request, env, ctx }) {
 				return await renderHTML(request, data, theme + "/admin/index.html", 200, env, ctx);
 			}
 			else if (checkPass(request)) {
-				// ... (The rest of the admin routes remain unchanged)
 				if (pathname.startsWith("/admin/saveAddNew/")) {
 					let jsonA = await request.json();
 					let article = {};
@@ -117,13 +114,30 @@ async function handleRequest({ request, env, ctx }) {
                             article[item.name] = item.value;
                         }
                     });
-					let id = Date.now().toString();
+					
+                    const id = Date.now().toString();
 					article.id = id;
                     article.contentHtml = article.content;
                     delete article.content;
-					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
-					articleList.unshift(article);
-					await env.XYRJ_BLOG.put("articleList", JSON.stringify(articleList));
+
+                    const articleMeta = {
+                        id: article.id,
+                        title: article.title,
+                        link: article.link,
+                        createDate: article.createDate,
+                        'category[]': article['category[]'],
+                        tags: article.tags,
+                        contentText: (article.contentHtml || "").replace(/<[^>]+>/g, "").substring(0, 180),
+                        // --- 关键修改：优先使用特色图片字段，否则从正文提取 ---
+                        firstImageUrl: article.img || getFirstImageUrl(article.contentHtml)
+                    };
+
+					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+					articleIndex.unshift(articleMeta);
+					
+                    await env.XYRJ_BLOG.put("article_index", JSON.stringify(articleIndex));
+                    await env.XYRJ_BLOG.put(`article:${id}`, JSON.stringify(article));
+
 					return new Response(JSON.stringify({ "id": id, "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/saveEdit/")) {
@@ -139,13 +153,29 @@ async function handleRequest({ request, env, ctx }) {
                     });
                     article.contentHtml = article.content;
                     delete article.content;
-					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
-					let id = article.id;
-					const index = articleList.findIndex(item => item.id === id)
+
+                    const id = article.id;
+                    const articleMeta = {
+                        id: article.id,
+                        title: article.title,
+                        link: article.link,
+                        createDate: article.createDate,
+                        'category[]': article['category[]'],
+                        tags: article.tags,
+                        contentText: (article.contentHtml || "").replace(/<[^>]+>/g, "").substring(0, 180),
+                        // --- 关键修改：优先使用特色图片字段，否则从正文提取 ---
+                        firstImageUrl: article.img || getFirstImageUrl(article.contentHtml)
+                    };
+
+					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+					const index = articleIndex.findIndex(item => item.id === id);
 					if (index > -1) {
-						articleList[index] = article;
+						articleIndex[index] = articleMeta;
 					}
-					await env.XYRJ_BLOG.put("articleList", JSON.stringify(articleList));
+
+                    await env.XYRJ_BLOG.put("article_index", JSON.stringify(articleIndex));
+					await env.XYRJ_BLOG.put(`article:${id}`, JSON.stringify(article));
+
 					return new Response(JSON.stringify({ "id": id, "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/get/")) {
@@ -154,8 +184,7 @@ async function handleRequest({ request, env, ctx }) {
 					if (!id) {
 						return new Response(JSON.stringify({ msg: "Article ID is missing." }), { status: 400, headers: { 'Content-Type': 'application/json' }});
 					}
-					const articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
-					const articleSingle = articleList.find(item => item.id === id);
+					const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, {type: "json"});
 					if (articleSingle) {
                         articleSingle.content = articleSingle.contentHtml || "";
                         delete articleSingle.contentHtml;
@@ -166,19 +195,20 @@ async function handleRequest({ request, env, ctx }) {
 				}
 				else if (pathname.startsWith("/admin/getList/")) {
 					let page = pathname.substring(15, pathname.lastIndexOf('/'));
-					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
+					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 					let pageSize = 10;
-					let result = articleList.slice((page - 1) * pageSize, page * pageSize)
+					let result = articleIndex.slice((page - 1) * pageSize, page * pageSize);
 					return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/delete/")) {
 					const parts = pathname.split('/');
     				const id = parts[3];
-					let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
-					const index = articleList.findIndex(item => item.id === id);
+					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+					const index = articleIndex.findIndex(item => item.id === id);
 					if (index > -1) {
-						articleList.splice(index, 1);
-						await env.XYRJ_BLOG.put("articleList", JSON.stringify(articleList));
+						articleIndex.splice(index, 1);
+                        await env.XYRJ_BLOG.delete(`article:${id}`);
+						await env.XYRJ_BLOG.put("article_index", JSON.stringify(articleIndex));
 						return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					}
 					return new Response(JSON.stringify({ "msg": "Article not found" }), { status: 404, headers: { 'Content-Type': 'application/json' }});
@@ -218,11 +248,10 @@ async function handleRequest({ request, env, ctx }) {
 				return new Response("Unauthorized", { status: 401 });
 			}
 		}
-		// ... (The rest of the routes remain unchanged)
 		else if (pathname.startsWith("/sitemap.xml")) {
-			let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
+			let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 			let xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
-			for (const item of articleList) {
+			for (const item of articleIndex) {
 				xml += `<url><loc>${url.origin}/article/${item.id}/${item.link}</loc><lastmod>${new Date(item.createDate).toISOString()}</lastmod></url>`;
 			}
 			xml += `</urlset>`;
@@ -320,7 +349,6 @@ async function render(data, template_path, env) {
 	let templateResponse = await fetch(templateUrl);
 	let template = await templateResponse.text();
     
-    // Fetch global site settings for all templates
     const [
         logo,
         siteName,
@@ -356,13 +384,11 @@ async function render(data, template_path, env) {
         site.widgetMenuList = [];
     }
 
-    // Combine page-specific data with global site data
     let renderData = { 
         ...data, 
         OPT: site,
     };
 
-    // Special handling for frontend footer links
     if (!template_path.includes('admin')) {
         let footer_links_html = '';
         if (footer_links_json) {
@@ -386,32 +412,28 @@ async function render(data, template_path, env) {
 	return mustache.render(template, renderData);
 }
 
-// ... (The rest of the functions getIndexData, getArticleData, etc. remain unchanged)
 async function getIndexData(request, env) {
 	let url = new URL(request.url);
 	let page = 1;
 	if (url.pathname.startsWith("/page/")) {
 		page = parseInt(url.pathname.substring(6, url.pathname.lastIndexOf('/')));
 	}
-	let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
+	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 	let pageSize = 10;
-	let result = articleList.slice((page - 1) * pageSize, page * pageSize)
+	let result = articleIndex.slice((page - 1) * pageSize, page * pageSize)
 	for (const item of result) {
 		item.url = `/article/${item.id}/${item.link}/`;
 		item.createDate10 = item.createDate.substring(0, 10);
-        const content = item.contentHtml || "";
-		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 150);
-        item.firstImageUrl = getFirstImageUrl(content);
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
         item.views = Math.floor(Math.random() * 1000) + 50;
 	}
 	let data = {};
-	data["listTitle"] = "文章列表"; // 新增
+	data["listTitle"] = "文章列表";
 	data["articleList"] = result;
 	if (page > 1) data["pageNewer"] = { "url": `/page/${page - 1}/`};
-	if (articleList.length > page * pageSize) data["pageOlder"] = { "url": `/page/${page + 1}/`};
+	if (articleIndex.length > page * pageSize) data["pageOlder"] = { "url": `/page/${page + 1}/`};
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	
@@ -422,10 +444,9 @@ async function getIndexData(request, env) {
         data["carousel_slides"] = [];
     }
 
-	let widgetRecentlyList = articleList.slice(0, 5);
+	let widgetRecentlyList = articleIndex.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
     const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
@@ -435,8 +456,7 @@ async function getIndexData(request, env) {
 
 async function getArticleData(request, id, env) {
 	let data = {};
-	let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
-	let articleSingle = articleList.find(item => item.id === id);
+    const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, { type: "json" });
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
@@ -452,29 +472,27 @@ async function getArticleData(request, id, env) {
 
 	data["articleSingle"] = articleSingle;
 	
-	const index = articleList.findIndex(item => item.id === id)
+    let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	const index = articleIndex.findIndex(item => item.id === id)
 	if (index > 0) {
-		data["articleNewer"] = { ...articleList[index - 1], url: `/article/${articleList[index - 1].id}/${articleList[index - 1].link}/` };
+		data["articleNewer"] = { ...articleIndex[index - 1], url: `/article/${articleIndex[index - 1].id}/${articleIndex[index - 1].link}/` };
 	}
-	if (index < articleList.length - 1) {
-		data["articleOlder"] = { ...articleList[index + 1], url: `/article/${articleList[index + 1].id}/${articleList[index + 1].link}/` };
+	if (index < articleIndex.length - 1) {
+		data["articleOlder"] = { ...articleIndex[index + 1], url: `/article/${articleIndex[index + 1].id}/${articleIndex[index + 1].link}/` };
 	}
 
-	// ==================== BEGIN: BREADCRUMB MODIFICATION ====================
 	let breadcrumb_html = `<a href="/"><i class="fas fa-home"></i> 主页</a>`;
 	if (Array.isArray(articleSingle['category[]']) && articleSingle['category[]'].length > 0) {
 		const firstCategoryName = articleSingle['category[]'][0];
 		breadcrumb_html += ` / <a href="/category/${encodeURIComponent(firstCategoryName)}/">${firstCategoryName}</a>`;
 	}
 	data["articleBreadcrumb"] = breadcrumb_html;
-	// ===================== END: BREADCRUMB MODIFICATION =====================
 
 	data["widgetCategoryList"] = allCategories;
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
-	let widgetRecentlyList = articleList.slice(0, 5);
+	let widgetRecentlyList = articleIndex.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        item.firstImageUrl = getFirstImageUrl(item.contentHtml);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
     data["title"] = articleSingle.title;
@@ -482,10 +500,10 @@ async function getArticleData(request, id, env) {
 }
 
 async function getCategoryOrTagsData(request, type, key, page, env) {
-	let articleList = JSON.parse(await env.XYRJ_BLOG.get("articleList") || "[]");
+	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 	let result = [];
 	const decodedKey = decodeURI(key);
-	for (const item of articleList) {
+	for (const item of articleIndex) {
 		if (type === "category") {
 			if (Array.isArray(item['category[]']) && item['category[]'].includes(decodedKey)) {
 				result.push(item);
@@ -500,28 +518,24 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        const content = item.contentHtml || "";
-		item.contentText = content.replace(/<[^>]+>/g, "").substring(0, 150);
-        item.firstImageUrl = getFirstImageUrl(content);
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
         item.views = Math.floor(Math.random() * 1000) + 50;
-        item.createDate10 = item.createDate.substring(0, 10); // <-- Modification
+        item.createDate10 = item.createDate.substring(0, 10);
 	}
 	let data = {};
-    data["listTitle"] = decodedKey; // 新增
+    data["listTitle"] = decodedKey;
 	data["articleList"] = resultPage;
 	if (page > 1) data["pageNewer"] = { "url": `/${type}/${key}/page/${page - 1}/`};
 	if (result.length > page * pageSize) data["pageOlder"] = { "url": `/${type}/${key}/page/${page + 1}/`};
 
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
-	let widgetRecentlyList = articleList.slice(0, 5);
+	let widgetRecentlyList = articleIndex.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        item.firstImageUrl = getFirstImageUrl(item.contentHtml);
-        item.createDate10 = item.createDate.substring(0, 10); // <-- Modification
+        item.createDate10 = item.createDate.substring(0, 10);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
     const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
