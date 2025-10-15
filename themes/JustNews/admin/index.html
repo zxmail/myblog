@@ -73,6 +73,7 @@
 								<th>ID</th>
 								<th>标题</th>
 								<th>创建日期</th>
+                                <th>分类</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -394,11 +395,9 @@
 			const footerLinksContainer = $('#footer-links-container');
 			footerLinksContainer.empty();
 			try {
-                // --- 关键修改：创建一个临时div来解码HTML实体 ---
                 var tempDiv = $('<div>');
                 tempDiv.html(`{{& footer_links }}`);
                 var decodedJsonString = tempDiv.text();
-                // --- 修改结束 ---
 
 				if (decodedJsonString.trim()) {
                     const footerLinks = JSON.parse(decodedJsonString);
@@ -488,6 +487,7 @@
 							<td>${Info.id}</td>
 							<td>${Info.title}</td>
 							<td>${Info.createDate ? Info.createDate.replace("T"," ") : ''}</td>
+                            <td>${Info['category[]'] ? Info['category[]'].join(', ') : ''}</td>
 							<td>
 								<button class="btn btn-primary btn-xs" onclick="editArticle('${Info.id}')">编辑</button>
 								<button class="btn btn-danger btn-xs" onclick="deleteArticle('${Info.id}')">删除</button>
@@ -792,7 +792,6 @@
 			const icon = $(this).find('input').eq(0).val();
 			const text = $(this).find('input').eq(1).val();
 			const url = $(this).find('input').eq(2).val();
-            // --- 关键修改：只要三项中任意一项有值，就保存 ---
 			if (icon || text || url) {
 				footerLinks.push({ icon: icon, text: text, url: url });
 			}
