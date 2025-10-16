@@ -348,8 +348,6 @@
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // ... (您原有的其他脚本) ...
-
     // Sticky Sidebar Logic
     if (window.innerWidth >= 991) {
         const header = document.querySelector('.site-header');
@@ -358,45 +356,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (header && rightColumn && leftColumn) {
             const headerHeight = header.offsetHeight;
-            const topOffset = 20; // 额外的顶部间距
+            const topOffset = 20; // Extra top spacing
+            const rightColumnMarginLeft = 18; // from style.css
 
-            // 设置初始的 top 值
-            rightColumn.style.top = headerHeight + topOffset + 'px';
+            // Initial top for sticky
+            rightColumn.style.top = (headerHeight + topOffset) + 'px';
 
-            // 获取右侧栏初始的水平位置
+            // Get initial horizontal position
             const rightColumnLeft = rightColumn.getBoundingClientRect().left;
 
             window.addEventListener('scroll', function() {
-                const rightColumnRect = rightColumn.getBoundingClientRect();
                 const leftColumnRect = leftColumn.getBoundingClientRect();
-                const container = document.querySelector('.main-layout');
-                const containerRect = container.getBoundingClientRect();
-
-                // 当右侧栏的高度大于或等于左侧栏时，不执行任何操作
+                
                 if (rightColumn.offsetHeight >= leftColumn.offsetHeight) {
                     return;
                 }
                 
-                // 当滚动使得左侧栏底部到达视口底部时，固定右侧栏
+                // When left column bottom reaches window bottom, fix the sidebar
                 if (leftColumnRect.bottom <= window.innerHeight) {
-                    let bottomFixedTop = window.innerHeight - rightColumnRect.height - (window.innerHeight - leftColumnRect.bottom);
+                    const topPosition = leftColumnRect.bottom - rightColumn.offsetHeight;
                     rightColumn.style.position = 'fixed';
-                    // 新增：设置水平位置
                     rightColumn.style.left = rightColumnLeft + 'px';
-                    rightColumn.style.top = Math.min(headerHeight + topOffset, bottomFixedTop) + 'px';
+                    rightColumn.style.top = topPosition + 'px';
+                    
+                    // FIX: Compensate for removed sidebar to prevent left column shift
+                    leftColumn.style.marginRight = (rightColumn.offsetWidth + rightColumnMarginLeft) + 'px';
 
-                } else if (containerRect.top > headerHeight + topOffset) {
-                    // 当容器顶部回到初始位置以下
+                } else { // This single 'else' handles all cases for returning to sticky
                     rightColumn.style.position = 'sticky';
-                    // 新增：移除固定的left值，恢复sticky的自然定位
                     rightColumn.style.left = '';
-                    rightColumn.style.top = headerHeight + topOffset + 'px';
-                } else {
-                    // 恢复 sticky 行为
-                    rightColumn.style.position = 'sticky';
-                    // 新增：移除固定的left值
-                    rightColumn.style.left = '';
-                    rightColumn.style.top = headerHeight + topOffset + 'px';
+                    rightColumn.style.top = (headerHeight + topOffset) + 'px';
+                    
+                    // FIX: Remove compensation margin
+                    leftColumn.style.marginRight = '';
                 }
             });
         }
