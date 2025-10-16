@@ -175,55 +175,53 @@
             </div>
 
             <aside class="right-column">
-                <div class="sidebar-sticky-wrapper">
-                    <div class="widget widget-recent-posts">
-                        <h3 class="widget-title">热门文章</h3>
-                        <ul>
-                            {{#widgetRecentlyList}}
-                            <li class="recent-article-item-box">
-                                {{#firstImageUrl}}
-                                <div class="recent-article-item-image">
-                                    <a href="{{url}}">
-                                        <img src="{{firstImageUrl}}" alt="{{title}}">
-                                    </a>
-                                </div>
-                                {{/firstImageUrl}}
-                                <div class="recent-article-item-content">
-                                    <a href="{{url}}">{{title}}</a>
-                                    <span class="recent-article-item-date">{{createDate10}}</span>
-                                </div>
-                            </li>
-                            {{/widgetRecentlyList}}
-                        </ul>
-                    </div>
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">热门文章</h3>
+                    <ul>
+                        {{#widgetRecentlyList}}
+                        <li class="recent-article-item-box">
+                            {{#firstImageUrl}}
+                            <div class="recent-article-item-image">
+                                <a href="{{url}}">
+                                    <img src="{{firstImageUrl}}" alt="{{title}}">
+                                </a>
+                            </div>
+                            {{/firstImageUrl}}
+                            <div class="recent-article-item-content">
+                                <a href="{{url}}">{{title}}</a>
+                                <span class="recent-article-item-date">{{createDate10}}</span>
+                            </div>
+                        </li>
+                        {{/widgetRecentlyList}}
+                    </ul>
+                </div>
 
-                    <div class="widget widget-categories">
-                        <h3 class="widget-title">分类目录</h3>
-                        <ul>
-                            {{#widgetCategoryList}}
-                            <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
-                            {{/widgetCategoryList}}
-                        </ul>
-                    </div>
+                <div class="widget widget-categories">
+                    <h3 class="widget-title">分类目录</h3>
+                    <ul>
+                        {{#widgetCategoryList}}
+                        <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
+                        {{/widgetCategoryList}}
+                    </ul>
+                </div>
 
-                    <div class="widget widget-tags">
-                        <h3 class="widget-title">标签</h3>
-                        <div class="tag-cloud">
-                            <a href="#">示例标签</a>
-                            <a href="#">Cloudflare</a>
-                            <a href="#">Workers</a>
-                            <a href="#">Blog</a>
-                        </div>
-                    </div>
-
-                    <div class="widget widget-comments">
-                        <h3 class="widget-title">最近评论</h3>
-                        <ul>
-                            <li>暂无评论</li>
-                        </ul>
+                <div class="widget widget-tags">
+                    <h3 class="widget-title">标签</h3>
+                    <div class="tag-cloud">
+                        <a href="#">示例标签</a>
+                        <a href="#">Cloudflare</a>
+                        <a href="#">Workers</a>
+                        <a href="#">Blog</a>
                     </div>
                 </div>
-            </aside>
+
+                <div class="widget widget-comments">
+                    <h3 class="widget-title">最近评论</h3>
+                    <ul>
+                        <li>暂无评论</li>
+                    </ul>
+                </div>
+                </aside>
         </div>
 
         <div class="friend-links">
@@ -348,62 +346,5 @@
         });
     });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.innerWidth <= 990) {
-        return;
-    }
-
-    const rightColumn = document.querySelector('.right-column');
-    const sidebarWrapper = document.querySelector('.sidebar-sticky-wrapper');
-    const leftColumn = document.querySelector('.left-column');
-    const mainLayout = document.querySelector('.main-layout');
-
-    if (!sidebarWrapper || !leftColumn || !mainLayout) {
-        return;
-    }
-
-    const headerHeight = document.querySelector('.site-header').offsetHeight;
-    const sidebarWrapperWidth = sidebarWrapper.offsetWidth;
-    const mainLayoutTop = mainLayout.offsetTop;
-
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const viewportHeight = window.innerHeight;
-        
-        const mainLayoutHeight = mainLayout.offsetHeight;
-        const sidebarWrapperHeight = sidebarWrapper.offsetHeight;
-
-        // The point where the sidebar should start sticking
-        const startStickPoint = mainLayoutTop - headerHeight;
-        
-        // The point where the sidebar should stop sticking and become absolute
-        // This is when the bottom of the main layout is about to scroll off screen
-        const stopStickPoint = mainLayoutTop + mainLayoutHeight - sidebarWrapperHeight - headerHeight;
-
-
-        if (scrollTop > startStickPoint) {
-            if (scrollTop < stopStickPoint) {
-                // State: Fixed to top
-                sidebarWrapper.classList.add('sidebar-fixed');
-                sidebarWrapper.classList.remove('sidebar-absolute-bottom');
-                sidebarWrapper.style.width = sidebarWrapperWidth + 'px';
-            } else {
-                // State: Absolute at bottom
-                sidebarWrapper.classList.remove('sidebar-fixed');
-                sidebarWrapper.classList.add('sidebar-absolute-bottom');
-                sidebarWrapper.style.width = '100%';
-            }
-        } else {
-            // State: Default (static)
-            sidebarWrapper.classList.remove('sidebar-fixed');
-            sidebarWrapper.classList.remove('sidebar-absolute-bottom');
-            sidebarWrapper.style.width = '100%';
-        }
-    }, { passive: true });
-});
-</script>
-
 </body>
 </html>
