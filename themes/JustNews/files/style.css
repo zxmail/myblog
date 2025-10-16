@@ -1352,12 +1352,3 @@ ul, li {
         border-top: 1px solid #eee;
     }
 }
-
-    @media screen and (min-width: 992px) {
-        .right-column {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 20px; 
-            align-self: flex-start;
-        }
-    }
