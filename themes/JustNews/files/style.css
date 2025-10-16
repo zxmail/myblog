@@ -1358,7 +1358,7 @@ ul, li {
     .right-column {
         position: -webkit-sticky; /* 兼容 Safari 浏览器 */
         position: sticky;
-        top: 0px; /* 让侧边栏顶部与浏览器顶部保持 80px 的距离 */
+        top: -180px; /* 让侧边栏顶部与浏览器顶部保持 80px 的距离 */
         align-self: flex-start; /* 这是让 sticky 在 flex 布局中生效的关键 */
     }
 }
