@@ -128,7 +128,6 @@ async function handleRequest({ request, env, ctx }) {
                         'category[]': article['category[]'],
                         tags: article.tags,
                         contentText: (article.contentHtml || "").replace(/<[^>]+>/g, "").substring(0, 180),
-                        // --- 关键修改：优先使用特色图片字段，否则从正文提取 ---
                         firstImageUrl: article.img || getFirstImageUrl(article.contentHtml)
                     };
 
@@ -163,7 +162,6 @@ async function handleRequest({ request, env, ctx }) {
                         'category[]': article['category[]'],
                         tags: article.tags,
                         contentText: (article.contentHtml || "").replace(/<[^>]+>/g, "").substring(0, 180),
-                        // --- 关键修改：优先使用特色图片字段，否则从正文提取 ---
                         firstImageUrl: article.img || getFirstImageUrl(article.contentHtml)
                     };
 
@@ -186,7 +184,7 @@ async function handleRequest({ request, env, ctx }) {
 					}
 					const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, {type: "json"});
 					if (articleSingle) {
-                        articleSingle.content = articleSingle.contentHtml || "";
+                        articleSingle.createDate10 = articleSingle.createDate.substring(0, 10);
                         delete articleSingle.contentHtml;
 						return new Response(JSON.stringify(articleSingle), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					} else {
@@ -352,7 +350,7 @@ async function render(data, template_path, env) {
     const [
         logo,
         siteName,
-        widgetMenuList,
+        widgetMenuList_JSON, // 重命名变量以便清晰区分原始JSON和处理后的对象
         theme_github_path,
         site_description,
         site_keywords,
@@ -378,12 +376,39 @@ async function render(data, template_path, env) {
     site.siteKeywords = site_keywords || "";
     site.showSiteNameInHeader = showSiteNameInHeader === 'true';
 
+    // ===== 核心修改：在这里预处理菜单数据 =====
     try {
-        site.widgetMenuList = JSON.parse(widgetMenuList || "[]");
+        let widgetMenuList = JSON.parse(widgetMenuList_JSON || "[]");
+
+        // 创建一个递归函数，为每个菜单项明确添加 hasChildren 标记
+        function processMenuItems(items) {
+            if (!items || !Array.isArray(items)) {
+                return;
+            }
+            items.forEach(item => {
+                // 检查当前项是否有子菜单，并且子菜单不是一个空数组
+                if (item.children && Array.isArray(item.children) && item.children.length > 0) {
+                    // 如果有，就明确地添加 hasChildren: true
+                    item.hasChildren = true;
+                    // 然后继续递归处理它的子菜单
+                    processMenuItems(item.children);
+                } else {
+                    // 否则，就明确地设置为 false
+                    item.hasChildren = false;
+                }
+            });
+        }
+
+        // 执行这个处理函数
+        processMenuItems(widgetMenuList);
+        // 将处理好的、带有明确标记的菜单列表赋值给 site 对象
+        site.widgetMenuList = widgetMenuList;
+
     } catch (e) {
         site.widgetMenuList = [];
     }
-
+    // ===== 修改结束 =====
+    
     let renderData = { 
         ...data, 
         OPT: site,
@@ -461,10 +486,7 @@ async function getArticleData(request, id, env) {
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
 	articleSingle.content = articleSingle.contentHtml || "";
-    
-    // ########## 第一处修改 ##########
-    // 为主文章添加 createDate10 字段，用于模板显示
-    articleSingle.createDate10 = articleSingle.createDate.substring(0, 10);
+	articleSingle.createDate10 = articleSingle.createDate.substring(0, 10);
 
     const allCategoriesText = await env.XYRJ_CONFIG.get("WidgetCategory") || "[]";
     const allCategories = JSON.parse(allCategoriesText);
@@ -497,9 +519,7 @@ async function getArticleData(request, id, env) {
 	let widgetRecentlyList = articleIndex.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
-        // ########## 第二处修改 ##########
-        // 为侧边栏“热门文章”列表添加 createDate10 字段
-        item.createDate10 = item.createDate.substring(0, 10);
+		item.createDate10 = item.createDate.substring(0, 10);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
     data["title"] = articleSingle.title;
