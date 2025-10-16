@@ -348,47 +348,61 @@
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sticky Sidebar Logic
+    // --- FINAL STICKY SIDEBAR SCRIPT ---
     if (window.innerWidth >= 991) {
+        const mainLayout = document.querySelector('.main-layout');
         const header = document.querySelector('.site-header');
         const rightColumn = document.querySelector('.right-column');
         const leftColumn = document.querySelector('.left-column');
 
-        if (header && rightColumn && leftColumn) {
+        if (mainLayout && header && rightColumn && leftColumn) {
             const headerHeight = header.offsetHeight;
             const topOffset = 20; // Extra top spacing
-            const rightColumnMarginLeft = 18; // from style.css
 
-            // Initial top for sticky
+            // Set initial top for sticky state
             rightColumn.style.top = (headerHeight + topOffset) + 'px';
 
-            // Get initial horizontal position
+            // Calculate the initial offset caused by justify-content: center
+            const initialLayoutOffset = mainLayout.getBoundingClientRect().left;
+            
+            // Get initial horizontal position for the right column
             const rightColumnLeft = rightColumn.getBoundingClientRect().left;
+
+            let isFixed = false;
 
             window.addEventListener('scroll', function() {
                 const leftColumnRect = leftColumn.getBoundingClientRect();
                 
+                // If the sidebar is taller than the content, do nothing.
                 if (rightColumn.offsetHeight >= leftColumn.offsetHeight) {
                     return;
                 }
                 
-                // When left column bottom reaches window bottom, fix the sidebar
+                // Condition to switch to fixed
                 if (leftColumnRect.bottom <= window.innerHeight) {
-                    const topPosition = leftColumnRect.bottom - rightColumn.offsetHeight;
-                    rightColumn.style.position = 'fixed';
+                    if (!isFixed) {
+                        mainLayout.classList.add('sidebar-fixed-adjust');
+                        mainLayout.style.paddingLeft = initialLayoutOffset + 'px';
+                        rightColumn.style.position = 'fixed';
+                        isFixed = true;
+                    }
+                    
+                    // Update position while fixed
                     rightColumn.style.left = rightColumnLeft + 'px';
-                    rightColumn.style.top = topPosition + 'px';
-                    
-                    // FIX: Compensate for removed sidebar to prevent left column shift
-                    leftColumn.style.marginRight = (rightColumn.offsetWidth + rightColumnMarginLeft) + 'px';
+                    // This calculation keeps the sidebar bottom aligned with the content bottom
+                    rightColumn.style.top = (leftColumnRect.bottom - rightColumn.offsetHeight) + 'px';
 
-                } else { // This single 'else' handles all cases for returning to sticky
-                    rightColumn.style.position = 'sticky';
-                    rightColumn.style.left = '';
-                    rightColumn.style.top = (headerHeight + topOffset) + 'px';
-                    
-                    // FIX: Remove compensation margin
-                    leftColumn.style.marginRight = '';
+                } else { // Condition to switch back to sticky
+                    if (isFixed) {
+                        mainLayout.classList.remove('sidebar-fixed-adjust');
+                        mainLayout.style.paddingLeft = '';
+                        
+                        rightColumn.style.position = 'sticky';
+                        rightColumn.style.left = '';
+                        rightColumn.style.top = (headerHeight + topOffset) + 'px';
+
+                        isFixed = false;
+                    }
                 }
             });
         }
