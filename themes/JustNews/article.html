@@ -18,169 +18,42 @@
 	{{& OPT.codeBeforHead}}
 
     <style>
-        .breadcrumb a {
-            color: #888;
-        }
-        .breadcrumb a:hover {
-            color: #333;
-        }
+        .breadcrumb a { color: #888; }
+        .breadcrumb a:hover { color: #333; }
     </style>
 </head>
 <body class="m-flex"> 
 	<header class="site-header">
     <div class="header-container">
-        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
-            <i class="fal fa-bars"></i>
-        </div>
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle"><i class="fal fa-bars"></i></div>
         <div class="header-left">
             <div class="logo-area">
-                {{ #OPT.logo }}
-                <a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>
-                {{ /OPT.logo }}
-                {{ #OPT.showSiteNameInHeader }}
-                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
-                {{ /OPT.showSiteNameInHeader }}
+                {{ #OPT.logo }}<a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>{{ /OPT.logo }}
+                {{ #OPT.showSiteNameInHeader }}<a href="/" class="blog-name">{{ &OPT.siteName }}</a>{{ /OPT.showSiteNameInHeader }}
             </div>
-            <nav class="main-nav" id="main-nav">
-                <div class="close-menu-btn" id="close-menu-btn">&times;</div>
-
-                <div class="mobile-nav-header">
-                    <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="导航背景" class="mobile-nav-header-image">
-                </div>
-
-                <ul>
-                    {{ #OPT.widgetMenuList }}
-                    <li>
-                        <a href="{{ &url }}">
-                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                            {{ #hasChildren }}
-                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /hasChildren }}
-                        </a>
-                        {{ #hasChildren }}
-                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /hasChildren }}
-
-                        {{ #hasChildren }}
-                        <ul class="sub-menu">
-                            {{ #children }}
-                            <li>
-                                <a href="{{ &url }}">
-                                    {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #hasChildren }}
-                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /hasChildren }}
-                                </a>
-                                {{ #hasChildren }}
-                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /hasChildren }}
-
-                                {{ #hasChildren }}
-                                <ul class="sub-menu">
-                                    {{ #children }}
-                                    <li>
-                                        <a href="{{ &url }}">
-                                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                        </a>
-                                    </li>
-                                    {{ /children }}
-                                </ul>
-                                {{ /hasChildren }}
-                            </li>
-                            {{ /children }}
-                        </ul>
-                        {{ /hasChildren }}
-                    </li>
-                    {{ /OPT.widgetMenuList }}
-                     <li class="login-btn-mobile">
-                        <a href="/admin">
-                            <button class="login-btn-header">登录</button>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            </div>
-
+            <nav class="main-nav" id="main-nav"></nav>
+        </div>
         <div class="header-right">
-            <div class="search-icon" id="search-toggle">
-                <i class="fal fa-search"></i>
-            </div>
-             <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
+            <div class="search-icon" id="search-toggle"><i class="fal fa-search"></i></div>
+            <a href="/admin" class="login-link"><i class="fal fa-user-circle"></i></a>
         </div>
     </div>
-
-	<div class="search-box-container" id="search-box">
-        <input type="text" placeholder="输入关键词搜索..." class="search-input">
-        <button class="search-button">搜索</button>
-        <i class="far fa-chevron-double-up" id="close-search-btn" title="收起"></i>
-    </div>
+	<div class="search-box-container" id="search-box"></div>
 </header>
     <div id="wrap" class="container">
         <div class="main-layout">
             <div id="post-{{ &articleSingle.id }}" class="left-column post-article">
                 <article>
                     <div class="entry-card">
-                        <div class="breadcrumb" style="margin-bottom: 23px; font-size: 14px; color: #888;">
-                            {{{ articleBreadcrumb }}}
-                        </div>
-
+                        <div class="breadcrumb" style="margin-bottom: 23px; font-size: 14px; color: #888;">{{{ articleBreadcrumb }}}</div>
                         <div class="entry-head">
                             <h1 class="entry-title">{{ &articleSingle.title }}</h1>
-                            
-                            <div class="entry-info">
-                                <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
-                                <span class="dot">•</span>
-                                <span class="entry-category">
-                                    <i class="fal fa-folder-open"></i>
-                                    {{ #articleSingle.categories }}
-                                        <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
-                                    {{ /articleSingle.categories }}
-                                </span>
-                                <span class="dot">•</span>
-                                <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
-                                    <i class="fal fa-eye"></i>
-                                    <em>{{ &OPT.otherCodeA }}</em>
-                                    <i class="leancloud-visitors-count"></i> 100
-                                </span>
-                            </div>
+                            <div class="entry-info"></div>
                         </div>
-                        <div class="entry-content">
-                            {{{ articleSingle.content }}}
-                        </div>
-                        <div class="entry-footer">
-                            <div class="entry-tag">
-                                <i class="fal fa-tags"></i>
-                                {{ #articleSingle.tags }}
-                                    <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
-                                {{ /articleSingle.tags }}
-                            </div>
-
-                            <div class="entry-page">
-                                {{ #articleNewer }}	
-                                <div class="entry-page-prev">
-                                    <a href="{{ &url }}" title="{{ &title }}" rel="prev">
-                                        <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
-                                        <span class="page-title">{{ &title }}</span>
-                                    </a>
-                                </div>
-                                {{ /articleNewer }}
-
-                                {{ #articleOlder }}
-                                <div class="entry-page-next">
-                                    <a href="{{ &url }}" title="{{ &title }}" rel="next">
-                                        <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
-                                        <span class="page-title">{{ &title }}</span>
-                                    </a>
-                                </div>
-                                {{ /articleOlder }}
-                            </div>
-                        </div>
+                        <div class="entry-content">{{{ articleSingle.content }}}</div>
+                        <div class="entry-footer"></div>
                     </div>
-                    <div id="comments" class="entry-comments entry-card">
-                        {{ &OPT.commentCode }}
-                    </div>
+                    <div id="comments" class="entry-comments entry-card">{{ &OPT.commentCode }}</div>
                 </article>
             </div>
 
@@ -192,11 +65,7 @@
                             {{#widgetRecentlyList}}
                             <li class="recent-article-item-box">
                                 {{#firstImageUrl}}
-                                <div class="recent-article-item-image">
-                                    <a href="{{url}}">
-                                        <img src="{{firstImageUrl}}" alt="{{title}}">
-                                    </a>
-                                </div>
+                                <div class="recent-article-item-image"><a href="{{url}}"><img src="{{firstImageUrl}}" alt="{{title}}"></a></div>
                                 {{/firstImageUrl}}
                                 <div class="recent-article-item-content">
                                     <a href="{{url}}">{{title}}</a>
@@ -206,7 +75,6 @@
                             {{/widgetRecentlyList}}
                         </ul>
                     </div>
-
                     <div class="widget widget-categories">
                         <h3 class="widget-title">分类目录</h3>
                         <ul>
@@ -215,7 +83,6 @@
                             {{/widgetCategoryList}}
                         </ul>
                     </div>
-
                     <div class="widget widget-tags">
                         <h3 class="widget-title">标签</h3>
                         <div class="tag-cloud">
@@ -225,7 +92,6 @@
                             <a href="#">Blog</a>
                         </div>
                     </div>
-
                     <div class="widget widget-comments">
                         <h3 class="widget-title">最近评论</h3>
                         <ul>
@@ -235,117 +101,71 @@
                 </div>
             </aside>
         </div>
-
-        <div class="friend-links">
-             <h3 class="widget-title">友情链接</h3>
-             <div class="links-container">
-                {{#widgetLinkList}}
-                <div class="link-item">
-                    {{#img}}
-                        <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}">
-                        </a>
-                    {{/img}}
-                    {{^img}}
-                        <a href="{{url}}" target="_blank">{{name}}</a>
-                    {{/img}}
-                </div>
-                {{/widgetLinkList}}
-            </div>
-        </div>
     </div>
 
-	<footer class="footer">
-		<div class="container">
-			<div class="footer-meta">
-				<div class="footer-links">
-					{{{ footer_links }}}
-				</div>
-				<p>{{{ site_footer_copyright }}}</p>
-			</div>
-			</div>
-	</footer>
+	<footer class="footer"></footer>
 
-    <div class="action action-style-0 action-color-0 action-pos-0">
-        <div class="action-item gotop j-top">
-            <i class="fal fa-arrow-up action-item-icon"></i>
-        </div>
-    </div>
-    
+    <div class="action action-style-0 action-color-0 action-pos-0"></div>
     <div class="overlay" id="overlay"></div>
-    
     <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ... (您的其他脚本保持不变)
-        });
+        // Your other scripts here...
     </script>
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ... (您的其他脚本保持不变)
-    });
-</script>
+        if (window.innerWidth <= 990) {
+            return;
+        }
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.innerWidth <= 990) {
-        return;
-    }
+        const sidebarWrapper = document.querySelector('.sidebar-sticky-wrapper');
+        const mainLayout = document.querySelector('.main-layout');
+        if (!sidebarWrapper || !mainLayout) {
+            return;
+        }
 
-    const sidebarWrapper = document.querySelector('.sidebar-sticky-wrapper');
-    const mainLayout = document.querySelector('.main-layout');
+        const header = document.querySelector('.site-header');
+        // Capture the initial width of the sidebar when it's not fixed
+        const initialWidth = sidebarWrapper.offsetWidth;
 
-    if (!sidebarWrapper || !mainLayout) {
-        return;
-    }
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            
+            // Recalculate dimensions and positions inside the scroll handler
+            // This ensures the values are always correct, even if images load late
+            const stickyTopOffset = 80; // This is the 'top' value from the '.sidebar-fixed' CSS class
+            const mainLayoutTop = mainLayout.offsetTop;
+            const mainLayoutHeight = mainLayout.offsetHeight;
+            const sidebarWrapperHeight = sidebarWrapper.offsetHeight;
 
-    const headerHeight = document.querySelector('.site-header').offsetHeight;
-    const sidebarWrapperWidth = sidebarWrapper.offsetWidth;
-    const footer = document.querySelector('.footer');
+            // Define the scroll thresholds based on current layout
+            // 1. Point where the sidebar should START sticking
+            const topThreshold = mainLayoutTop - stickyTopOffset;
+            
+            // 2. Point where the sidebar should STOP sticking and become absolute
+            const bottomThreshold = mainLayoutTop + mainLayoutHeight - sidebarWrapperHeight - stickyTopOffset;
 
-    let isFixed = false;
-    let isAbsolute = false;
-
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const viewportHeight = window.innerHeight;
-        
-        const sidebarTopInDocument = mainLayout.offsetTop;
-        const sidebarBottomInDocument = mainLayout.offsetTop + mainLayout.offsetHeight;
-        
-        const startStickPoint = sidebarTopInDocument - headerHeight;
-        const stopStickPoint = sidebarBottomInDocument - sidebarWrapper.offsetHeight - headerHeight;
-
-        if (scrollTop > startStickPoint) {
-            if (scrollTop < stopStickPoint) {
-                if (!isFixed) {
+            // Apply logic based on scroll position
+            if (scrollTop > topThreshold) {
+                if (scrollTop < bottomThreshold) {
+                    // State 2: FIXED - Scrolling within the main content
                     sidebarWrapper.classList.add('sidebar-fixed');
                     sidebarWrapper.classList.remove('sidebar-absolute-bottom');
-                    sidebarWrapper.style.width = sidebarWrapperWidth + 'px';
-                    isFixed = true;
-                    isAbsolute = false;
-                }
-            } else {
-                if (!isAbsolute) {
+                    sidebarWrapper.style.width = initialWidth + 'px';
+                } else {
+                    // State 3: ABSOLUTE - Reached the end of the main content
                     sidebarWrapper.classList.remove('sidebar-fixed');
                     sidebarWrapper.classList.add('sidebar-absolute-bottom');
                     sidebarWrapper.style.width = '100%';
-                    isFixed = false;
-                    isAbsolute = true;
                 }
-            }
-        } else {
-            if (isFixed || isAbsolute) {
+            } else {
+                // State 1: STATIC - At the top of the page
                 sidebarWrapper.classList.remove('sidebar-fixed');
                 sidebarWrapper.classList.remove('sidebar-absolute-bottom');
                 sidebarWrapper.style.width = '100%';
-                isFixed = false;
-                isAbsolute = false;
             }
-        }
-    }, { passive: true });
-});
-</script>
-</body>
+        }, { passive: true });
+    });
+    </script>
+    </body>
 </html>
