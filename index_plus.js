@@ -461,6 +461,10 @@ async function getArticleData(request, id, env) {
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
 	articleSingle.content = articleSingle.contentHtml || "";
+    
+    // ########## 第一处修改 ##########
+    // 为主文章添加 createDate10 字段，用于模板显示
+    articleSingle.createDate10 = articleSingle.createDate.substring(0, 10);
 
     const allCategoriesText = await env.XYRJ_CONFIG.get("WidgetCategory") || "[]";
     const allCategories = JSON.parse(allCategoriesText);
@@ -493,6 +497,9 @@ async function getArticleData(request, id, env) {
 	let widgetRecentlyList = articleIndex.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+        // ########## 第二处修改 ##########
+        // 为侧边栏“热门文章”列表添加 createDate10 字段
+        item.createDate10 = item.createDate.substring(0, 10);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
     data["title"] = articleSingle.title;
