@@ -346,5 +346,53 @@
         });
     });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ... (您原有的其他脚本) ...
+
+    // Sticky Sidebar Logic
+    if (window.innerWidth >= 991) {
+        const header = document.querySelector('.site-header');
+        const rightColumn = document.querySelector('.right-column');
+        const leftColumn = document.querySelector('.left-column');
+
+        if (header && rightColumn && leftColumn) {
+            const headerHeight = header.offsetHeight;
+            const topOffset = 20; // 额外的顶部间距
+
+            // 设置初始的 top 值
+            rightColumn.style.top = headerHeight + topOffset + 'px';
+
+            window.addEventListener('scroll', function() {
+                const rightColumnRect = rightColumn.getBoundingClientRect();
+                const leftColumnRect = leftColumn.getBoundingClientRect();
+                const container = document.querySelector('.main-layout');
+                const containerRect = container.getBoundingClientRect();
+
+                // 当右侧栏的高度大于或等于左侧栏时，不执行任何操作
+                if (rightColumn.offsetHeight >= leftColumn.offsetHeight) {
+                    return;
+                }
+                
+                // 当滚动使得左侧栏底部到达视口底部时，固定右侧栏
+                if (leftColumnRect.bottom <= window.innerHeight) {
+                    // 计算差值并应用
+                    let bottomFixedTop = window.innerHeight - rightColumnRect.height - (window.innerHeight - leftColumnRect.bottom);
+                    rightColumn.style.position = 'fixed';
+                    rightColumn.style.top = Math.min(headerHeight + topOffset, bottomFixedTop) + 'px';
+                } else if (containerRect.top > headerHeight + topOffset) {
+                    // 当容器顶部回到初始位置以下
+                    rightColumn.style.position = 'sticky';
+                    rightColumn.style.top = headerHeight + topOffset + 'px';
+                } else {
+                    // 恢复 sticky 行为
+                    rightColumn.style.position = 'sticky';
+                    rightColumn.style.top = headerHeight + topOffset + 'px';
+                }
+            });
+        }
+    }
+});
+</script>
 </body>
 </html>
