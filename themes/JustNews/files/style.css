@@ -1352,3 +1352,13 @@ ul, li {
         border-top: 1px solid #eee;
     }
 }
+
+/* --- Sticky Sidebar --- */
+@media (min-width: 991px) {
+    .right-column {
+        position: -webkit-sticky; /* For Safari */
+        position: sticky;
+        top: 80px; /* 距离顶部的距离，可根据您的头部高度调整 */
+        align-self: flex-start; /* 确保在flex容器中对齐到顶部 */
+    }
+}
