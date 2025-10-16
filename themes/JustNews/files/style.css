@@ -96,7 +96,6 @@ ul, li {
     margin-left: 18px;
     width: 100%;
     max-width: 310px;
-    position: relative; /* This is the positioning context for the sidebar wrapper */
 }
 
 /* 5. Header & Navigation */
@@ -1135,6 +1134,8 @@ ul, li {
     }
 }
 
+/* zxmail/myblog/myblog-a17ca243855b0252cc3830671093a6fc0cf10920/themes/JustNews/files/style.css */
+
 /* --- Article Page Enhancement --- */
 
 /* Replace original article selector */
@@ -1350,19 +1351,4 @@ ul, li {
         border-left: none;
         border-top: 1px solid #eee;
     }
-}
-
-/* --- New Styles for Sidebar Scrolling Logic --- */
-
-/* This class is added by JavaScript when the sidebar should be fixed to the top */
-.sidebar-fixed {
-    position: fixed;
-    top: 80px; /* Adjust this value to match your header height */
-}
-
-/* This class is added by JavaScript when the sidebar reaches the bottom of its container */
-.sidebar-absolute-bottom {
-    position: absolute;
-    bottom: 0;
-    top: auto;
 }
