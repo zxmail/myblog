@@ -1353,12 +1353,12 @@ ul, li {
     }
 }
 
-/* --- Sticky Sidebar Enhancement --- */
+/* --- 智能粘性侧边栏 --- */
 @media (min-width: 991px) {
     .right-column {
         position: -webkit-sticky; /* 兼容 Safari 浏览器 */
         position: sticky;
-        top: 80px; /* 侧边栏“粘”在距离浏览器顶部 80px 的位置 */
-        align-self: flex-start; /* 确保在 flex 布局中 sticky 生效 */
+        top: 80px; /* 让侧边栏顶部与浏览器顶部保持 80px 的距离 */
+        align-self: flex-start; /* 这是让 sticky 在 flex 布局中生效的关键 */
     }
 }
