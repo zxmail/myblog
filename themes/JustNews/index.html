@@ -16,6 +16,20 @@
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
+    <style>
+        /* 当屏幕宽度大于等于992px时（通常是PC端），应用以下样式 */
+        @media screen and (min-width: 992px) {
+            .right-column {
+                /* 将右侧边栏设置为粘性定位 */
+                position: -webkit-sticky; /* 兼容 Safari */
+                position: sticky;
+                /* 设置距离顶部的距离，您可以根据您网站header的高度进行调整 */
+                top: 20px; 
+                /* 确保在flex布局中对齐方式正确 */
+                align-self: flex-start;
+            }
+        }
+    </style>
 </head>
 <body class="m-flex">
 	<header class="site-header">
@@ -184,7 +198,7 @@
                             <div class="recent-article-item-image">
                                 <a href="{{url}}">
                                     <img src="{{firstImageUrl}}" alt="{{title}}">
-                                </a>
+                                a>
                             </div>
                             {{/firstImageUrl}}
                             <div class="recent-article-item-content">
