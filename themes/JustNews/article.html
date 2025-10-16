@@ -6,8 +6,8 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
     <title>{{ &title }}</title>
-    <meta name="keywords" content="{{ &OPT.keywords }}" />
-    <meta name="description" content="{{ &OPT.siteDescription }}" />
+    <meta name="keywords" content="{{ &keywords }}" />
+    <meta name="description" content="{{ &description }}" />
 
     <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
@@ -16,17 +16,8 @@
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
-
-    <style>
-        .breadcrumb a {
-            color: #888; /* 设置面包屑导航中链接的颜色为灰色 */
-        }
-        .breadcrumb a:hover {
-            color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
-        }
-    </style>
-    </head>
-<body class="m-flex"> 
+</head>
+<body class="m-flex">
 	<header class="site-header">
     <div class="header-container">
         <div class="mobile-menu-toggle" id="mobile-menu-toggle">
@@ -53,6 +44,7 @@
                     <li>
                         <a href="{{ &url }}">
                             {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                            {{! 使用我们新的、清晰无误的 hasChildren 标记来判断 }}
                             {{ #hasChildren }}
                             <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
                             {{ /hasChildren }}
@@ -93,10 +85,10 @@
                     </li>
                     {{ /OPT.widgetMenuList }}
                      <li class="login-btn-mobile">
-                        <a href="/admin">
-                            <button class="login-btn-header">登录</button>
-                        </a>
-                    </li>
+                         <a href="/admin">
+                             <button class="login-btn-header">登录</button>
+                         </a>
+                     </li>
                 </ul>
             </nav>
             </div>
@@ -106,8 +98,8 @@
                 <i class="fal fa-search"></i>
             </div>
              <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
+                 <i class="fal fa-user-circle"></i>
+             </a>
         </div>
     </div>
 
@@ -119,68 +111,75 @@
 </header>
     <div id="wrap" class="container">
         <div class="main-layout">
-            <article id="post-{{ &articleSingle.id }}" class="post-article">
-                <div class="entry-card">
-					<div class="breadcrumb" style="margin-bottom: 23px; font-size: 14px; color: #888;">
-						{{{ articleBreadcrumb }}}
-					</div>
+            <div class="left-column post-article">
+                <article>
+                    {{#article.firstImageUrl}}
+                    <div class="article-featured-image" style="background-image: url('{{article.firstImageUrl}}');"></div>
+                    {{/article.firstImageUrl}}
 
-                    <div class="entry-head">
-                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
+                    <div class="entry-card">
+                        <header class="entry-head">
+                            <h1 class="entry-title">{{article.title}}</h1>
+                            <div class="entry-info">
+                                <span class="entry-date"><i class="fal fa-calendar-alt"></i>{{article.createDate10}}</span>
+                                <span class="dot">&middot;</span>
+                                <span class="entry-category"><i class="fal fa-folder"></i>
+                                    {{#article.category}}
+                                    <a href="/category/{{.}}/">{{.}}</a>
+                                    {{/article.category}}
+                                </span>
+                                <span class="dot">&middot;</span>
+                                <span class="entry-views"><i class="fal fa-eye"></i>{{article.views}}</span>
+                            </div>
+                        </header>
                         
-                        <div class="entry-info">
-                            <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
-                            <span class="dot">•</span>
-                             <span class="entry-category">
-                                <i class="fal fa-folder-open"></i>
-                                {{ #articleSingle.categories }}
-                                    <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
-                                {{ /articleSingle.categories }}
-                            </span>
-                            <span class="dot">•</span>
-                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
-                                <i class="fal fa-eye"></i>
-                                <em>{{ &OPT.otherCodeA }}</em>
-                                <i class="leancloud-visitors-count"></i> 100
-                            </span>
-                        </div>
-                    </div>
-                    <div class="entry-content">
-                        {{{ articleSingle.contentHtml }}}
-                    </div>
-                    <div class="entry-footer">
-                        <div class="entry-tag">
-                             <i class="fal fa-tags"></i>
-                            {{ #articleSingle.tags }}
-                                <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
-                            {{ /articleSingle.tags }}
+                        <div class="entry-content">
+                            {{{article.content}}}
                         </div>
 
-                        <div class="entry-page">
-                            {{ #articleNewer }}	
-                            <div class="entry-page-prev">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="prev">
-                                    <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
+                        <footer class="entry-footer">
+                            <div class="entry-tag">
+                                <i class="fal fa-tags"></i>
+                                <a href="#">示例标签</a>
+                                <a href="#">Cloudflare</a>
                             </div>
-                            {{ /articleNewer }}
+                            <nav class="entry-page">
+                                {{#prevArticle}}
+                                <a href="{{url}}" class="entry-page-prev">
+                                    <span class="page-arrow">上一篇</span>
+                                    <span class="page-title">{{title}}</span>
+                                </a>
+                                {{/prevArticle}}
+                                {{^prevArticle}}
+                                <a class="entry-page-prev">
+                                    <span class="page-arrow">上一篇</span>
+                                    <span class="page-title">没有了</span>
+                                </a>
+                                {{/prevArticle}}
 
-                            {{ #articleOlder }}
-                            <div class="entry-page-next">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="next">
-                                     <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
-                                    <span class="page-title">{{ &title }}</span>
+                                {{#nextArticle}}
+                                <a href="{{url}}" class="entry-page-next">
+                                    <span class="page-arrow">下一篇</span>
+                                    <span class="page-title">{{title}}</span>
                                 </a>
-                            </div>
-                            {{ /articleOlder }}
-                        </div>
+                                {{/nextArticle}}
+                                {{^nextArticle}}
+                                <a class="entry-page-next">
+                                    <span class="page-arrow">下一篇</span>
+                                    <span class="page-title">没有了</span>
+                                </a>
+                                {{/nextArticle}}
+
+                            </nav>
+                        </footer>
                     </div>
+                </article>
+
+                <div id="comments" class="entry-card">
+                     <h3 class="widget-title">评论</h3>
+                     <p>暂无评论</p>
                 </div>
-                <div id="comments" class="entry-comments entry-card">
-                    {{ &OPT.commentCode }}
-                </div>
-            </article>
+            </div>
 
             <aside class="right-column">
                 <div class="sidebar-sticky-wrapper">
@@ -232,24 +231,6 @@
                     </div>
                 </div>
             </aside>
-        </div>
-
-        <div class="friend-links">
-             <h3 class="widget-title">友情链接</h3>
-             <div class="links-container">
-                {{#widgetLinkList}}
-                <div class="link-item">
-                    {{#img}}
-                        <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}">
-                        </a>
-                    {{/img}}
-                    {{^img}}
-                        <a href="{{url}}" target="_blank">{{name}}</a>
-                    {{/img}}
-                </div>
-                {{/widgetLinkList}}
-            </div>
         </div>
     </div>
 
@@ -337,24 +318,57 @@
                 }
             });
         });
-
-        const swiper = new Swiper('.swiper', {
-            autoHeight: true,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
     });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth <= 990) {
+        return;
+    }
+
+    const rightColumn = document.querySelector('.right-column');
+    const sidebarWrapper = document.querySelector('.sidebar-sticky-wrapper');
+    const leftColumn = document.querySelector('.left-column');
+    const mainLayout = document.querySelector('.main-layout');
+
+    if (!sidebarWrapper || !leftColumn || !mainLayout) {
+        return;
+    }
+
+    const headerHeight = document.querySelector('.site-header').offsetHeight;
+    const sidebarWrapperWidth = sidebarWrapper.offsetWidth;
+    const mainLayoutTop = mainLayout.offsetTop;
+
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const viewportHeight = window.innerHeight;
+        
+        const mainLayoutHeight = mainLayout.offsetHeight;
+        const sidebarWrapperHeight = sidebarWrapper.offsetHeight;
+
+        const startStickPoint = mainLayoutTop - headerHeight;
+        
+        const stopStickPoint = mainLayoutTop + mainLayoutHeight - sidebarWrapperHeight - headerHeight;
+
+        if (scrollTop > startStickPoint) {
+            if (scrollTop < stopStickPoint) {
+                sidebarWrapper.classList.add('sidebar-fixed');
+                sidebarWrapper.classList.remove('sidebar-absolute-bottom');
+                sidebarWrapper.style.width = sidebarWrapperWidth + 'px';
+            } else {
+                sidebarWrapper.classList.remove('sidebar-fixed');
+                sidebarWrapper.classList.add('sidebar-absolute-bottom');
+                sidebarWrapper.style.width = '100%';
+            }
+        } else {
+            sidebarWrapper.classList.remove('sidebar-fixed');
+            sidebarWrapper.classList.remove('sidebar-absolute-bottom');
+            sidebarWrapper.style.width = '100%';
+        }
+    }, { passive: true });
+});
+</script>
+
 </body>
 </html>
