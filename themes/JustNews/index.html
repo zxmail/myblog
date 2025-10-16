@@ -363,6 +363,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // 设置初始的 top 值
             rightColumn.style.top = headerHeight + topOffset + 'px';
 
+            // 获取右侧栏初始的水平位置
+            const rightColumnLeft = rightColumn.getBoundingClientRect().left;
+
             window.addEventListener('scroll', function() {
                 const rightColumnRect = rightColumn.getBoundingClientRect();
                 const leftColumnRect = leftColumn.getBoundingClientRect();
@@ -376,17 +379,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // 当滚动使得左侧栏底部到达视口底部时，固定右侧栏
                 if (leftColumnRect.bottom <= window.innerHeight) {
-                    // 计算差值并应用
                     let bottomFixedTop = window.innerHeight - rightColumnRect.height - (window.innerHeight - leftColumnRect.bottom);
                     rightColumn.style.position = 'fixed';
+                    // 新增：设置水平位置
+                    rightColumn.style.left = rightColumnLeft + 'px';
                     rightColumn.style.top = Math.min(headerHeight + topOffset, bottomFixedTop) + 'px';
+
                 } else if (containerRect.top > headerHeight + topOffset) {
                     // 当容器顶部回到初始位置以下
                     rightColumn.style.position = 'sticky';
+                    // 新增：移除固定的left值，恢复sticky的自然定位
+                    rightColumn.style.left = '';
                     rightColumn.style.top = headerHeight + topOffset + 'px';
                 } else {
                     // 恢复 sticky 行为
                     rightColumn.style.position = 'sticky';
+                    // 新增：移除固定的left值
+                    rightColumn.style.left = '';
                     rightColumn.style.top = headerHeight + topOffset + 'px';
                 }
             });
