@@ -96,10 +96,12 @@ ul, li {
     margin-left: 18px;
     width: 100%;
     max-width: 310px;
-    position: -webkit-sticky; /* 兼容 Safari 浏览器 */
+}
+
+.sidebar-sticky-wrapper {
+    position: -webkit-sticky;
     position: sticky;
-    top: 80px; /* 顶部距离，根据您的 header 高度调整 */
-    align-self: flex-start; /* 在Flexbox布局中确保其表现正确 */
+    top: 80px;
 }
 
 /* 5. Header & Navigation */
