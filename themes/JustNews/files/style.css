@@ -80,7 +80,6 @@ ul, li {
 .main-layout {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* 改为flex-start以配合sticky定位 */
 }
 
 .main-content {
@@ -97,9 +96,6 @@ ul, li {
     margin-left: 18px;
     width: 100%;
     max-width: 310px;
-    position: -webkit-sticky; /* 兼容 Safari */
-    position: sticky;
-    top: 80px; /* 顶部间距，留出导航栏位置 */
 }
 
 /* 5. Header & Navigation */
@@ -1354,10 +1350,5 @@ ul, li {
     .entry-page-next {
         border-left: none;
         border-top: 1px solid #eee;
-    }
-    
-    /* 在移动端禁用sticky效果 */
-    .right-column {
-        position: static;
     }
 }
