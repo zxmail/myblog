@@ -1362,3 +1362,7 @@ ul, li {
         align-self: flex-start; /* 确保在flex容器中对齐到顶部 */
     }
 }
+/* --- Sticky Sidebar Layout Adjustment --- */
+.main-layout.sidebar-fixed-adjust {
+    justify-content: flex-start;
+}
