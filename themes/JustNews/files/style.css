@@ -1279,23 +1279,31 @@ ul, li {
 
 /* Prev/Next Post Navigation */
 .entry-page {
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    background: #f9f9f9;
+    border-radius: 8px;
     overflow: hidden;
 }
 .entry-page a {
-    color: #666;
+    display: block;
+    padding: 15px 20px;
     width: 50%;
-    text-decoration: none;
+    color: #666;
+    transition: background .3s;
 }
 .entry-page a:hover {
-    color: #000;
+    background: #f0f0f0;
+    color: var(--theme-hover);
+}
+.entry-page-next {
+    text-align: right;
+    border-left: 1px solid #eee;
 }
 .entry-page .page-arrow {
-    display: block;
     font-size: 13px;
     color: #999;
+    display: block;
     margin-bottom: 5px;
 }
 .entry-page .page-title {
@@ -1304,9 +1312,7 @@ ul, li {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.entry-page-next {
-   text-align: right;
-}
+
 /* Comments Section */
 #comments.entry-card {
     margin-top: 20px;
@@ -1344,15 +1350,5 @@ ul, li {
     .entry-page-next {
         border-left: none;
         border-top: 1px solid #eee;
-    }
-}
-
-/* --- 智能粘性侧边栏 --- */
-@media (min-width: 991px) {
-    .right-column {
-        position: -webkit-sticky; /* 兼容 Safari 浏览器 */
-        position: sticky;
-        top: -180px; /* 让侧边栏顶部与浏览器顶部保持 80px 的距离 */
-        align-self: flex-start; /* 这是让 sticky 在 flex 布局中生效的关键 */
     }
 }
