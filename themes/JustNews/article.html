@@ -156,25 +156,33 @@
                             {{ /articleSingle.tags }}
                         </div>
 
-                        <div class="entry-page">
-                            {{ #articleNewer }}	
-                            <div class="entry-page-prev">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="prev">
-                                    <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
-                            </div>
-                            {{ /articleNewer }}
+<nav class="entry-page">
+    {{#pageNewer}}
+    <a href="{{url}}" style="float: left;">
+        <span class="page-arrow">← 上一篇</span>
+        <span class="page-title">{{title}}</span>
+    </a>
+    {{/pageNewer}}
+    {{^pageNewer}}
+    <a style="float: left; pointer-events: none; color: #ccc;">
+        <span class="page-arrow">← 上一篇</span>
+        <span class="page-title">没有更多了</span>
+    </a>
+    {{/pageNewer}}
 
-                            {{ #articleOlder }}
-                            <div class="entry-page-next">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="next">
-                                     <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
-                            </div>
-                            {{ /articleOlder }}
-                        </div>
+    {{#pageOlder}}
+    <a href="{{url}}" style="float: right;">
+        <span class="page-arrow">下一篇 →</span>
+        <span class="page-title">{{title}}</span>
+    </a>
+    {{/pageOlder}}
+    {{^pageOlder}}
+    <a style="float: right; pointer-events: none; color: #ccc;">
+        <span class="page-arrow">下一篇 →</span>
+        <span class="page-title">没有更多了</span>
+    </a>
+    {{/pageOlder}}
+</nav>
                     </div>
                 </div>
                 <div id="comments" class="entry-comments entry-card">
