@@ -23,6 +23,55 @@
         .breadcrumb a:hover {
             color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
         }
+
+        /* --- START: New Comment Styles --- */
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
+            min-height: 100px;
+        }
+        .comment-form .form-submit {
+            margin-top: 10px;
+        }
+        .comment-form .submit {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-form .submit:hover {
+            background-color: #555;
+        }
+        .comment-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .comment-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        .comment-body p {
+            margin: 0 0 10px;
+        }
+        .comment-meta {
+            font-size: 12px;
+            color: #888;
+        }
+        /* --- END: New Comment Styles --- */
+
     </style>
     </head>
 <body class="m-flex"> 
@@ -179,10 +228,24 @@
 								</div>
                         </div>
                 </div>
+                
                 <div id="comments" class="entry-comments entry-card">
-                    {{ &OPT.commentCode }}
+                    <h3 class="widget-title">发表评论</h3>
+                    <form id="comment-form" class="comment-form">
+                        <p class="comment-form-comment">
+                            <textarea id="comment-content" name="content" cols="45" rows="5" required placeholder="请输入评论..."></textarea>
+                        </p>
+                        <p class="form-submit">
+                            <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
+                        </p>
+                    </form>
+            
+                    <h3 class="widget-title" id="comments-title" style="margin-top: 30px;">评论列表</h3>
+                    <ul id="comment-list" class="comment-list">
+                        <li class="comment-item">正在加载评论...</li>
+                    </ul>
                 </div>
-            </article>
+                </article>
 
             <aside class="right-column">
                 <div class="sidebar-sticky-wrapper">
@@ -341,6 +404,125 @@
                 }
             });
         });
+
+        // --- START: New Comment Logic ---
+        const articleId = '{{ &articleSingle.id }}'; // 从Mustache模板获取文章ID
+        const commentForm = document.getElementById('comment-form');
+        const commentList = document.getElementById('comment-list');
+        const commentContentInput = document.getElementById('comment-content');
+
+        // 1. 渲染评论列表的函数
+        function renderComments(comments) {
+            commentList.innerHTML = ''; // 清空列表
+            if (comments.length === 0) {
+                commentList.innerHTML = '<li class="comment-item">暂无评论</li>';
+                return;
+            }
+
+            comments.forEach(comment => {
+                const li = document.createElement('li');
+                li.className = 'comment-item';
+                li.id = `comment-${comment.id}`;
+                // 使用 textContent 来防止 XSS
+                const p = document.createElement('p');
+                p.textContent = comment.content; 
+                
+                li.innerHTML = `
+                    <div class="comment-body">
+                    </div>
+                    <div class="comment-meta">
+                        <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
+                    </div>
+                `;
+                li.querySelector('.comment-body').appendChild(p);
+                commentList.appendChild(li);
+            });
+        }
+
+        // 2. 获取评论的函数
+        async function fetchComments() {
+            try {
+                // 根据 index_plus.js，我们只能获取所有评论
+                const response = await fetch('/api/comments_all');
+                if (!response.ok) throw new Error('获取评论失败');
+                
+                const allComments = await response.json();
+                
+                // 在客户端筛选出当前文章的评论
+                const articleComments = allComments.filter(comment => comment.articleSlug === articleId);
+                
+                renderComments(articleComments);
+            } catch (error) {
+                console.error('获取评论时出错:', error);
+                commentList.innerHTML = '<li class="comment-item">加载评论失败</li>';
+            }
+        }
+
+        // 3. 处理评论表单提交
+        if (commentForm) {
+            commentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const content = commentContentInput.value.trim();
+                if (!content) {
+                    alert('评论内容不能为空');
+                    return;
+                }
+
+                const newComment = {
+                    content: content,
+                    timestamp: Date.now()
+                    // 如果您添加了其他字段（如昵称），请在此处添加
+                };
+
+                try {
+                    // 使用 index_plus.js 中定义的 POST 接口
+                    const response = await fetch(`/api/comments/${articleId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newComment)
+                    });
+
+                    if (!response.ok) throw new Error('提交评论失败');
+
+                    const savedComment = await response.json();
+                    
+                    // 乐观更新UI：将新评论添加到列表顶部
+                    if (commentList.querySelector('.comment-item')?.textContent === '暂无评论' || commentList.querySelector('.comment-item')?.textContent === '正在加载评论...') {
+                        commentList.innerHTML = ''; // 清空 "暂无评论"
+                    }
+
+                    const li = document.createElement('li');
+                    li.className = 'comment-item';
+                    li.id = `comment-${savedComment.id}`;
+                    
+                    const p = document.createElement('p');
+                    p.textContent = savedComment.content;
+
+                    li.innerHTML = `
+                        <div class="comment-body">
+                        </div>
+                        <div class="comment-meta">
+                            <span class="comment-date">${new Date(savedComment.timestamp).toLocaleString()}</span>
+                        </div>
+                    `;
+                    li.querySelector('.comment-body').appendChild(p);
+                    // 将新评论添加到列表的开头
+                    commentList.prepend(li);
+
+                    commentContentInput.value = ''; // 清空输入框
+                } catch (error) {
+                    console.error('提交评论时出错:', error);
+                    alert('评论提交失败');
+                }
+            });
+        }
+
+        // 4. 页面加载时立即获取评论
+        fetchComments();
+        // --- END: New Comment Logic ---
+
 
         const swiper = new Swiper('.swiper', {
             autoHeight: true,
