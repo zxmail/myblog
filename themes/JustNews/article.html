@@ -70,6 +70,20 @@
             font-size: 12px;
             color: #888;
         }
+        .comment-contact {
+            margin-left: 10px;
+            color: #555;
+            font-style: italic;
+        }
+        /* --- 新增表单样式 --- */
+        .comment-form p {
+             margin: 10px 0;
+        }
+        .comment-form label {
+            margin-right: 5px;
+            font-size: 14px;
+            color: #555;
+        }
         /* --- END: New Comment Styles --- */
 
     </style>
@@ -235,6 +249,21 @@
                         <p class="comment-form-comment">
                             <textarea id="comment-content" name="content" cols="45" rows="5" required placeholder="请输入评论..."></textarea>
                         </p>
+                        
+                        <p class="comment-form-contact">
+                            <label for="contact-type">联系方式 (可选):</label>
+                            <select id="contact-type" name="contact-type" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
+                                <option value="email">邮箱</option>
+                                <option value="qq">QQ</option>
+                                <option value="wechat">微信</option>
+                                <option value="telegram">Telegram</option>
+                            </select>
+                            <input type="text" id="contact-value" name="contact-value" placeholder="请输入您的联系方式" style="width: calc(100% - 110px); padding: 5px; border-radius: 4px; border: 1px solid #ddd; margin-left: 5px; box-sizing: border-box;">
+                        </p>
+                        <p class="comment-form-captcha">
+                            <label for="captcha-input">验证: <span id="captcha-question" style="font-weight: bold; color: #333; margin: 0 5px;"></span> = ?</label>
+                            <input type="text" id="captcha-input" name="captcha" required style="width: 60px; padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
+                            <input type="hidden" id="captcha-answer"> </p>
                         <p class="form-submit">
                             <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
                         </p>
@@ -410,6 +439,31 @@
         const commentForm = document.getElementById('comment-form');
         const commentList = document.getElementById('comment-list');
         const commentContentInput = document.getElementById('comment-content');
+        
+        // --- START: New Captcha/Contact Elements ---
+        const contactTypeEl = document.getElementById('contact-type');
+        const contactValueEl = document.getElementById('contact-value');
+        const captchaQuestionEl = document.getElementById('captcha-question');
+        const captchaInputEl = document.getElementById('captcha-input');
+        const captchaAnswerEl = document.getElementById('captcha-answer');
+        // --- END: New Captcha/Contact Elements ---
+
+
+        // --- START: New Captcha Function ---
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1; // 1-10
+            const num2 = Math.floor(Math.random() * 10) + 1; // 1-10
+            const answer = num1 + num2;
+
+            if(captchaQuestionEl) {
+                captchaQuestionEl.textContent = `${num1} + ${num2}`;
+            }
+            if(captchaAnswerEl) {
+                captchaAnswerEl.value = answer.toString();
+            }
+        }
+        // --- END: New Captcha Function ---
+
 
         // 1. 渲染评论列表的函数
         function renderComments(comments) {
@@ -423,19 +477,48 @@
                 const li = document.createElement('li');
                 li.className = 'comment-item';
                 li.id = `comment-${comment.id}`;
-                // 使用 textContent 来防止 XSS
-                const p = document.createElement('p');
-                p.textContent = comment.content; 
+
+                // --- START: Safer Rendering ---
+                const commentBody = document.createElement('div');
+                commentBody.className = 'comment-body';
                 
-                li.innerHTML = `
-                    <div class="comment-body">
-                    </div>
-                    <div class="comment-meta">
-                        <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
-                    </div>
-                `;
-                li.querySelector('.comment-body').appendChild(p);
+                const commentContent = document.createElement('p');
+                commentContent.textContent = comment.content; // Safe
+                commentBody.appendChild(commentContent);
+
+                const commentMeta = document.createElement('div');
+                commentMeta.className = 'comment-meta';
+                
+                const commentDate = document.createElement('span');
+                commentDate.className = 'comment-date';
+                commentDate.textContent = new Date(comment.timestamp).toLocaleString();
+                commentMeta.appendChild(commentDate);
+
+                // --- START: Display Contact Info (If exists) ---
+                if (comment.contact && comment.contact.value) {
+                    let typeLabel = '联系方式';
+                    switch(comment.contact.type) {
+                        case 'email': typeLabel = '邮箱'; break;
+                        case 'qq': typeLabel = 'QQ'; break;
+                        case 'wechat': typeLabel = '微信'; break;
+                        case 'telegram': typeLabel = 'Telegram'; break;
+                    }
+                    
+                    const contactSpan = document.createElement('span');
+                    contactSpan.className = 'comment-contact';
+                    
+                    // Create text nodes to be safe
+                    contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
+                    contactSpan.appendChild(document.createTextNode(comment.contact.value)); // Safe
+                    
+                    commentMeta.appendChild(contactSpan);
+                }
+                // --- END: Display Contact Info ---
+                
+                li.appendChild(commentBody);
+                li.appendChild(commentMeta);
                 commentList.appendChild(li);
+                // --- END: Safer Rendering ---
             });
         }
 
@@ -463,16 +546,43 @@
             commentForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const content = commentContentInput.value.trim();
+
+                // --- START: New Validation ---
+                const captchaAnswer = captchaAnswerEl.value;
+                const captchaInput = captchaInputEl.value.trim();
+
+                if (captchaInput !== captchaAnswer) {
+                    alert('验证码不正确!');
+                    generateCaptcha(); // 刷新验证码
+                    captchaInputEl.value = ''; // 清空输入
+                    return;
+                }
+                // --- END: New Validation ---
+
                 if (!content) {
                     alert('评论内容不能为空');
                     return;
                 }
 
+                // --- START: Get Contact Info ---
+                const contactType = contactTypeEl.value;
+                const contactValue = contactValueEl.value.trim();
+                // --- END: Get Contact Info ---
+
+
                 const newComment = {
                     content: content,
-                    timestamp: Date.now()
-                    // 如果您添加了其他字段（如昵称），请在此处添加
+                    timestamp: Date.now(),
+                    contact: {} // 创建一个对象用于存储联系信息
                 };
+
+                // 仅当用户填写了联系方式时才添加
+                if (contactValue) {
+                    newComment.contact = {
+                        type: contactType,
+                        value: contactValue
+                    };
+                }
 
                 try {
                     // 使用 index_plus.js 中定义的 POST 接口
@@ -493,34 +603,68 @@
                         commentList.innerHTML = ''; // 清空 "暂无评论"
                     }
 
+                    // --- START: Safer Optimistic Update ---
                     const li = document.createElement('li');
                     li.className = 'comment-item';
                     li.id = `comment-${savedComment.id}`;
+
+                    const commentBody = document.createElement('div');
+                    commentBody.className = 'comment-body';
                     
-                    const p = document.createElement('p');
-                    p.textContent = savedComment.content;
+                    const commentContent = document.createElement('p');
+                    commentContent.textContent = savedComment.content; // Safe
+                    commentBody.appendChild(commentContent);
 
-                    li.innerHTML = `
-                        <div class="comment-body">
-                        </div>
-                        <div class="comment-meta">
-                            <span class="comment-date">${new Date(savedComment.timestamp).toLocaleString()}</span>
-                        </div>
-                    `;
-                    li.querySelector('.comment-body').appendChild(p);
-                    // 将新评论添加到列表的开头
-                    commentList.prepend(li);
+                    const commentMeta = document.createElement('div');
+                    commentMeta.className = 'comment-meta';
+                    
+                    const commentDate = document.createElement('span');
+                    commentDate.className = 'comment-date';
+                    commentDate.textContent = new Date(savedComment.timestamp).toLocaleString();
+                    commentMeta.appendChild(commentDate);
 
-                    commentContentInput.value = ''; // 清空输入框
+                    if (savedComment.contact && savedComment.contact.value) {
+                        let typeLabel = '联系方式';
+                        switch(savedComment.contact.type) {
+                            case 'email': typeLabel = '邮箱'; break;
+                            case 'qq': typeLabel = 'QQ'; break;
+_case 'wechat': typeLabel = '微信'; break;
+                            case 'telegram': typeLabel = 'Telegram'; break;
+                        }
+                        
+                        const contactSpan = document.createElement('span');
+                        contactSpan.className = 'comment-contact';
+                        
+                        contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
+                        contactSpan.appendChild(document.createTextNode(savedComment.contact.value)); // Safe
+                        
+                        commentMeta.appendChild(contactSpan);
+                    }
+                    
+                    li.appendChild(commentBody);
+                    li.appendChild(commentMeta);
+                    commentList.prepend(li); // 添加到列表开头
+                    // --- END: Safer Optimistic Update ---
+
+
+                    // --- START: Clear inputs and regenerate captcha ---
+                    commentContentInput.value = ''; // 清空评论框
+                    contactValueEl.value = '';    // 清空联系方式
+                    captchaInputEl.value = '';    // 清空验证码
+                    generateCaptcha();            // 重新生成验证码
+                    // --- END: Clear inputs ---
+
                 } catch (error) {
                     console.error('提交评论时出错:', error);
                     alert('评论提交失败');
+                    generateCaptcha(); // 出错时也刷新验证码
                 }
             });
         }
 
-        // 4. 页面加载时立即获取评论
+        // 4. 页面加载时立即获取评论和生成验证码
         fetchComments();
+        generateCaptcha(); // --- ADDED: 初始生成验证码 ---
         // --- END: New Comment Logic ---
 
 
