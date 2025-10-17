@@ -1418,7 +1418,7 @@ ul, li {
     .entry-page-prev, 
     .entry-page-next {
         width: 100%; /* <--- 修改：小屏幕占满全宽 */
-        height: 100px; /* 移动端高度小一点 */
+        height: 60px; /* 移动端高度小一点 */
         min-width: 100%; /* 占满全宽 (冗余，但无害) */
         margin-bottom: 15px; /* <--- 新增：用 margin 替代 gap */
     }
