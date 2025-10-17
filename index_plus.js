@@ -474,22 +474,6 @@ async function getIndexData(request, env) {
 		item.url = `/article/${item.id}/${item.link}/`;
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
-	const allTags = new Set();
-    articleIndex.forEach(article => {
-        if (article.tags && typeof article.tags === 'string') {
-            article.tags.split(',').forEach(tag => {
-                const trimmedTag = tag.trim();
-                if (trimmedTag) {
-                    allTags.add(trimmedTag);
-                }
-            });
-        }
-    });
-
-    // 将 Set 转换为 Mustache 需要的数组对象格式
-    data["widgetTagList"] = Array.from(allTags).map(tag => {
-        return { name: tag, url: `/tags/${encodeURIComponent(tag)}/` };
-    });
     const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
     data["title"] = siteName;
 	return data;
@@ -499,12 +483,6 @@ async function getArticleData(request, id, env) {
 	let data = {};
     const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, { type: "json" });
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
-	if (articleSingle.tags && typeof articleSingle.tags === 'string') {
-		// 按逗号分割，并移除可能的空字符串
-		articleSingle.tags = articleSingle.tags.split(',').filter(tag => tag.trim() !== '');
-	} else {
-		articleSingle.tags = []; // 确保它总是一个数组
-	}
 	
 	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
 	articleSingle.content = articleSingle.contentHtml || "";
@@ -523,38 +501,11 @@ async function getArticleData(request, id, env) {
     let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 	const index = articleIndex.findIndex(item => item.id === id)
 	if (index > 0) {
-		const newerArticle = articleIndex[index - 1];
-		data["articleNewer"] = { 
-			...newerArticle, 
-			url: `/article/${newerArticle.id}/${newerArticle.link}/`,
-			createDate10: newerArticle.createDate.substring(0, 10) // 添加这一行
-		};
+		data["articleNewer"] = { ...articleIndex[index - 1], url: `/article/${articleIndex[index - 1].id}/${articleIndex[index - 1].link}/` };
 	}
 	if (index < articleIndex.length - 1) {
-		const olderArticle = articleIndex[index + 1];
-		data["articleOlder"] = { 
-			...olderArticle, 
-			url: `/article/${olderArticle.id}/${olderArticle.link}/`,
-			createDate10: olderArticle.createDate.substring(0, 10) // 添加这一行
-		};
+		data["articleOlder"] = { ...articleIndex[index + 1], url: `/article/${articleIndex[index + 1].id}/${articleIndex[index + 1].link}/` };
 	}
-
-	const allTags = new Set();
-articleIndex.forEach(article => {
-    if (article.tags && typeof article.tags === 'string') {
-        article.tags.split(',').forEach(tag => {
-            const trimmedTag = tag.trim();
-            if (trimmedTag) {
-                allTags.add(trimmedTag);
-            }
-        });
-    }
-});
-
-// 将 Set 转换为 Mustache 需要的数组对象格式
-data["widgetTagList"] = Array.from(allTags).map(tag => {
-    return { name: tag, url: `/tags/${encodeURIComponent(tag)}/` };
-});
 
 	let breadcrumb_html = `<a href="/"><i class="fas fa-home"></i> 主页</a>`;
 	if (Array.isArray(articleSingle['category[]']) && articleSingle['category[]'].length > 0) {
@@ -614,22 +565,6 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
         item.createDate10 = item.createDate.substring(0, 10);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
-	const allTags = new Set();
-    articleIndex.forEach(article => {
-        if (article.tags && typeof article.tags === 'string') {
-            article.tags.split(',').forEach(tag => {
-                const trimmedTag = tag.trim();
-                if (trimmedTag) {
-                    allTags.add(trimmedTag);
-                }
-            });
-        }
-    });
-
-    // 将 Set 转换为 Mustache 需要的数组对象格式
-    data["widgetTagList"] = Array.from(allTags).map(tag => {
-        return { name: tag, url: `/tags/${encodeURIComponent(tag)}/` };
-    });
     const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
     data["title"] = `${decodedKey} - ${siteName}`;
 	return data;
