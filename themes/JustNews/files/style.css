@@ -1342,7 +1342,7 @@ ul, li {
     transition: transform 0.3s ease;
 }
 
-/* 鼠标悬停时轻微放大 */
+/* 鼠标悬停时轻微放大
 .entry-page-prev:hover,
 .entry-page-next:hover {
     transform: scale(1.01);
