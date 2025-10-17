@@ -1277,41 +1277,10 @@ ul, li {
     color: #fff;
 }
 
-/* Prev/Next Post Navigation */
-.entry-page {
-    display: flex;
-    justify-content: space-between;
-    background: #f9f9f9;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.entry-page a {
-    display: block;
-    padding: 15px 20px;
-    width: 50%;
-    color: #666;
-    transition: background .3s;
-}
-.entry-page a:hover {
-    background: #f0f0f0;
-    color: var(--theme-hover);
-}
-.entry-page-next {
-    text-align: right;
-    border-left: 1px solid #eee;
-}
-.entry-page .page-arrow {
-    font-size: 13px;
-    color: #999;
-    display: block;
-    margin-bottom: 5px;
-}
-.entry-page .page-title {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+/* * 移除了这里原有的 .entry-page, .entry-page a, .entry-page-next,
+ * .entry-page .page-arrow, 和 .entry-page .page-title
+ * 的旧样式代码。
+*/
 
 /* Comments Section */
 #comments.entry-card {
@@ -1341,16 +1310,11 @@ ul, li {
     .entry-content {
         font-size: 15px;
     }
-    .entry-page {
-        flex-direction: column;
-    }
-    .entry-page a {
-        width: 100%;
-    }
-    .entry-page-next {
-        border-left: none;
-        border-top: 1px solid #eee;
-    }
+    
+    /* 移除了这里原有的 .entry-page 相关的媒体查询样式 */
+    /* .entry-page { ... } */
+    /* .entry-page a { ... } */
+    /* .entry-page-next { ... } */
 }
 /* --- 智能粘性侧边栏 --- */
 @media (min-width: 991px) {
@@ -1359,5 +1323,121 @@ ul, li {
         position: sticky;
         top: -180px; /* 让侧边栏顶部与浏览器顶部保持 80px 的距离 */
         align-self: flex-start; /* 这是让 sticky 在 flex 布局中生效的关键 */
+    }
+}
+
+/* --- 新的文章页 - 上一篇/下一篇 样式 (背景图版) --- */
+
+.entry-page {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* 在小屏幕上允许换行 */
+    gap: 20px; /* 卡片之间的间距 */
+    margin-top: 30px;
+}
+
+.entry-page-prev,
+.entry-page-next {
+    flex: 1; /* 占据可用空间 */
+    min-width: 250px; /* 最小宽度，防止在 flex 中被过度压缩 */
+    position: relative; /* 关键：为内部绝对定位提供锚点 */
+    height: 120px; /* 您可以根据需要调整此高度 */
+    border-radius: 8px;
+    overflow: hidden; /* 确保背景图不会溢出圆角 */
+    background-color: #f0f0f0; /* 图片加载前/失败时的占位背景色 */
+    background-size: cover; /* 关键：使背景图覆盖整个容器 */
+    background-position: center; /* 关键：背景图居中显示 */
+    transition: transform 0.3s ease;
+}
+
+/* 鼠标悬停时轻微放大 */
+.entry-page-prev:hover,
+.entry-page-next:hover {
+    transform: scale(1.02);
+}
+
+/* 链接和蒙版层 */
+.entry-page-prev a,
+.entry-page-next a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 垂直居中标题 */
+    align-items: center; /* 水平居中标题 */
+    padding: 20px;
+    text-decoration: none;
+    color: #ffffff; /* 白色文字 */
+    background: rgba(0, 0, 0, 0.45); /* 黑色蒙版 */
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+/* 悬停时蒙版变深 */
+.entry-page-prev a:hover,
+.entry-page-next a:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* 文章标题 */
+.entry-page-prev a span,
+.entry-page-next a span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    /* 标题过长时显示省略号 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* 防止标题撑开容器 */
+}
+
+/* 底部信息 (上一篇/下一篇/日期) */
+.entry-page-info {
+    position: absolute; /* 绝对定位于卡片底部 */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex; /* 使用 flex 替代 float 来布局左右内容 */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px; /* 内边距 */
+    background: rgba(0, 0, 0, 0.2); /* 底部透明条 */
+    font-size: 0.85rem;
+    color: #f0f0f0; /* 亮灰色文字 */
+}
+
+/* .pull-left 和 .pull-right 里的 float 就不再需要了 
+*/
+.entry-page-info .pull-left {
+    /* float: left; - 已被 flex 替代 */
+}
+
+.entry-page-info .pull-right {
+    /* float: right; - 已被 flex 替代 */
+}
+
+/* SVG 图标样式 */
+.entry-page-info .wpcom-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor; /* 使 SVG 颜色与文字颜色一致 */
+    vertical-align: -0.15em; /* 轻微调整图标垂直对齐 */
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+/* 响应式设计：在小屏幕上堆叠 */
+@media (max-width: 767px) {
+    .entry-page {
+        flex-direction: column; /* 垂直堆叠 */
+        gap: 15px;
+    }
+    .entry-page-prev, .entry-page-next {
+        height: 100px; /* 移动端高度小一点 */
+        min-width: 100%; /* 占满全宽 */
     }
 }
