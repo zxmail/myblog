@@ -1345,7 +1345,7 @@ ul, li {
 /* 鼠标悬停时轻微放大 */
 .entry-page-prev:hover,
 .entry-page-next:hover {
-    transform: scale(1.02);
+    transform: scale(1.00);
 }
 
 /* 链接和蒙版层 */
@@ -1359,7 +1359,7 @@ ul, li {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* 标题顶部对齐 */
-    padding: 16px;
+    padding: 6px 15px;
     text-decoration: none;
     color: #ffffff; /* 白色文字 */
     background: rgba(0, 0, 0, 0.45); /* 黑色蒙版 */
