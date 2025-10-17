@@ -1366,15 +1366,27 @@ ul, li {
     bottom: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 垂直居中标题 */
-    align-items: center; /* 水平居中标题 */
+    /* --- 修改点 --- */
+    justify-content: flex-start; /* 改为 flex-start (顶部对齐), 而不是 center */
+    /* align-items: center; (移除) */
+    /* text-align: center; (移除) */
+    /* --- 修改结束 --- */
     padding: 20px;
     text-decoration: none;
     color: #ffffff; /* 白色文字 */
     background: rgba(0, 0, 0, 0.45); /* 黑色蒙版 */
-    text-align: center;
     transition: background 0.3s ease;
 }
+
+/* --- 新增规则：分别为左右卡片设置文本对齐 --- */
+.entry-page-prev a {
+    text-align: left;
+}
+.entry-page-next a {
+    text-align: right;
+}
+/* --- 新增结束 --- */
+
 
 /* 悬停时蒙版变深 */
 .entry-page-prev a:hover,
@@ -1392,6 +1404,7 @@ ul, li {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%; /* 防止标题撑开容器 */
+    /* (标题会根据父元素 <a> 的 text-align 自动左右对齐) */
 }
 
 /* 底部信息 (上一篇/下一篇/日期) */
@@ -1439,5 +1452,10 @@ ul, li {
     .entry-page-prev, .entry-page-next {
         height: 100px; /* 移动端高度小一点 */
         min-width: 100%; /* 占满全宽 */
+    }
+    
+    /* --- 新增：在移动端，将下一篇的标题也改回左对齐 --- */
+    .entry-page-next a {
+        text-align: left;
     }
 }
