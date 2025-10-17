@@ -197,7 +197,7 @@
 
 <nav class="entry-page">
     {{#pageNewer}}
-    <a href="{{url}}">
+    <a href="{{firstImageUrl}}">
         <span class="page-title">{{title}}</span>
         <span class="page-meta">
             <span class="page-arrow">« 上一篇</span>
@@ -215,7 +215,7 @@
     {{/pageNewer}}
 
     {{#pageOlder}}
-    <a href="{{url}}" style="align-items: flex-end;"> <span class="page-title" style="text-align: right;">{{title}}</span>
+    <a href="{{firstImageUrl}}" style="align-items: flex-end;"> <span class="page-title" style="text-align: right;">{{title}}</span>
         <span class="page-meta">
             <span class="page-date">{{createDate10}}</span>
             <span class="page-arrow">下一篇 »</span>
