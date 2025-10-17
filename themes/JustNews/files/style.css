@@ -1333,8 +1333,8 @@ ul, li {
     width: 48.5%; /* <--- 新增：使用 width 实现间距 */
     min-width: 250px; /* 最小宽度，防止在 flex 中被过度压缩 (可保留) */
     position: relative; /* 关键：为内部绝对定位提供锚点 */
-    height: 120px; /* 您可以根据需要调整此高度 */
-    border-radius: 8px;
+    height: 80px; /* 您可以根据需要调整此高度 */
+    border-radius: 5px;
     overflow: hidden; /* 确保背景图不会溢出圆角 */
     background-color: #f0f0f0; /* 图片加载前/失败时的占位背景色 */
     background-size: cover; /* 关键：使背景图覆盖整个容器 */
@@ -1359,20 +1359,20 @@ ul, li {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* 标题顶部对齐 */
-    padding: 20px;
+    padding: 16px;
     text-decoration: none;
     color: #ffffff; /* 白色文字 */
     background: rgba(0, 0, 0, 0.45); /* 黑色蒙版 */
     transition: background 0.3s ease;
 }
 
-/* 分别为左右卡片设置文本对齐 */
+/* 分别为左右卡片设置文本对齐
 .entry-page-prev a {
     text-align: left;
 }
 .entry-page-next a {
     text-align: right;
-}
+}  */
 
 /* 悬停时蒙版变深 */
 .entry-page-prev a:hover,
@@ -1383,8 +1383,6 @@ ul, li {
 /* 文章标题 */
 .entry-page-prev a span,
 .entry-page-next a span {
-    font-size: 1.1rem;
-    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1400,9 +1398,9 @@ ul, li {
     display: flex; 
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px; 
+    padding: 5px 15px; 
     background: rgba(0, 0, 0, 0.2); 
-    font-size: 0.85rem;
+    font-size: 12px;
     color: #f0f0f0; 
 }
 
@@ -1429,8 +1427,8 @@ ul, li {
         margin-bottom: 0;
     }
     
-    /* 在移动端，将下一篇的标题也改回左对齐 */
+    /* 在移动端，将下一篇的标题也改回左对齐 
     .entry-page-next a {
         text-align: left;
-    }
+    } */
 }
