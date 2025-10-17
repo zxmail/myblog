@@ -214,15 +214,17 @@
                         </ul>
                     </div>
 
-                    <div class="widget widget-tags">
-                        <h3 class="widget-title">标签</h3>
-                        <div class="tag-cloud">
-                            <a href="#">示例标签</a>
-                            <a href="#">Cloudflare</a>
-                            <a href="#">Workers</a>
-                            <a href="#">Blog</a>
-                        </div>
-                    </div>
+<div class="widget widget-tags">
+    <h3 class="widget-title">标签</h3>
+    <div class="tag-cloud">
+        {{ #widgetTagList }}
+            <a href="{{url}}">{{name}}</a>
+        {{ /widgetTagList }}
+        {{ ^widgetTagList }}
+            <span>暂无标签</span>
+        {{ /widgetTagList }}
+    </div>
+</div>
 
                     <div class="widget widget-comments">
                         <h3 class="widget-title">最近评论</h3>
