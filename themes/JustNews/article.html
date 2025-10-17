@@ -156,25 +156,38 @@
                         </div>
 
                         <div class="entry-page">
-                            {{ #articleNewer }}	
-                            <div class="entry-page-prev">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="prev">
-                                    <span class="page-arrow"><i class="fal fa-chevron-left"></i> 上一篇</span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
-                            </div>
-                            {{ /articleNewer }}
 
-                            {{ #articleOlder }}
-                            <div class="entry-page-next">
-                                <a href="{{ &url }}" title="{{ &title }}" rel="next">
-                                     <span class="page-arrow">下一篇 <i class="fal fa-chevron-right"></i></span>
-                                    <span class="page-title">{{ &title }}</span>
-                                </a>
-                            </div>
-                            {{ /articleOlder }}
+									{{ #articleNewer }}	
+									<div class="entry-page-prev j-lazy lazyloaded" style="background-image: url(&quot;{{ &img }}&quot;); display: block;" data-original="{{ &img }}" data-bg="{{ &img }}" fifu-width="392" fifu-height="86">
+										<a href="{{ &url }}" title="{{ &title }}" rel="prev" >
+											<span>{{ &title }}</span></a>
+										<div class="entry-page-info">
+											<span class="pull-left">
+												<i class="wpcom-icon wi">
+													<svg aria-hidden="true">
+														<use xlink:href="#wi-arrow-left-double"></use>
+													</svg>
+												</i>上一篇</span>
+											<span class="pull-right">{{ &createDate10 }}</span></div>
+									</div>
+									{{ /articleNewer }}
+
+									{{ #articleOlder }}
+									<div class="entry-page-next j-lazy lazyloaded" style="background-image: url(&quot;{{ &img }}&quot;); display: block;" data-original="{{ &img }}" data-bg="{{ &img }}" fifu-width="392" fifu-height="86">
+										<a href="{{ &url }}" title="{{ &title }}" rel="next" >
+											<span>{{ &title }}</span></a>
+										<div class="entry-page-info">
+											<span class="pull-right">下一篇
+												<i class="wpcom-icon wi">
+													<svg aria-hidden="true">
+														<use xlink:href="#wi-arrow-right-double"></use></svg>
+												</i>
+											</span>
+											<span class="pull-left">{{ &createDate10 }}</span></div>
+									</div>
+									{{ /articleOlder }}
+								</div>
                         </div>
-                    </div>
                 </div>
                 <div id="comments" class="entry-comments entry-card">
                     {{ &OPT.commentCode }}
