@@ -1410,16 +1410,6 @@ ul, li {
 .entry-page-info .pull-left {}
 .entry-page-info .pull-right {}
 
-/* SVG 图标样式 */
-.entry-page-info .wpcom-icon {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    fill: currentColor; 
-    vertical-align: -0.15em; 
-    margin-right: 4px;
-    margin-left: 4px;
-}
 
 /* 响应式设计：在小屏幕上堆叠 */
 @media (max-width: 767px) {
