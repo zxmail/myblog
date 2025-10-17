@@ -75,7 +75,8 @@
             color: #555;
             font-style: italic;
         }
-        /* --- 新增表单样式 --- */
+        
+        /* --- START: Horizontal Form Row Styles --- */
         .comment-form p {
              margin: 10px 0;
         }
@@ -83,7 +84,61 @@
             margin-right: 5px;
             font-size: 14px;
             color: #555;
+            vertical-align: middle; /* 帮助标签与输入框对齐 */
         }
+
+        .comment-form-bottom-row {
+            display: flex;
+            flex-wrap: wrap; /* 允许在小屏幕上换行 */
+            align-items: center; /* 垂直居中对齐 */
+            justify-content: flex-start; /* 从左侧开始排列 */
+            margin-top: 10px;
+        }
+        /* 移除 flex 容器内 p 元素的默认上下边距，并添加右边距 */
+        .comment-form-bottom-row p {
+            margin: 5px 15px 5px 0; /* (上 右 下 左) 为元素之间添加右边距 */
+        }
+        .comment-form-bottom-row .form-submit {
+            margin-right: 0; /* 最后一个元素不需要右边距 */
+        }
+
+        /* 统一下拉框、输入框和按钮的高度 */
+        #contact-type,
+        #contact-value,
+        #captcha-input,
+        .comment-form-bottom-row .submit {
+            height: 36px; /* 统一高度 */
+            padding-top: 5px;
+            padding-bottom: 5px;
+            box-sizing: border-box; /* 确保 padding 不会破坏高度 */
+            vertical-align: middle;
+        }
+        
+        #contact-type {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        #contact-value {
+            width: 150px; /* 给一个固定宽度 */
+            margin-left: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        #captcha-input {
+            width: 60px; /* 验证码输入框宽度 */
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .comment-form-bottom-row .submit {
+            /* 调整 padding 以匹配新高度 */
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        /* --- END: Horizontal Form Row Styles --- */
+        
         /* --- END: New Comment Styles --- */
 
     </style>
@@ -250,24 +305,30 @@
                             <textarea id="comment-content" name="content" cols="45" rows="5" required placeholder="请输入评论..."></textarea>
                         </p>
                         
-                        <p class="comment-form-contact">
-                            <label for="contact-type">联系方式 (可选):</label>
-                            <select id="contact-type" name="contact-type" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
-                                <option value="email">邮箱</option>
-                                <option value="qq">QQ</option>
-                                <option value="wechat">微信</option>
-                                <option value="telegram">Telegram</option>
-                            </select>
-                            <input type="text" id="contact-value" name="contact-value" placeholder="请输入您的联系方式" style="width: calc(100% - 110px); padding: 5px; border-radius: 4px; border: 1px solid #ddd; margin-left: 5px; box-sizing: border-box;">
-                        </p>
-                        <p class="comment-form-captcha">
-                            <label for="captcha-input">验证: <span id="captcha-question" style="font-weight: bold; color: #333; margin: 0 5px;"></span> = ?</label>
-                            <input type="text" id="captcha-input" name="captcha" required style="width: 60px; padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
-                            <input type="hidden" id="captcha-answer"> </p>
-                        <p class="form-submit">
-                            <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
-                        </p>
-                    </form>
+                        <div class="comment-form-bottom-row">
+
+                            <p class="comment-form-contact">
+                                <label for="contact-type">联系方式:</label>
+                                <select id="contact-type" name="contact-type">
+                                    <option value="email">邮箱</option>
+                                    <option value="qq">QQ</option>
+                                    <option value="wechat">微信</option>
+                                    <option value="telegram">Telegram</option>
+                                </select>
+                                <input type="text" id="contact-value" name="contact-value" placeholder="请输入联系方式">
+                            </p>
+
+                            <p class="comment-form-captcha">
+                                <label for="captcha-input">验证: <span id="captcha-question" style="font-weight: bold; color: #333; margin: 0 5px;"></span> = ?</label>
+                                <input type="text" id="captcha-input" name="captcha" required>
+                                <input type="hidden" id="captcha-answer"> </p>
+                            
+                            <p class="form-submit">
+                                <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
+                            </p>
+
+                        </div>
+                        </form>
             
                     <h3 class="widget-title" id="comments-title" style="margin-top: 30px;">评论列表</h3>
                     <ul id="comment-list" class="comment-list">
@@ -628,7 +689,7 @@
                         switch(savedComment.contact.type) {
                             case 'email': typeLabel = '邮箱'; break;
                             case 'qq': typeLabel = 'QQ'; break;
-_case 'wechat': typeLabel = '微信'; break;
+                            case 'wechat': typeLabel = '微信'; break;
                             case 'telegram': typeLabel = 'Telegram'; break;
                         }
                         
