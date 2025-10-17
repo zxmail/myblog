@@ -1277,16 +1277,10 @@ ul, li {
     color: #fff;
 }
 
-/* * 移除了这里原有的 .entry-page, .entry-page a, .entry-page-next,
- * .entry-page .page-arrow, 和 .entry-page .page-title
- * 的旧样式代码。
-*/
-
 /* Comments Section */
 #comments.entry-card {
     margin-top: 20px;
 }
-
 
 /* Responsive Adjustments for Article */
 @media (max-width: 990px) {
@@ -1311,10 +1305,7 @@ ul, li {
         font-size: 15px;
     }
     
-    /* 移除了这里原有的 .entry-page 相关的媒体查询样式 */
-    /* .entry-page { ... } */
-    /* .entry-page a { ... } */
-    /* .entry-page-next { ... } */
+    /* 移除了旧的 .entry-page 媒体查询样式 */
 }
 /* --- 智能粘性侧边栏 --- */
 @media (min-width: 991px) {
@@ -1326,20 +1317,21 @@ ul, li {
     }
 }
 
-/* --- 新的文章页 - 上一篇/下一篇 样式 (背景图版) --- */
+/* --- 新的文章页 - 上一篇/下一篇 样式 (背景图版 - 修正为 width: 48.5% 方法) --- */
 
 .entry-page {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap; /* 在小屏幕上允许换行 */
-    gap: 20px; /* 卡片之间的间距 */
+    /* gap: 20px;  <--- 移除 gap */
     margin-top: 30px;
 }
 
 .entry-page-prev,
 .entry-page-next {
-    flex: 1; /* 占据可用空间 */
-    min-width: 250px; /* 最小宽度，防止在 flex 中被过度压缩 */
+    /* flex: 1; <--- 移除 flex: 1 */
+    width: 48.5%; /* <--- 新增：使用 width 实现间距 */
+    min-width: 250px; /* 最小宽度，防止在 flex 中被过度压缩 (可保留) */
     position: relative; /* 关键：为内部绝对定位提供锚点 */
     height: 120px; /* 您可以根据需要调整此高度 */
     border-radius: 8px;
@@ -1366,11 +1358,7 @@ ul, li {
     bottom: 0;
     display: flex;
     flex-direction: column;
-    /* --- 修改点 --- */
-    justify-content: flex-start; /* 改为 flex-start (顶部对齐), 而不是 center */
-    /* align-items: center; (移除) */
-    /* text-align: center; (移除) */
-    /* --- 修改结束 --- */
+    justify-content: flex-start; /* 标题顶部对齐 */
     padding: 20px;
     text-decoration: none;
     color: #ffffff; /* 白色文字 */
@@ -1378,15 +1366,13 @@ ul, li {
     transition: background 0.3s ease;
 }
 
-/* --- 新增规则：分别为左右卡片设置文本对齐 --- */
+/* 分别为左右卡片设置文本对齐 */
 .entry-page-prev a {
     text-align: left;
 }
 .entry-page-next a {
     text-align: right;
 }
-/* --- 新增结束 --- */
-
 
 /* 悬停时蒙版变深 */
 .entry-page-prev a:hover,
@@ -1399,46 +1385,38 @@ ul, li {
 .entry-page-next a span {
     font-size: 1.1rem;
     font-weight: 600;
-    /* 标题过长时显示省略号 */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%; /* 防止标题撑开容器 */
-    /* (标题会根据父元素 <a> 的 text-align 自动左右对齐) */
+    max-width: 100%; 
 }
 
 /* 底部信息 (上一篇/下一篇/日期) */
 .entry-page-info {
-    position: absolute; /* 绝对定位于卡片底部 */
+    position: absolute; 
     bottom: 0;
     left: 0;
     width: 100%;
-    display: flex; /* 使用 flex 替代 float 来布局左右内容 */
+    display: flex; 
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px; /* 内边距 */
-    background: rgba(0, 0, 0, 0.2); /* 底部透明条 */
+    padding: 10px 15px; 
+    background: rgba(0, 0, 0, 0.2); 
     font-size: 0.85rem;
-    color: #f0f0f0; /* 亮灰色文字 */
+    color: #f0f0f0; 
 }
 
-/* .pull-left 和 .pull-right 里的 float 就不再需要了 
-*/
-.entry-page-info .pull-left {
-    /* float: left; - 已被 flex 替代 */
-}
-
-.entry-page-info .pull-right {
-    /* float: right; - 已被 flex 替代 */
-}
+/* .pull-left 和 .pull-right 里的 float 就不再需要了 */
+.entry-page-info .pull-left {}
+.entry-page-info .pull-right {}
 
 /* SVG 图标样式 */
 .entry-page-info .wpcom-icon {
     display: inline-block;
     width: 1em;
     height: 1em;
-    fill: currentColor; /* 使 SVG 颜色与文字颜色一致 */
-    vertical-align: -0.15em; /* 轻微调整图标垂直对齐 */
+    fill: currentColor; 
+    vertical-align: -0.15em; 
     margin-right: 4px;
     margin-left: 4px;
 }
@@ -1447,14 +1425,21 @@ ul, li {
 @media (max-width: 767px) {
     .entry-page {
         flex-direction: column; /* 垂直堆叠 */
-        gap: 15px;
+        /* gap: 15px; <--- 移除 gap */
     }
-    .entry-page-prev, .entry-page-next {
+    .entry-page-prev, 
+    .entry-page-next {
+        width: 100%; /* <--- 修改：小屏幕占满全宽 */
         height: 100px; /* 移动端高度小一点 */
-        min-width: 100%; /* 占满全宽 */
+        min-width: 100%; /* 占满全宽 (冗余，但无害) */
+        margin-bottom: 15px; /* <--- 新增：用 margin 替代 gap */
+    }
+    .entry-page-prev:last-child, /* <--- 新增：移除最后一个元素的下边距 */
+    .entry-page-next:last-child {
+        margin-bottom: 0;
     }
     
-    /* --- 新增：在移动端，将下一篇的标题也改回左对齐 --- */
+    /* 在移动端，将下一篇的标题也改回左对齐 */
     .entry-page-next a {
         text-align: left;
     }
