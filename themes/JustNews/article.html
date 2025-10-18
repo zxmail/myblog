@@ -349,7 +349,6 @@
             const submitButton = document.getElementById('submit-comment');
 
             function loadComments() {
-                // 调用新的安全 GET 接口
                 fetch(`/api/comments/${articleSlug}`)
                 .then(response => response.json())
                 .then(comments => {
@@ -365,10 +364,9 @@
                         const commentEl = document.createElement('div');
                         commentEl.className = 'comment';
 
-                        // 使用服务器为Cravatar生成的临时ID
                         const avatar = `https://cravatar.cn/avatar/${comment.id}?s=48&d=mp`;
                         
-                        // --- START: 已还原的联系方式逻辑（安全） ---
+                        // --- START: 已修改的联系方式逻辑 ---
                         let contactHtml = '';
                         if (comment.contact && comment.contact.value) {
                             let contactIcon = 'fa-comment-dots'; // default
@@ -376,9 +374,15 @@
                             if (comment.contact.type === 'qq') contactIcon = 'fa-qq';
                             if (comment.contact.type === 'wechat') contactIcon = 'fa-weixin';
 
-                            // --- 无需前端脱敏 ---
-                            // 直接显示服务器传来的、已经脱敏的 displayValue
-                            const displayValue = comment.contact.value;
+                            // --- Masking Logic ---
+                            let displayValue = '';
+                            const originalValue = comment.contact.value;
+                            if (originalValue.length <= 2) {
+                                displayValue = originalValue;
+                            } else {
+                                displayValue = originalValue.substring(0, 2) + '*'.repeat(originalValue.length - 2);
+                            }
+                            // --- End Masking Logic ---
                             
                             contactHtml = `
                                 <span class="comment-contact">
@@ -386,7 +390,7 @@
                                 </span>
                             `;
                         }
-                        // --- END: 已还原的联系方式逻辑（安全） ---
+                        // --- END: 已修改的联系方式逻辑 ---
 
                         // --- Sanitize content ---
                         const contentDiv = document.createElement('div');
