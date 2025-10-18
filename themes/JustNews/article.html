@@ -2,759 +2,526 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
-    <title>{{ &title }}</title>
-    <meta name="keywords" content="{{ &OPT.keywords }}" />
-    <meta name="description" content="{{ &OPT.siteDescription }}" />
-
-    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
-	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
-	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
-	{{& OPT.codeBeforHead}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{articleSingle.title}} - {{& OPT.siteName}}</title>
+    <meta name="description" content="{{articleSingle.contentText}}">
+    <meta name="keywords" content="{{articleSingle.tags}}">
+    <link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/style.css">
+    <link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/fonts/fontawesome5pro-all.min.css">
+	<link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/swiper.min.css">
+    <link rel="stylesheet" href="{{& OPT.theme_github_path}}JustNews/files/noto+serif.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/atom-one-light.min.css">
     <style>
-        .breadcrumb a {
-            color: #888; /* 设置面包屑导航中链接的颜色为灰色 */
+        :root {
+            --primary-color: #007bff; 
         }
-        .breadcrumb a:hover {
-            color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
-        }
+        .pagination-bar { text-align: center; margin-top: 20px; }
+        .pagination-bar a { text-decoration: none; padding: 5px 10px; border: 1px solid #ddd; margin: 0 5px; }
+        .pagination-bar a:hover { background: #f0f0f0; }
+        .pagination-bar .current { font-weight: bold; padding: 5px 10px; }
+		.post-navigation { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+		.post-navigation .nav-previous, .post-navigation .nav-next { width: 100%; max-width: 48%; margin-bottom: 20px; }
+		.post-navigation a { text-decoration: none; color: #333; }
+		.post-navigation a:hover { color: var(--primary-color); }
+		.post-navigation .nav-title { font-size: 14px; color: #777; margin-bottom: 5px; }
+		.post-navigation .post-title { font-size: 16px; font-weight: bold; line-height: 1.4; display: block; }
+		.post-navigation .nav-next { text-align: right; }
+		.post-navigation .nav-image { margin-top: 10px; }
+		.post-navigation .nav-image img { max-width: 100px; height: 60px; object-fit: cover; border-radius: 5px; }
+		.post-navigation .nav-previous .nav-image { float: left; margin-right: 10px; }
+		.post-navigation .nav-next .nav-image { float: right; margin-left: 10px; }
+		.nav-links .nav-previous a, .nav-links .nav-next a { display: flex; align-items: center; }
+		.nav-links .nav-previous .post-details { text-align: left; }
+		.nav-links .nav-next .post-details { text-align: right; }
+		.nav-links .nav-next a { flex-direction: row-reverse; }
 
-        /* --- START: New Comment Styles --- */
-        .comment-form {
-            margin-top: 20px;
-        }
-        .comment-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
-            min-height: 100px;
-        }
-        .comment-form .form-submit {
-            margin-top: 10px;
-        }
-        .comment-form .submit {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .comment-form .submit:hover {
-            background-color: #555;
-        }
-        .comment-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-        .comment-item {
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
-        }
-        .comment-item:last-child {
-            border-bottom: none;
-        }
-        .comment-body p {
-            margin: 0 0 10px;
-        }
-        .comment-meta {
-            font-size: 12px;
-            color: #888;
-        }
-        .comment-contact {
-            margin-left: 10px;
-            color: #555;
-            font-style: italic;
-        }
-        
-        /* --- START: Horizontal Form Row Styles --- */
-        .comment-form p {
-             margin: 10px 0;
-        }
-        .comment-form label {
-            margin-right: 5px;
-            font-size: 14px;
-            color: #555;
-            vertical-align: middle; /* 帮助标签与输入框对齐 */
-        }
-
-        .comment-form-bottom-row {
-            display: flex;
-            flex-wrap: wrap; /* 允许在小屏幕上换行 */
-            align-items: center; /* 垂直居中对齐 */
-            justify-content: flex-start; /* 从左侧开始排列 */
-            margin-top: 10px;
-        }
-        /* 移除 flex 容器内 p 元素的默认上下边距，并添加右边距 */
-        .comment-form-bottom-row p {
-            margin: 5px 15px 5px 0; /* (上 右 下 左) 为元素之间添加右边距 */
-        }
-        .comment-form-bottom-row .form-submit {
-            margin-right: 0; /* 最后一个元素不需要右边距 */
-        }
-
-        /* 统一下拉框、输入框和按钮的高度 */
-        #contact-type,
-        #contact-value,
-        #captcha-input,
-        .comment-form-bottom-row .submit {
-            height: 36px; /* 统一高度 */
-            padding-top: 5px;
-            padding-bottom: 5px;
-            box-sizing: border-box; /* 确保 padding 不会破坏高度 */
-            vertical-align: middle;
-        }
-        
-        #contact-type {
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        #contact-value {
-            width: 150px; /* 给一个固定宽度 */
-            margin-left: 5px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        
-        #captcha-input {
-            width: 60px; /* 验证码输入框宽度 */
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        
-        .comment-form-bottom-row .submit {
-            /* 调整 padding 以匹配新高度 */
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        /* --- END: Horizontal Form Row Styles --- */
-        
-        /* --- END: New Comment Styles --- */
-/* --- START: Custom Focus Style --- */
-        /* 针对评论表单中的所有输入元素（文本域、下拉框、文本框） */
-        .comment-form textarea:focus,
-        .comment-form select:focus,
-        .comment-form input[type="text"]:focus {
-            outline: none; /* 关键：移除了浏览器默认的“粗黑”轮廓 */
-            border-color: #888; /* 将边框颜色在聚焦时变为柔和的灰色（不再“黑”） */
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); /* 添加一个非常轻微的阴影，提示聚焦状态 */
-        }
-        /* --- END: Custom Focus Style --- */
+		@media (max-width: 767px) {
+			.post-navigation .nav-previous, .post-navigation .nav-next { max-width: 100%; }
+			.post-navigation .nav-image img { max-width: 80px; height: 50px; }
+		}
+		
+		#comments-section { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+		.comment-form-grid { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 15px; margin-bottom: 15px; }
+		#comment-form textarea { width: 100%; min-height: 120px; }
+		#comment-form input, #comment-form select, #comment-form textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+		#comment-form .comment-form-actions { display: flex; justify-content: flex-end; }
+		#comment-form button { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; }
+		#comment-form button:hover { background-color: #0056b3; }
+		#comments-list { margin-top: 30px; }
+		.comment { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0; display: flex; }
+		.comment-avatar { margin-right: 15px; }
+		.comment-avatar img { width: 48px; height: 48px; border-radius: 50%; }
+		.comment-content { flex: 1; }
+		.comment-meta { font-size: 13px; color: #777; margin-bottom: 5px; }
+		.comment-author { font-weight: bold; color: #333; margin-right: 8px; }
+		.comment-date { margin-right: 8px; }
+		.comment-contact { font-size: 12px; background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+		.comment-contact .fas { margin-right: 3px; }
+		.comment-body { margin-top: 5px; line-height: 1.6; color: #444; }
+		#comment-form .full-width { grid-column: 1 / -1; }
+		@media (max-width: 600px) { .comment-form-grid { grid-template-columns: 1fr; } }
+		.comment-form-contact { display: flex; }
+		.comment-form-contact select { flex: 0 0 100px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+		.comment-form-contact input { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 0; }
+		
     </style>
-    </head>
-<body class="m-flex"> 
-	<header class="site-header">
-    <div class="header-container">
-        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
-            <i class="fal fa-bars"></i>
-        </div>
-        <div class="header-left">
-            <div class="logo-area">
-                {{ #OPT.logo }}
-                <a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>
-                {{ /OPT.logo }}
-                {{ #OPT.showSiteNameInHeader }}
-                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
-                {{ /OPT.showSiteNameInHeader }}
+    {{{ &OPT.codeBeforHead }}}
+</head>
+<body>
+    {{{ &OPT.codeBeforBody }}}
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                {{#OPT.logo}}
+                <a href="/" class="logo">
+                    <img src="{{& OPT.logo}}" alt="{{& OPT.siteName}} Logo">
+                </a>
+                {{/OPT.logo}}
+                {{#OPT.showSiteNameInHeader}}
+                <a href="/" class="site-name-link">
+                    <span class="site-name">{{& OPT.siteName}}</span>
+                </a>
+                {{/OPT.showSiteNameInHeader}}
             </div>
-            <nav class="main-nav" id="main-nav">
-                <div class="close-menu-btn" id="close-menu-btn">&times;</div>
-
-                <div class="mobile-nav-header">
-                    <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="导航背景" class="mobile-nav-header-image">
-                </div>
-
-                <ul>
-                    {{ #OPT.widgetMenuList }}
-                    <li>
-                        <a href="{{ &url }}">
-                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                            {{ #hasChildren }}
-                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /hasChildren }}
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    {{#OPT.widgetMenuList}}
+                    <li class="nav-item {{#hasChildren}}has-submenu{{/hasChildren}}">
+                        <a href="{{url}}" {{^url}}onclick="return false;"{{/url}}>
+                            {{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}
+                            {{#hasChildren}}<i class="fas fa-chevron-down submenu-toggle"></i>{{/hasChildren}}
                         </a>
-                        {{ #hasChildren }}
-                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /hasChildren }}
-
-                        {{ #hasChildren }}
-                        <ul class="sub-menu">
-                            {{ #children }}
-                            <li>
-                                <a href="{{ &url }}">
-                                    {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #hasChildren }}
-                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /hasChildren }}
+                        {{#hasChildren}}
+                        <ul class="submenu">
+                            {{#children}}
+                            <li class="nav-item {{#hasChildren}}has-submenu{{/hasChildren}}">
+                                <a href="{{url}}" {{^url}}onclick="return false;"{{/url}}>
+                                    {{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}
+                                    {{#hasChildren}}<i class="fas fa-chevron-right submenu-toggle-nested"></i>{{/hasChildren}}
                                 </a>
-                                {{ #hasChildren }}
-                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /hasChildren }}
-
-                                {{ #hasChildren }}
-                                <ul class="sub-menu">
-                                    {{ #children }}
-                                    <li>
-                                        <a href="{{ &url }}">
-                                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                        </a>
+                                {{#hasChildren}}
+                                <ul class="submenu-nested">
+                                    {{#children}}
+                                    <li class="nav-item">
+                                        <a href="{{url}}">{{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}</a>
                                     </li>
-                                    {{ /children }}
+                                    {{/children}}
                                 </ul>
-                                {{ /hasChildren }}
+                                {{/hasChildren}}
                             </li>
-                            {{ /children }}
+                            {{/children}}
                         </ul>
-                        {{ /hasChildren }}
+                        {{/hasChildren}}
                     </li>
-                    {{ /OPT.widgetMenuList }}
-                     <li class="login-btn-mobile">
-                        <a href="/admin">
-                            <button class="login-btn-header">登录</button>
-                        </a>
-                    </li>
+                    {{/OPT.widgetMenuList}}
                 </ul>
             </nav>
+            <div class="mobile-nav-toggle">
+                <i class="fas fa-bars"></i>
             </div>
-
-        <div class="header-right">
-            <div class="search-icon" id="search-toggle">
-                <i class="fal fa-search"></i>
-            </div>
-             <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
         </div>
-    </div>
-
-	<div class="search-box-container" id="search-box">
-        <input type="text" placeholder="输入关键词搜索..." class="search-input">
-        <button class="search-button">搜索</button>
-        <i class="far fa-chevron-double-up" id="close-search-btn" title="收起"></i>
-    </div>
-</header>
-    <div id="wrap" class="container">
-        <div class="main-layout">
-            <article id="post-{{ &articleSingle.id }}" class="post-article">
-                <div class="entry-card">
-					<div class="breadcrumb" style="margin-bottom: 23px; font-size: 14px; color: #888;">
-						{{{ articleBreadcrumb }}}
-					</div>
-
-                    <div class="entry-head">
-                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
-                        
-                        <div class="entry-info">
-                            <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
-                            <span class="dot">•</span>
-                             <span class="entry-category">
-                                <i class="fal fa-folder-open"></i>
-                                {{ #articleSingle.categories }}
-                                    <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
-                                {{ /articleSingle.categories }}
-                            </span>
-                            <span class="dot">•</span>
-                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
-                                <i class="fal fa-eye"></i>
-                                <em>{{ &OPT.otherCodeA }}</em>
-                                <i class="leancloud-visitors-count"></i> 100
-                            </span>
-                        </div>
-                    </div>
-                    <div class="entry-content">
-                        {{{ articleSingle.contentHtml }}}
-                    </div>
-                    <div class="entry-footer">
-                        <div class="entry-tag">
-                             <i class="fal fa-tags"></i>
-                            {{ #articleSingle.tags }}
-                                <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
-                            {{ /articleSingle.tags }}
-                        </div>
-
-                        <div class="entry-page">
-
-									{{ #articleNewer }}	
-									<div class="entry-page-prev j-lazy lazyloaded" style="background-image: url(&quot;{{ &img }}&quot;); display: block;" data-original="{{ &img }}" data-bg="{{ &img }}" fifu-width="392" fifu-height="86">
-										<a href="{{ &url }}" title="{{ &title }}" rel="prev" >
-											<span>{{ &title }}</span></a>
-										<div class="entry-page-info">
-											<span class="pull-left">上一篇</span>
-											<span class="pull-right">{{ &createDate10 }}</span></div>
-									</div>
-									{{ /articleNewer }}
-
-									{{ #articleOlder }}
-									<div class="entry-page-next j-lazy lazyloaded" style="background-image: url(&quot;{{ &img }}&quot;); display: block;" data-original="{{ &img }}" data-bg="{{ &img }}" fifu-width="392" fifu-height="86">
-										<a href="{{ &url }}" title="{{ &title }}" rel="next" >
-											<span>{{ &title }}</span></a>
-										<div class="entry-page-info">
-											<span class="pull-right">下一篇</span>
-											<span class="pull-left">{{ &createDate10 }}</span></div>
-									</div>
-									{{ /articleOlder }}
-								</div>
-                        </div>
-                </div>
-                
-                <div id="comments" class="entry-comments entry-card">
-                    <h3 class="widget-title">发表评论</h3>
-                    <form id="comment-form" class="comment-form">
-                        <p class="comment-form-comment">
-                            <textarea id="comment-content" name="content" cols="45" rows="5" required placeholder="请输入评论..."></textarea>
-                        </p>
-                        
-                        <div class="comment-form-bottom-row">
-
-                            <p class="comment-form-contact">
-                                <label for="contact-type">联系方式:</label>
-                                <select id="contact-type" name="contact-type">
-                                    <option value="email">邮箱</option>
-                                    <option value="qq">QQ</option>
-                                    <option value="wechat">微信</option>
-                                    <option value="telegram">Telegram</option>
-                                </select>
-                                <input type="text" id="contact-value" name="contact-value" placeholder="请输入联系方式">
-                            </p>
-
-                            <p class="comment-form-captcha">
-                                <label for="captcha-input">验证: <span id="captcha-question" style="font-weight: bold; color: #333; margin: 0 5px;"></span> = ?</label>
-                                <input type="text" id="captcha-input" name="captcha" required>
-                                <input type="hidden" id="captcha-answer"> </p>
-                            
-                            <p class="comment-form-contact">
-                                <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
-                            </p>
-
-                        </div>
-                        </form>
-            
-                    <h3 class="widget-title" id="comments-title" style="margin-top: 30px;">评论列表</h3>
-                    <ul id="comment-list" class="comment-list">
-                        <li class="comment-item">正在加载评论...</li>
+    </header>
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-header">
+            <div class="logo-container">
+                {{#OPT.logo}}
+                <a href="/" class="logo">
+                    <img src="{{& OPT.logo}}" alt="{{& OPT.siteName}} Logo">
+                </a>
+                {{/OPT.logo}}
+                {{#OPT.showSiteNameInHeader}}
+                <span class="site-name">{{& OPT.siteName}}</span>
+                {{/OPT.showSiteNameInHeader}}
+            </div>
+            <div class="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <nav class="mobile-nav">
+            <ul class="mobile-nav-list">
+                {{#OPT.widgetMenuList}}
+                <li class="mobile-nav-item {{#hasChildren}}has-submenu{{/hasChildren}}">
+                    <a href="{{url}}" {{^url}}class="no-link"{{/url}}>
+                        {{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}
+                        {{#hasChildren}}<span class="submenu-arrow"><i class="fas fa-chevron-down"></i></span>{{/hasChildren}}
+                    </a>
+                    {{#hasChildren}}
+                    <ul class="mobile-submenu">
+                        {{#children}}
+                        <li class="mobile-nav-item {{#hasChildren}}has-submenu{{/hasChildren}}">
+                            <a href="{{url}}" {{^url}}class="no-link"{{/url}}>
+                                {{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}
+                                {{#hasChildren}}<span class="submenu-arrow"><i class="fas fa-chevron-right"></i></span>{{/hasChildren}}
+                            </a>
+                            {{#hasChildren}}
+                            <ul class="mobile-submenu-nested">
+                                {{#children}}
+                                <li class="mobile-nav-item">
+                                    <a href="{{url}}">{{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}</a>
+                                </li>
+                                {{/children}}
+                            </ul>
+                            {{/hasChildren}}
+                            </li>
+                        {{/children}}
                     </ul>
-                </div>
+                    {{/hasChildren}}
+                </li>
+                {{/OPT.widgetMenuList}}
+            </ul>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-wrapper">
+                <article class="post-full">
+                    <header class="post-header">
+                        <div class="breadcrumb">
+                            {{{articleBreadcrumb}}} / <span>正文</span>
+                        </div>
+                        <h1 class="post-title">{{articleSingle.title}}</h1>
+                        <div class="post-meta">
+                            <span class="meta-item"><i class="fas fa-calendar-alt"></i> {{articleSingle.createDate10}}</span>
+                            {{#articleSingle.categories}}
+                            <span class="meta-item category-meta">
+                                <a href="/category/{{name}}/">
+                                    {{#icon}}<i class="{{icon}}"></i> {{/icon}}{{name}}
+                                </a>
+                            </span>
+                            {{/articleSingle.categories}}
+                        </div>
+                    </header>
+
+                    {{#articleSingle.img}}
+                    <figure class="post-feature-image">
+                        <img src="{{articleSingle.img}}" alt="{{articleSingle.title}}">
+                    </figure>
+                    {{/articleSingle.img}}
+
+                    <div class="post-content">
+                        {{{articleSingle.content}}}
+                    </div>
+
+                    {{#articleSingle.tags}}
+                    <div class="post-tags">
+                        <i class="fas fa-tags"></i>
+                        {{#articleSingle.tags}}
+                        <a href="/tags/{{.}}/">{{.}}</a>
+                        {{/articleSingle.tags}}
+                    </div>
+                    {{/articleSingle.tags}}
                 </article>
 
-            <aside class="right-column">
-                <div class="sidebar-sticky-wrapper">
-                    <div class="widget widget-recent-posts">
-                        <h3 class="widget-title">热门文章</h3>
-                        <ul>
-                            {{#widgetRecentlyList}}
-                            <li class="recent-article-item-box">
-                                {{#firstImageUrl}}
-                                <div class="recent-article-item-image">
-                                    <a href="{{url}}">
-                                        <img src="{{firstImageUrl}}" alt="{{title}}">
-                                    </a>
-                                </div>
-                                {{/firstImageUrl}}
-                                <div class="recent-article-item-content">
-                                    <a href="{{url}}">{{title}}</a>
-                                    <span class="recent-article-item-date">{{createDate10}}</span>
-                                </div>
-                            </li>
-                            {{/widgetRecentlyList}}
-                        </ul>
-                    </div>
+				<nav class="post-navigation" aria-label="文章">
+					<div class="nav-links">
+						{{#articleNewer}}
+						<div class="nav-previous">
+							<a href="{{url}}" rel="prev">
+								{{#img}}
+								<div class="nav-image"><img src="{{img}}" alt="{{title}}"></div>
+								{{/img}}
+								<div class="post-details">
+									<span class="nav-title"><i class="fas fa-chevron-left"></i> 上一篇</span>
+									<span class="post-title">{{title}}</span>
+								</div>
+							</a>
+						</div>
+						{{/articleNewer}}
 
-                    <div class="widget widget-categories">
-                        <h3 class="widget-title">分类目录</h3>
-                        <ul>
-                            {{#widgetCategoryList}}
-                            <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
-                            {{/widgetCategoryList}}
-                        </ul>
-                    </div>
+						{{#articleOlder}}
+						<div class="nav-next">
+							<a href="{{url}}" rel="next">
+								{{#img}}
+								<div class="nav-image"><img src="{{img}}" alt="{{title}}"></div>
+								{{/img}}
+								<div class="post-details">
+									<span class="nav-title">下一篇 <i class="fas fa-chevron-right"></i></span>
+									<span class="post-title">{{title}}</span>
+								</div>
+							</a>
+						</div>
+						{{/articleOlder}}
+					</div>
+				</nav>
+				
+				
+                <section id="comments-section">
+                    <h3>发表评论</h3>
+                    <form id="comment-form">
+                        <div class="comment-form-grid">
+                            <input type="text" id="comment-author" placeholder="昵称 (必填)" required>
+                            
+                            <div class="comment-form-contact">
+                                <select id="comment-contact-type">
+                                    <option value="email">Email</option>
+                                    <option value="qq">QQ</option>
+                                    <option value="wechat">微信</option>
+                                    <option value="other">其它</option>
+                                </select>
+                                <input type="text" id="comment-contact-value" placeholder="联系方式 (可选, 不公开)">
+                            </div>
+                        </div>
+                        <div class="full-width">
+                            <textarea id="comment-content" placeholder="请在此输入评论内容... (必填)" required></textarea>
+                        </div>
+                        <div class="comment-form-actions">
+                            <button type="submit" id="submit-comment">提交评论</button>
+                        </div>
+                    </form>
 
-<div class="widget widget-tags">
-    <h3 class="widget-title">标签</h3>
-    <div class="tag-cloud">
-        {{ #widgetTagList }}
-            <a href="{{url}}">{{name}}</a>
-        {{ /widgetTagList }}
-        {{ ^widgetTagList }}
-            <span>暂无标签</span>
-        {{ /widgetTagList }}
-    </div>
-</div>
-
-                    <div class="widget widget-comments">
-                        <h3 class="widget-title">最近评论</h3>
-                        <ul>
-                            <li>暂无评论</li>
-                        </ul>
+                    <div id="comments-list">
+                        <h3 id="comments-title" style="margin-top: 30px; display: none;">评论</h3>
                     </div>
+                </section>
+
+
+            </div>
+
+            <aside class="sidebar">
+                <div class="widget">
+                    <h4 class="widget-title">分类</h4>
+                    <ul class="widget-list widget-category">
+                        {{#widgetCategoryList}}
+                        <li><a href="/category/{{name}}/"><i class="{{icon}}"></i> {{name}}</a></li>
+                        {{/widgetCategoryList}}
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h4 class="widget-title">近期文章</h4>
+                    <ul class="widget-list widget-recent-posts">
+                        {{#widgetRecentlyList}}
+                        <li>
+                            <a href="{{url}}">{{title}}</a>
+                            <span class="post-date">{{createDate10}}</span>
+                        </li>
+                        {{/widgetRecentlyList}}
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h4 class="widget-title">标签云</h4>
+                    <div class="widget-tag-cloud">
+                        {{#widgetTagList}}
+                        <a href="{{url}}">{{name}}</a>
+                        {{/widgetTagList}}
+                    </div>
+                </div>
+                <div class="widget">
+                    <h4 class="widget-title">友情链接</h4>
+                    <ul class="widget-list widget-links">
+                        {{#widgetLinkList}}
+                        {{#img}}
+                        <li class="image-link"><a href="{{url}}" target="_blank"><img src="{{img}}" alt="{{name}}"></a></li>
+                        {{/img}}
+                        {{^img}}
+                        <li><a href="{{url}}" target="_blank">{{name}}</a></li>
+                        {{/img}}
+                        {{/widgetLinkList}}
+                    </ul>
                 </div>
             </aside>
         </div>
+    </main>
 
-        <div class="friend-links">
-             <h3 class="widget-title">友情链接</h3>
-             <div class="links-container">
-                {{#widgetLinkList}}
-                <div class="link-item">
-                    {{#img}}
-                        <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}">
-                        </a>
-                    {{/img}}
-                    {{^img}}
-                        <a href="{{url}}" target="_blank">{{name}}</a>
-                    {{/img}}
-                </div>
-                {{/widgetLinkList}}
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                {{{footer_links}}}
+            </div>
+            <div class="copyright">
+                {{{site_footer_copyright}}}
             </div>
         </div>
-    </div>
+    </footer>
 
-	<footer class="footer">
-		<div class="container">
-			<div class="footer-meta">
-				<div class="footer-links">
-					{{{ footer_links }}}
-				</div>
-				<p>{{{ site_footer_copyright }}}</p>
-			</div>
-			</div>
-	</footer>
-
-    <div class="action action-style-0 action-color-0 action-pos-0">
-        <div class="action-item gotop j-top">
-            <i class="fal fa-arrow-up action-item-icon"></i>
-        </div>
-    </div>
-    
-    <div class="overlay" id="overlay"></div>
-    
-    <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
-
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const topButton = document.querySelector('.j-top');
-            if(topButton) {
-                topButton.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchToggle = document.getElementById('search-toggle');
-        const searchBox = document.getElementById('search-box');
-        const closeSearchBtn = document.getElementById('close-search-btn');
-
-        if (searchToggle && searchBox) {
-            searchToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                searchBox.classList.toggle('visible');
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
             });
             
-            searchBox.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        }
+            // --- 评论JS ---
+            const commentForm = document.getElementById('comment-form');
+            const commentsList = document.getElementById('comments-list');
+            const commentsTitle = document.getElementById('comments-title');
+            const articleSlug = '{{articleSingle.link}}'; 
+            const submitButton = document.getElementById('submit-comment');
 
-        if (closeSearchBtn) {
-            closeSearchBtn.addEventListener('click', function() {
-                searchBox.classList.remove('visible');
-            });
-        }
-        
-        document.addEventListener('click', function() {
-            if (searchBox && searchBox.classList.contains('visible')) {
-                searchBox.classList.remove('visible');
-            }
-        });
-
-        const menuToggle = document.getElementById('mobile-menu-toggle');
-        const mainNav = document.getElementById('main-nav');
-        const body = document.querySelector('body');
-        const overlay = document.getElementById('overlay');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-
-        const openMenu = function() { body.classList.add('nav-open'); };
-        const closeMenu = function() { body.classList.remove('nav-open'); };
-        
-        if (menuToggle) { menuToggle.addEventListener('click', function(event) { event.stopPropagation(); openMenu(); }); }
-        if (overlay) { overlay.addEventListener('click', closeMenu); }
-        if (closeMenuBtn) { closeMenuBtn.addEventListener('click', closeMenu); }
-        mainNav.addEventListener('click', function(event){ event.stopPropagation(); });
-
-        const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
-        submenuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                const subMenu = this.nextElementSibling;
-                if (subMenu && subMenu.classList.contains('sub-menu')) {
-                    subMenu.classList.toggle('open');
-                }
-            });
-        });
-
-        // --- START: New Comment Logic ---
-        const articleId = '{{ &articleSingle.id }}'; // 从Mustache模板获取文章ID
-        const commentForm = document.getElementById('comment-form');
-        const commentList = document.getElementById('comment-list');
-        const commentContentInput = document.getElementById('comment-content');
-        
-        // --- START: New Captcha/Contact Elements ---
-        const contactTypeEl = document.getElementById('contact-type');
-        const contactValueEl = document.getElementById('contact-value');
-        const captchaQuestionEl = document.getElementById('captcha-question');
-        const captchaInputEl = document.getElementById('captcha-input');
-        const captchaAnswerEl = document.getElementById('captcha-answer');
-        // --- END: New Captcha/Contact Elements ---
-
-
-        // --- START: New Captcha Function ---
-        function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1; // 1-10
-            const num2 = Math.floor(Math.random() * 10) + 1; // 1-10
-            const answer = num1 + num2;
-
-            if(captchaQuestionEl) {
-                captchaQuestionEl.textContent = `${num1} + ${num2}`;
-            }
-            if(captchaAnswerEl) {
-                captchaAnswerEl.value = answer.toString();
-            }
-        }
-        // --- END: New Captcha Function ---
-
-
-        // 1. 渲染评论列表的函数
-        function renderComments(comments) {
-            commentList.innerHTML = ''; // 清空列表
-            if (comments.length === 0) {
-                commentList.innerHTML = '<li class="comment-item">暂无评论</li>';
-                return;
-            }
-
-            comments.forEach(comment => {
-                const li = document.createElement('li');
-                li.className = 'comment-item';
-                li.id = `comment-${comment.id}`;
-
-                // --- START: Safer Rendering ---
-                const commentBody = document.createElement('div');
-                commentBody.className = 'comment-body';
-                
-                const commentContent = document.createElement('p');
-                commentContent.textContent = comment.content; // Safe
-                commentBody.appendChild(commentContent);
-
-                const commentMeta = document.createElement('div');
-                commentMeta.className = 'comment-meta';
-                
-                const commentDate = document.createElement('span');
-                commentDate.className = 'comment-date';
-                commentDate.textContent = new Date(comment.timestamp).toLocaleString();
-                commentMeta.appendChild(commentDate);
-
-                // --- START: Display Contact Info (If exists) ---
-                if (comment.contact && comment.contact.value) {
-                    let typeLabel = '联系方式';
-                    switch(comment.contact.type) {
-                        case 'email': typeLabel = '邮箱'; break;
-                        case 'qq': typeLabel = 'QQ'; break;
-                        case 'wechat': typeLabel = '微信'; break;
-                        case 'telegram': typeLabel = 'Telegram'; break;
+            function loadComments() {
+                // 调用新的安全 GET 接口
+                fetch(`/api/comments/${articleSlug}`)
+                .then(response => response.json())
+                .then(comments => {
+                    commentsList.innerHTML = ''; 
+                    if (comments.length > 0) {
+                        commentsTitle.style.display = 'block';
+                        commentsTitle.textContent = `${comments.length} 条评论`;
+                    } else {
+                        commentsTitle.style.display = 'none';
                     }
-                    
-                    const contactSpan = document.createElement('span');
-                    contactSpan.className = 'comment-contact';
-                    
-                    // Create text nodes to be safe
-                    contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
-                    contactSpan.appendChild(document.createTextNode(comment.contact.value)); // Safe
-                    
-                    commentMeta.appendChild(contactSpan);
-                }
-                // --- END: Display Contact Info ---
-                
-                li.appendChild(commentBody);
-                li.appendChild(commentMeta);
-                commentList.appendChild(li);
-                // --- END: Safer Rendering ---
-            });
-        }
 
-        // 2. 获取评论的函数
-        async function fetchComments() {
-            try {
-                // 根据 index_plus.js，我们只能获取所有评论
-                const response = await fetch('/api/comments_all');
-                if (!response.ok) throw new Error('获取评论失败');
-                
-                const allComments = await response.json();
-                
-                // 在客户端筛选出当前文章的评论
-                const articleComments = allComments.filter(comment => comment.articleSlug === articleId);
-                
-                renderComments(articleComments);
-            } catch (error) {
-                console.error('获取评论时出错:', error);
-                commentList.innerHTML = '<li class="comment-item">加载评论失败</li>';
+                    comments.forEach(comment => {
+                        const commentEl = document.createElement('div');
+                        commentEl.className = 'comment';
+
+                        // 使用服务器为Cravatar生成的临时ID
+                        const avatar = `https://cravatar.cn/avatar/${comment.id}?s=48&d=mp`;
+                        
+                        // --- START: 已还原的联系方式逻辑（安全） ---
+                        let contactHtml = '';
+                        if (comment.contact && comment.contact.value) {
+                            let contactIcon = 'fa-comment-dots'; // default
+                            if (comment.contact.type === 'email') contactIcon = 'fa-envelope';
+                            if (comment.contact.type === 'qq') contactIcon = 'fa-qq';
+                            if (comment.contact.type === 'wechat') contactIcon = 'fa-weixin';
+
+                            // --- 无需前端脱敏 ---
+                            // 直接显示服务器传来的、已经脱敏的 displayValue
+                            const displayValue = comment.contact.value;
+                            
+                            contactHtml = `
+                                <span class="comment-contact">
+                                    <i class="fas ${contactIcon}"></i> ${displayValue}
+                                </span>
+                            `;
+                        }
+                        // --- END: 已还原的联系方式逻辑（安全） ---
+
+                        // --- Sanitize content ---
+                        const contentDiv = document.createElement('div');
+                        contentDiv.textContent = comment.content;
+                        const safeContent = contentDiv.innerHTML.replace(/\n/g, '<br>');
+
+                        commentEl.innerHTML = `
+                            <div class="comment-avatar">
+                                <img src="${avatar}" alt="Avatar">
+                            </div>
+                            <div class="comment-content">
+                                <div class="comment-meta">
+                                    <span class="comment-author">${document.createTextNode(comment.author).textContent}</span>
+                                    <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
+                                    ${contactHtml}
+                                </div>
+                                <div class="comment-body">
+                                    ${safeContent}
+                                </div>
+                            </div>
+                        `;
+                        commentsList.appendChild(commentEl);
+                    });
+                })
+                .catch(e => console.error('Error loading comments:', e));
             }
-        }
 
-        // 3. 处理评论表单提交
-        if (commentForm) {
-            commentForm.addEventListener('submit', async function(e) {
+            commentForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                const content = commentContentInput.value.trim();
+                submitButton.disabled = true;
+                submitButton.textContent = '提交中...';
 
-                // --- START: New Validation ---
-                const captchaAnswer = captchaAnswerEl.value;
-                const captchaInput = captchaInputEl.value.trim();
+                const author = document.getElementById('comment-author').value;
+                const content = document.getElementById('comment-content').value;
+                const contactType = document.getElementById('comment-contact-type').value;
+                const contactValue = document.getElementById('comment-contact-value').value;
 
-                if (captchaInput !== captchaAnswer) {
-                    alert('验证码不正确!');
-                    generateCaptcha(); // 刷新验证码
-                    captchaInputEl.value = ''; // 清空输入
+                if (!author || !content) {
+                    alert('昵称和评论内容不能为空！');
+                    submitButton.disabled = false;
+                    submitButton.textContent = '提交评论';
                     return;
                 }
-                // --- END: New Validation ---
-
-                if (!content) {
-                    alert('评论内容不能为空');
-                    return;
-                }
-
-                // --- START: Get Contact Info ---
-                const contactType = contactTypeEl.value;
-                const contactValue = contactValueEl.value.trim();
-                // --- END: Get Contact Info ---
-
 
                 const newComment = {
+                    author: author,
                     content: content,
-                    timestamp: Date.now(),
-                    contact: {} // 创建一个对象用于存储联系信息
-                };
-
-                // 仅当用户填写了联系方式时才添加
-                if (contactValue) {
-                    newComment.contact = {
+                    contact: {
                         type: contactType,
                         value: contactValue
-                    };
-                }
+                    },
+                    timestamp: Date.now()
+                };
 
-                try {
-                    // 使用 index_plus.js 中定义的 POST 接口
-                    const response = await fetch(`/api/comments/${articleId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(newComment)
+                fetch(`/api/comments/${articleSlug}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newComment)
+                })
+                .then(response => response.json())
+                .then(savedComment => {
+                    commentForm.reset();
+                    loadComments(); 
+                    submitButton.disabled = false;
+                    submitButton.textContent = '提交评论';
+                })
+                .catch(e => {
+                    alert('评论提交失败，请重试。');
+                    console.error('Error submitting comment:', e);
+                    submitButton.disabled = false;
+                    submitButton.textContent = '提交评论';
+                });
+            });
+
+            loadComments();
+            
+            // --- 移动菜单JS ---
+            const mobileToggle = document.querySelector('.mobile-nav-toggle');
+            const mobileMenu = document.querySelector('.mobile-menu-container');
+            const mobileClose = document.querySelector('.mobile-menu-close');
+
+            if (mobileToggle && mobileMenu && mobileClose) {
+                mobileToggle.addEventListener('click', () => {
+                    mobileMenu.classList.add('is-open');
+                });
+
+                mobileClose.addEventListener('click', () => {
+                    mobileMenu.classList.remove('is-open');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenu.contains(e.target) && !mobileToggle.contains(e.target) && mobileMenu.classList.contains('is-open')) {
+                        mobileMenu.classList.remove('is-open');
+                    }
+                });
+            }
+
+            const mobileSubmenuArrows = document.querySelectorAll('.mobile-nav-item.has-submenu .submenu-arrow');
+            mobileSubmenuArrows.forEach(arrow => {
+                arrow.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const parentItem = arrow.closest('.mobile-nav-item');
+                    parentItem.classList.toggle('submenu-open');
+                    const submenu = parentItem.querySelector('.mobile-submenu, .mobile-submenu-nested');
+                    if (submenu) {
+                        submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                    }
+                });
+            });
+
+            // --- 桌面菜单JS ---
+            const desktopSubmenuToggles = document.querySelectorAll('.main-nav .nav-item.has-submenu > a');
+            desktopSubmenuToggles.forEach(toggle => {
+                const hasSubmenu = toggle.parentElement.classList.contains('has-submenu');
+                if (hasSubmenu && !toggle.getAttribute('href')) {
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const parentItem = toggle.parentElement;
+                        parentItem.classList.toggle('submenu-open');
                     });
-
-                    if (!response.ok) throw new Error('提交评论失败');
-
-                    const savedComment = await response.json();
-                    
-                    // 乐观更新UI：将新评论添加到列表顶部
-                    if (commentList.querySelector('.comment-item')?.textContent === '暂无评论' || commentList.querySelector('.comment-item')?.textContent === '正在加载评论...') {
-                        commentList.innerHTML = ''; // 清空 "暂无评论"
-                    }
-
-                    // --- START: Safer Optimistic Update ---
-                    const li = document.createElement('li');
-                    li.className = 'comment-item';
-                    li.id = `comment-${savedComment.id}`;
-
-                    const commentBody = document.createElement('div');
-                    commentBody.className = 'comment-body';
-                    
-                    const commentContent = document.createElement('p');
-                    commentContent.textContent = savedComment.content; // Safe
-                    commentBody.appendChild(commentContent);
-
-                    const commentMeta = document.createElement('div');
-                    commentMeta.className = 'comment-meta';
-                    
-                    const commentDate = document.createElement('span');
-                    commentDate.className = 'comment-date';
-                    commentDate.textContent = new Date(savedComment.timestamp).toLocaleString();
-                    commentMeta.appendChild(commentDate);
-
-                    if (savedComment.contact && savedComment.contact.value) {
-                        let typeLabel = '联系方式';
-                        switch(savedComment.contact.type) {
-                            case 'email': typeLabel = '邮箱'; break;
-                            case 'qq': typeLabel = 'QQ'; break;
-                            case 'wechat': typeLabel = '微信'; break;
-                            case 'telegram': typeLabel = 'Telegram'; break;
-                        }
-                        
-                        const contactSpan = document.createElement('span');
-                        contactSpan.className = 'comment-contact';
-                        
-                        contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
-                        contactSpan.appendChild(document.createTextNode(savedComment.contact.value)); // Safe
-                        
-                        commentMeta.appendChild(contactSpan);
-                    }
-                    
-                    li.appendChild(commentBody);
-                    li.appendChild(commentMeta);
-                    commentList.prepend(li); // 添加到列表开头
-                    // --- END: Safer Optimistic Update ---
-
-
-                    // --- START: Clear inputs and regenerate captcha ---
-                    commentContentInput.value = ''; // 清空评论框
-                    contactValueEl.value = '';    // 清空联系方式
-                    captchaInputEl.value = '';    // 清空验证码
-                    generateCaptcha();            // 重新生成验证码
-                    // --- END: Clear inputs ---
-
-                } catch (error) {
-                    console.error('提交评论时出错:', error);
-                    alert('评论提交失败');
-                    generateCaptcha(); // 出错时也刷新验证码
                 }
             });
-        }
 
-        // 4. 页面加载时立即获取评论和生成验证码
-        fetchComments();
-        generateCaptcha(); // --- ADDED: 初始生成验证码 ---
-        // --- END: New Comment Logic ---
+            // 点击非菜单区域关闭打开的子菜单
+            document.addEventListener('click', (e) => {
+                document.querySelectorAll('.main-nav .nav-item.has-submenu.submenu-open').forEach(item => {
+                    if (!item.contains(e.target)) {
+                        item.classList.remove('submenu-open');
+                    }
+                });
+            });
 
-
-        const swiper = new Swiper('.swiper', {
-            autoHeight: true,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
         });
-    });
-</script>
+    </script>
+    {{{ &OPT.commentCode }}}
 </body>
 </html>
