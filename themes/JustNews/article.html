@@ -81,6 +81,17 @@
             color: #777;
             margin-left: 5px;
             font-style: italic;
+            /* Ensure it doesn't break line unnecessarily */
+            display: inline;
+            white-space: nowrap;
+        }
+        /* Adjust sidebar li spacing if needed */
+        .widget-comments ul li {
+            margin-bottom: 8px; /* Add some space between items */
+            line-height: 1.4; /* Adjust line height */
+        }
+        .widget-comments ul li a {
+             margin-right: 5px; /* Add space between link and contact */
         }
 
         /* --- START: Horizontal Form Row Styles --- */
@@ -588,15 +599,14 @@
             }
         }
 
-        // --- START: [修改 2] 新增函数，加载侧边栏“最近评论” ---
+        // --- START: [修改 2] 加载侧边栏“最近评论” (已修正布局) ---
         async function loadRecentComments() {
             try {
-                // 调用现在安全的 /api/comments_all 接口
                 const response = await fetch('/api/comments_all'); 
                 if (!response.ok) return; 
                 
                 const allComments = await response.json(); // 数据已打码
-                const recentComments = allComments.slice(0, 5); // 获取最新的 5 条
+                const recentComments = allComments.slice(0, 5); 
                 
                 const sidebarList = document.querySelector('.widget-comments ul');
                 if (!sidebarList) return; 
@@ -609,31 +619,32 @@
                 sidebarList.innerHTML = ''; // 清空
                 recentComments.forEach(comment => {
                     const li = document.createElement('li');
-                    
-                    // 创建文章链接
+                    
+                    // 为了防止 XSS，我们不直接用 innerHTML，而是创建文本节点
+                    
+                    // 1. 创建链接
                     const link = document.createElement('a');
-                    link.href = `/article/${comment.articleSlug}/`; // 假设 articleSlug 是 ID
+                    link.href = `/article/${comment.articleSlug}/`; 
                     link.title = `在文章 "${comment.articleSlug}" 上的评论`;
-                    // 显示截断的评论内容
                     link.textContent = comment.content.substring(0, 20) + (comment.content.length > 20 ? '...' : ''); 
                     li.appendChild(link); // 将链接添加到 li
 
-                    // 添加联系方式 (如果存在)
+                    // 2. 创建并添加联系方式 (如果存在)
                     if (comment.contact && comment.contact.value) {
-                        let typeLabel = comment.contact.type || '联系方式'; // 默认标签
-                        // 可以根据需要添加更多类型标签转换
-                        if (typeLabel === 'email') typeLabel = '邮箱';
-                        if (typeLabel === 'qq') typeLabel = 'QQ';
-                        if (typeLabel === 'wechat') typeLabel = '微信';
-                        if (typeLabel === 'telegram') typeLabel = 'Telegram';
+                        let typeLabel = comment.contact.type || '联系'; // 更短的标签
+                        if (typeLabel === 'email') typeLabel = '邮';
+                        if (typeLabel === 'qq') typeLabel = 'Q';
+                        if (typeLabel === 'wechat') typeLabel = '微';
+                        if (typeLabel === 'telegram') typeLabel = 'TG';
                         
                         const contactSpan = document.createElement('span');
-                        contactSpan.className = 'comment-contact-sidebar'; // 使用新的CSS class
-                        contactSpan.textContent = ` [${typeLabel}]: ${comment.contact.value}`; // 直接显示已打码的值
-                        li.appendChild(contactSpan); // 将联系方式添加到 li
+                        contactSpan.className = 'comment-contact-sidebar'; 
+                        // 使用 textContent 插入纯文本，避免 [] 和 "" 问题
+                        contactSpan.textContent = ` (${typeLabel}:${comment.contact.value})`; 
+                        li.appendChild(contactSpan); 
                     }
                     
-                    sidebarList.appendChild(li); // 将完整的 li 添加到列表中
+                    sidebarList.appendChild(li); 
                 });
             } catch (e) {
                 console.error('加载最近评论时出错:', e);
@@ -681,7 +692,7 @@
                     });
                     if (!response.ok) throw new Error('提交评论失败');
 
-                    // 刷新两个评论列表
+                    // 提交成功后，刷新两个评论列表
                     fetchComments(); 
                     loadRecentComments();
 
