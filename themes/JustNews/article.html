@@ -140,7 +140,16 @@
         /* --- END: Horizontal Form Row Styles --- */
         
         /* --- END: New Comment Styles --- */
-
+/* --- START: Custom Focus Style --- */
+        /* 针对评论表单中的所有输入元素（文本域、下拉框、文本框） */
+        .comment-form textarea:focus,
+        .comment-form select:focus,
+        .comment-form input[type="text"]:focus {
+            outline: none; /* 关键：移除了浏览器默认的“粗黑”轮廓 */
+            border-color: #888; /* 将边框颜色在聚焦时变为柔和的灰色（不再“黑”） */
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); /* 添加一个非常轻微的阴影，提示聚焦状态 */
+        }
+        /* --- END: Custom Focus Style --- */
     </style>
     </head>
 <body class="m-flex"> 
