@@ -521,14 +521,30 @@ async function getArticleData(request, id, env) {
 
 	data["articleSingle"] = articleSingle;
 	
+    // --- BEGIN MODIFICATION ---
+    // 这是您要求修改的代码块
     let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 	const index = articleIndex.findIndex(item => item.id === id)
+	
 	if (index > 0) {
-		data["articleNewer"] = { ...articleIndex[index - 1], url: `/article/${articleIndex[index - 1].id}/${articleIndex[index - 1].link}/` };
+		const newerArticle = articleIndex[index - 1];
+		data["articleNewer"] = { 
+			...newerArticle, 
+			url: `/article/${newerArticle.id}/${newerArticle.link}/`,
+			img: newerArticle.firstImageUrl || '', // 将 firstImageUrl 别名为 img
+			createDate10: newerArticle.createDate ? newerArticle.createDate.substring(0, 10) : '' // 添加 createDate10
+		};
 	}
 	if (index < articleIndex.length - 1) {
-		data["articleOlder"] = { ...articleIndex[index + 1], url: `/article/${articleIndex[index + 1].id}/${articleIndex[index + 1].link}/` };
+		const olderArticle = articleIndex[index + 1];
+		data["articleOlder"] = { 
+			...olderArticle, 
+			url: `/article/${olderArticle.id}/${olderArticle.link}/`,
+			img: olderArticle.firstImageUrl || '', // 将 firstImageUrl 别名为 img
+			createDate10: olderArticle.createDate ? olderArticle.createDate.substring(0, 10) : '' // 添加 createDate10
+		};
 	}
+    // --- END MODIFICATION ---
 
 	const allTags = new Set();
 articleIndex.forEach(article => {
