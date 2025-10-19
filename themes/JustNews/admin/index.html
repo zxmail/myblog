@@ -868,13 +868,15 @@ tinymce.init({
 			$.each(comments, function(i, comment) {
 				
 				// --- 联系方式处理逻辑 ---
-				let contactInfo = '---'; // 默认值
-				if (comment.contact && comment.contact.value) {
-					// 使用jQuery的.text()来转义HTML，防止XSS
-					const typeText = comment.contact.type || '未知';
-					const valueText = comment.contact.value;
-					contactInfo = `${$('<span>').text(typeText).html()}: <strong>${$('<span>').text(valueText).html()}</strong>`;
-				}
+let contactInfo = '---'; // 默认值
+if (comment.contact && comment.contact.value) {
+    // 直接使用原始数据，不再通过 .text() 进行HTML转义
+    const type = comment.contact.type || '未知';
+    const value = comment.contact.value;
+
+    // 直接拼接字符串，允许其中的 HTML 被渲染
+    contactInfo = `${type}: ${value}`;
+}
 				
 				// --- 内容转义逻辑 ---
 				const safeContent = $('<div>').text(comment.content).html();
