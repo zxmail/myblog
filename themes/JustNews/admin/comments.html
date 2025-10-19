@@ -74,16 +74,15 @@
                 comments.forEach(comment => {
 
                     // --- START: 联系方式处理逻辑 ---
-                    let contactInfo = '---'; // 默认值
-                    if (comment.contact && comment.contact.value) {
-                        const typeEl = document.createElement('span');
-                        typeEl.textContent = comment.contact.type || '未知';
-                        
-                        const valueEl = document.createElement('strong');
-                        valueEl.textContent = comment.contact.value;
+let contactInfo = '---'; // 默认值
+if (comment.contact && comment.contact.value) {
+    // 直接使用原始数据，不再通过 .textContent 和 .innerHTML 进行HTML转义
+    const type = comment.contact.type || '未知';
+    const value = comment.contact.value;
 
-                        contactInfo = `${typeEl.innerHTML}: ${valueEl.innerHTML}`;
-                    }
+    // 直接拼接字符串，允许其中的 HTML 被渲染
+    contactInfo = `${type}: ${value}`;
+}
                     // --- END: 联系方式处理逻辑 ---
                     
                     // --- START: 内容转义逻辑 ---
@@ -196,3 +195,4 @@
 
 </body>
 </html>
+
