@@ -138,8 +138,44 @@
             padding-right: 20px;
         }
         /* --- END: Horizontal Form Row Styles --- */
-        
-        /* --- END: New Comment Styles --- */
+/* ========== START: 新增加密样式 ========== */
+        .entry-content-protected {
+            border: 2px dashed #ffc107;
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .entry-content-protected p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .entry-content-protected input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            margin-right: 10px;
+            height: 38px; /* 统一样式 */
+            box-sizing: border-box;
+        }
+        .entry-content-protected button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            height: 38px; /* 统一样式 */
+            box-sizing: border-box;
+            vertical-align: top; /* 对齐输入框 */
+        }
+        .entry-content-protected button:hover {
+            background: #555;
+        }
+        /* ========== END: 新增加密样式 ========== */
 
     </style>
     </head>
@@ -243,7 +279,12 @@
 					</div>
 
                     <div class="entry-head">
-                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
+                        <h1 class="entry-title">
+							{{#articleSingle.isEncrypted}}
+                                <i class="fas fa-lock" style="color: #f0ad4e; margin-right: 8px;" title="已加密"></i>
+                            {{/articleSingle.isEncrypted}}
+							{{ &articleSingle.title }}
+						</h1>
                         
                         <div class="entry-info">
                             <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
@@ -263,7 +304,21 @@
                         </div>
                     </div>
                     <div class="entry-content">
-                        {{{ articleSingle.contentHtml }}}
+                        {{^articleSingle.isEncrypted}}
+                            {{{ articleSingle.contentHtml }}}
+                        {{/articleSingle.isEncrypted}}
+
+                        {{#articleSingle.isEncrypted}}
+                            <div class="entry-content-protected">
+                                <form id="password-form">
+                                    <p><i class="fas fa-lock"></i> 本文已加密，请输入密码查看。</p>
+                                    <div>
+                                        <input type="password" id="article-password-input" placeholder="请输入密码" required>
+                                        <button type="submit">提交</button>
+                                    </div>
+                                </form>
+                            </div>
+                        {{/articleSingle.isEncrypted}}
                     </div>
                     <div class="entry-footer">
                         <div class="entry-tag">
@@ -353,12 +408,8 @@
 							{{/firstImageUrl}}
 							<div class="recent-article-item-content">
 								<a href="{{url}}">
-									{{#isPinned}}
-									<i class="fas fa-thumbtack" 
-									   style="color: #f00; font-size: 0.9em; margin-right: 4px;" 
-									   title="置顶">
-									</i>
-									{{/isPinned}}
+									{{#isPinned}} <i class="fas fa-thumbtack" style="color: #f00; font-size: 0.9em; margin-right: 4px;" title="置顶"> </i> {{/isPinned}}
+									{{#hasPassword}} <i class="fas fa-lock" style="color: #f0ad4e; font-size: 0.9em; margin-right: 4px;" title="加密"></i>{{/hasPassword}}
 									{{title}}
 								</a>
 								<span class="recent-article-item-date">{{createDate10}}</span>
@@ -502,7 +553,33 @@
                 }
             });
         });
-
+			// ========== START: 新增密码表单逻辑 ==========
+        const passwordForm = document.getElementById('password-form');
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const passwordInput = document.getElementById('article-password-input');
+                const password = passwordInput.value;
+                if (!password) {
+                    alert('请输入密码！');
+                    return;
+                }
+                
+                // 从模板中获取文章ID
+                const articleId = '{{ &articleSingle.id }}';
+                const cookieName = `article_pass_${articleId}`;
+                
+                // 设置一个有效期为1天的Cookie
+                const d = new Date();
+                d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000)); // 1 day
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = cookieName + "=" + encodeURIComponent(password) + ";" + expires + ";path=/";
+                
+                // 刷新页面，让服务器用新Cookie重新检查权限
+                location.reload();
+            });
+        }
+        // ========== END: 新增密码表单逻辑 ==========
         // --- START: New Comment Logic ---
         const articleId = '{{ &articleSingle.id }}'; // 从Mustache模板获取文章ID
         const commentForm = document.getElementById('comment-form');
