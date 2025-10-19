@@ -903,8 +903,31 @@
         // 4. 页面加载时立即获取评论和生成验证码
         fetchComments();
         generateCaptcha(); // --- ADDED: 初始生成验证码 ---
-        // --- END: New Comment Logic ---
+		// --- START: 在这里添加搜索按钮的 JS 逻辑 ---
+        const searchButton = document.querySelector('.search-button');
+        const searchInput = document.querySelector('.search-input');
 
+        if(searchButton && searchInput) {
+            const performSearch = () => {
+                const query = searchInput.value.trim();
+                if (query) {
+                    // 重定向到搜索结果页 (这个 URL 稍后需要在 index_plus.js 中实现)
+                    window.location.href = '/search/' + encodeURIComponent(query) + '/';
+                }
+            };
+
+            // 点击按钮时搜索
+            searchButton.addEventListener('click', performSearch);
+
+            // 在输入框按回车键时搜索
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+        // --- END: 搜索按钮的 JS 逻辑 ---
+        // --- END: New Comment Logic ---
 
         const swiper = new Swiper('.swiper', {
             autoHeight: true,
