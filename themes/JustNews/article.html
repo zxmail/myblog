@@ -304,7 +304,7 @@
                         </div>
                     </div>
                     <div class="entry-content">
-                        {{#articleSingle.isEncrypted}}
+                        {{^articleSingle.isEncrypted}}
                             {{{ articleSingle.contentHtml }}}
                         {{/articleSingle.isEncrypted}}
 
