@@ -1,288 +1,279 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
-    <title>{{ &title }}</title>
-    <meta name="keywords" content="{{ &OPT.keywords }}" />
-    <meta name="description" content="{{ &OPT.siteDescription }}" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover">
+    <title>{{ &title }}</title>
+    <meta name="keywords" content="{{ &OPT.keywords }}" />
+    <meta name="description" content="{{ &OPT.siteDescription }}" />
 
-    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
-    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
+    <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
+    <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
-    <style>
-        .breadcrumb a {
-            color: #888; /* 设置面包屑导航中链接的颜色为灰色 */
-        }
-        .breadcrumb a:hover {
-            color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
-        }
+    <style>
+        .breadcrumb a {
+            color: #888; /* 设置面包屑导航中链接的颜色为灰色 */
+        }
+        .breadcrumb a:hover {
+            color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
+        }
 
-        /* --- START: New Comment Styles --- */
-        .comment-form {
-            margin-top: 20px;
-        }
-        .comment-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
-            min-height: 100px;
-        }
-        .comment-form .form-submit {
-            margin-top: 10px;
-        }
-        .comment-form .submit {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .comment-form .submit:hover {
-            background-color: #555;
-        }
-        .comment-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-        .comment-item {
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
-        }
-        .comment-item:last-child {
-            border-bottom: none;
-        }
-        .comment-body p {
-            margin: 0 0 10px;
-        }
-        .comment-meta {
-            font-size: 12px;
-            color: #888;
-        }
-        .comment-contact {
-            margin-left: 10px;
-            color: #555;
-            font-style: italic;
-        }
-        
-        /* --- START: Horizontal Form Row Styles --- */
-        .comment-form p {
-             margin: 10px 0;
-        }
-        .comment-form label {
-            margin-right: 5px;
-            font-size: 14px;
-            color: #555;
-            vertical-align: middle; /* 帮助标签与输入框对齐 */
-        }
+        /* --- START: New Comment Styles --- */
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
+            min-height: 100px;
+        }
+        .comment-form .form-submit {
+            margin-top: 10px;
+        }
+        .comment-form .submit {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .comment-form .submit:hover {
+            background-color: #555;
+        }
+        .comment-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .comment-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        .comment-body p {
+            margin: 0 0 10px;
+        }
+        .comment-meta {
+            font-size: 12px;
+            color: #888;
+        }
+        .comment-contact {
+            margin-left: 10px;
+            color: #555;
+            font-style: italic;
+        }
+        
+        /* --- START: Horizontal Form Row Styles --- */
+        .comment-form p {
+             margin: 10px 0;
+        }
+        .comment-form label {
+            margin-right: 5px;
+            font-size: 14px;
+            color: #555;
+            vertical-align: middle; /* 帮助标签与输入框对齐 */
+        }
 
-        .comment-form-bottom-row {
-            display: flex;
-            flex-wrap: wrap; /* 允许在小屏幕上换行 */
-            align-items: center; /* 垂直居中对齐 */
-            justify-content: flex-start; /* 从左侧开始排列 */
-            margin-top: 10px;
-        }
-        /* 移除 flex 容器内 p 元素的默认上下边距，并添加右边距 */
-        .comment-form-bottom-row p {
-            margin: 5px 15px 5px 0; /* (上 右 下 左) 为元素之间添加右边距 */
-        }
-        .comment-form-bottom-row .form-submit {
-            margin-right: 0; /* 最后一个元素不需要右边距 */
-        }
+        .comment-form-bottom-row {
+            display: flex;
+            flex-wrap: wrap; /* 允许在小屏幕上换行 */
+            align-items: center; /* 垂直居中对齐 */
+            justify-content: flex-start; /* 从左侧开始排列 */
+            margin-top: 10px;
+        }
+        /* 移除 flex 容器内 p 元素的默认上下边距，并添加右边距 */
+        .comment-form-bottom-row p {
+            margin: 5px 15px 5px 0; /* (上 右 下 左) 为元素之间添加右边距 */
+        }
+        .comment-form-bottom-row .form-submit {
+            margin-right: 0; /* 最后一个元素不需要右边距 */
+        }
 
-        /* 统一下拉框、输入框和按钮的高度 */
-        #contact-type,
-        #contact-value,
-        #captcha-input,
-        .comment-form-bottom-row .submit {
-            height: 36px; /* 统一高度 */
-            padding-top: 5px;
-            padding-bottom: 5px;
-            box-sizing: border-box; /* 确保 padding 不会破坏高度 */
-            vertical-align: middle;
-        }
-        
-        #contact-type {
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
+        /* 统一下拉框、输入框和按钮的高度 */
+        #contact-type,
+        #contact-value,
+        #captcha-input,
+        .comment-form-bottom-row .submit {
+            height: 36px; /* 统一高度 */
+            padding-top: 5px;
+            padding-bottom: 5px;
+            box-sizing: border-box; /* 确保 padding 不会破坏高度 */
+            vertical-align: middle;
+        }
+        
+        #contact-type {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
 
-        #contact-value {
-            width: 150px; /* 给一个固定宽度 */
-            margin-left: 5px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        
-        #captcha-input {
-            width: 60px; /* 验证码输入框宽度 */
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        
-        .comment-form-bottom-row .submit {
-            /* 调整 padding 以匹配新高度 */
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        /* --- END: Horizontal Form Row Styles --- */
-        
-        /* --- END: New Comment Styles --- */
-/* --- START: Custom Focus Style --- */
-        /* 针对评论表单中的所有输入元素（文本域、下拉框、文本框） */
-        .comment-form textarea:focus,
-        .comment-form select:focus,
-        .comment-form input[type="text"]:focus {
-            outline: none; /* 关键：移除了浏览器默认的“粗黑”轮廓 */
-            border-color: #888; /* 将边框颜色在聚焦时变为柔和的灰色（不再“黑”） */
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); /* 添加一个非常轻微的阴影，提示聚焦状态 */
-        }
-        /* --- END: Custom Focus Style --- */
-    </style>
-    </head>
-<body class="m-flex"> 
+        #contact-value {
+            width: 150px; /* 给一个固定宽度 */
+            margin-left: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        #captcha-input {
+            width: 60px; /* 验证码输入框宽度 */
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .comment-form-bottom-row .submit {
+            /* 调整 padding 以匹配新高度 */
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        /* --- END: Horizontal Form Row Styles --- */
+        
+        /* --- END: New Comment Styles --- */
+
+    </style>
+    </head>
+<body class="m-flex"> 
 	<header class="site-header">
-    <div class="header-container">
-        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
-            <i class="fal fa-bars"></i>
-        </div>
-        <div class="header-left">
-            <div class="logo-area">
-                {{ #OPT.logo }}
-                <a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>
-                {{ /OPT.logo }}
-                {{ #OPT.showSiteNameInHeader }}
-                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
-                {{ /OPT.showSiteNameInHeader }}
-            </div>
-            <nav class="main-nav" id="main-nav">
-                <div class="close-menu-btn" id="close-menu-btn">&times;</div>
+    <div class="header-container">
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fal fa-bars"></i>
+        </div>
+        <div class="header-left">
+            <div class="logo-area">
+                {{ #OPT.logo }}
+                <a href="/"><img src="{{ &OPT.logo }}" alt="博客Logo" class="logo-image"></a>
+                {{ /OPT.logo }}
+                {{ #OPT.showSiteNameInHeader }}
+                <a href="/" class="blog-name">{{ &OPT.siteName }}</a>
+                {{ /OPT.showSiteNameInHeader }}
+            </div>
+            <nav class="main-nav" id="main-nav">
+                <div class="close-menu-btn" id="close-menu-btn">&times;</div>
 
-                <div class="mobile-nav-header">
-                    <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="导航背景" class="mobile-nav-header-image">
-                </div>
+                <div class="mobile-nav-header">
+                    <img src="{{ &OPT.theme_github_path }}JustNews/files/mobile-header.svg" alt="导航背景" class="mobile-nav-header-image">
+                </div>
 
-                <ul>
-                    {{ #OPT.widgetMenuList }}
-                    <li>
-                        <a href="{{ &url }}">
-                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                            {{ #hasChildren }}
-                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
-                            {{ /hasChildren }}
-                        </a>
-                        {{ #hasChildren }}
-                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                        {{ /hasChildren }}
+                <ul>
+                    {{ #OPT.widgetMenuList }}
+                    <li>
+                        <a href="{{ &url }}">
+                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                            {{ #hasChildren }}
+                            <span class="arrow-container"><i class="fal fa-angle-down"></i></span>
+                            {{ /hasChildren }}
+                        </a>
+                        {{ #hasChildren }}
+                        <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
+                        {{ /hasChildren }}
 
-                        {{ #hasChildren }}
-                        <ul class="sub-menu">
-                            {{ #children }}
-                            <li>
-                                <a href="{{ &url }}">
-                                    {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                    {{ #hasChildren }}
-                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
-                                    {{ /hasChildren }}
-                                </a>
-                                {{ #hasChildren }}
-                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
-                                {{ /hasChildren }}
+                        {{ #hasChildren }}
+                        <ul class="sub-menu">
+                            {{ #children }}
+                            <li>
+                                <a href="{{ &url }}">
+                                    {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                                    {{ #hasChildren }}
+                                    <span class="arrow-container"><i class="fal fa-angle-right"></i></span>
+                                    {{ /hasChildren }}
+                                </a>
+                                {{ #hasChildren }}
+                                <span class="submenu-toggle"><i class="fal fa-angle-right"></i></span>
+                                {{ /hasChildren }}
 
-                                {{ #hasChildren }}
-                                <ul class="sub-menu">
-                                    {{ #children }}
-                                    <li>
-                                        <a href="{{ &url }}">
-                                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
-                                        </a>
-                                    </li>
-                                    {{ /children }}
-                                </ul>
-                                {{ /hasChildren }}
-                            </li>
-                            {{ /children }}
-                        </ul>
-                        {{ /hasChildren }}
-                    </li>
-                    {{ /OPT.widgetMenuList }}
-                     <li class="login-btn-mobile">
-                        <a href="/admin">
-                            <button class="login-btn-header">登录</button>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            </div>
+                                {{ #hasChildren }}
+                                <ul class="sub-menu">
+                                    {{ #children }}
+                                    <li>
+                                        <a href="{{ &url }}">
+                                            {{ #icon }}<i class="{{ &icon }}" style="margin-right: 5px;"></i> {{ /icon}}{{ &name }}
+                                        </a>
+                                    </li>
+                                    {{ /children }}
+                                </ul>
+                                {{ /hasChildren }}
+                            </li>
+                            {{ /children }}
+                        </ul>
+                        {{ /hasChildren }}
+                    </li>
+                    {{ /OPT.widgetMenuList }}
+                     <li class="login-btn-mobile">
+                        <a href="/admin">
+                            <button class="login-btn-header">登录</button>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            </div>
 
-        <div class="header-right">
-            <div class="search-icon" id="search-toggle">
-                <i class="fal fa-search"></i>
-            </div>
-             <a href="/admin" class="login-link">
-                <i class="fal fa-user-circle"></i>
-            </a>
-        </div>
-    </div>
+        <div class="header-right">
+            <div class="search-icon" id="search-toggle">
+                <i class="fal fa-search"></i>
+            </div>
+             <a href="/admin" class="login-link">
+                <i class="fal fa-user-circle"></i>
+            </a>
+        </div>
+    </div>
 
 	<div class="search-box-container" id="search-box">
-        <input type="text" placeholder="输入关键词搜索..." class="search-input">
-        <button class="search-button">搜索</button>
-        <i class="far fa-chevron-double-up" id="close-search-btn" title="收起"></i>
-    </div>
+        <input type="text" placeholder="输入关键词搜索..." class="search-input">
+        <button class="search-button">搜索</button>
+        <i class="far fa-chevron-double-up" id="close-search-btn" title="收起"></i>
+    </div>
 </header>
-    <div id="wrap" class="container">
-        <div class="main-layout">
-            <article id="post-{{ &articleSingle.id }}" class="post-article">
-                <div class="entry-card">
+    <div id="wrap" class="container">
+        <div class="main-layout">
+            <article id="post-{{ &articleSingle.id }}" class="post-article">
+                <div class="entry-card">
 					<div class="breadcrumb" style="margin-bottom: 23px; font-size: 14px; color: #888;">
 						{{{ articleBreadcrumb }}}
 					</div>
 
-                    <div class="entry-head">
-                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
-                        
-                        <div class="entry-info">
-                            <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
-                            <span class="dot">•</span>
-                             <span class="entry-category">
-                                <i class="fal fa-folder-open"></i>
-                                {{ #articleSingle.categories }}
-                                    <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
-                                {{ /articleSingle.categories }}
-                            </span>
-                            <span class="dot">•</span>
-                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
-                                <i class="fal fa-eye"></i>
-                                <em>{{ &OPT.otherCodeA }}</em>
-                                <i class="leancloud-visitors-count"></i> 100
-                            </span>
-                        </div>
-                    </div>
-                    <div class="entry-content">
-                        {{{ articleSingle.contentHtml }}}
-                    </div>
-                    <div class="entry-footer">
-                        <div class="entry-tag">
-                             <i class="fal fa-tags"></i>
-                            {{ #articleSingle.tags }}
-                                <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
-                            {{ /articleSingle.tags }}
-                        </div>
+                    <div class="entry-head">
+                        <h1 class="entry-title">{{ &articleSingle.title }}</h1>
+                        
+                        <div class="entry-info">
+                            <span class="entry-date"><i class="fal fa-calendar-alt"></i> {{ &articleSingle.createDate10 }}</span>
+                            <span class="dot">•</span>
+                             <span class="entry-category">
+                                <i class="fal fa-folder-open"></i>
+                                {{ #articleSingle.categories }}
+                                    <a href="/category/{{&name}}/" rel="category tag">{{&name}}</a>
+                                {{ /articleSingle.categories }}
+                            </span>
+                            <span class="dot">•</span>
+                            <span id="{{ &articleSingle.url }}" class="leancloud_visitors">
+                                <i class="fal fa-eye"></i>
+                                <em>{{ &OPT.otherCodeA }}</em>
+                                <i class="leancloud-visitors-count"></i> 100
+                            </span>
+                        </div>
+                    </div>
+                    <div class="entry-content">
+                        {{{ articleSingle.contentHtml }}}
+                    </div>
+                    <div class="entry-footer">
+                        <div class="entry-tag">
+                             <i class="fal fa-tags"></i>
+                            {{ #articleSingle.tags }}
+                                <a href="/tags/{{&.}}/" rel="tag">{{&.}}</a>
+                            {{ /articleSingle.tags }}
+                        </div>
 
-                        <div class="entry-page">
+                        <div class="entry-page">
 
 									{{ #articleNewer }}	
 									<div class="entry-page-prev j-lazy lazyloaded" style="background-image: url(&quot;{{ &img }}&quot;); display: block;" data-original="{{ &img }}" data-bg="{{ &img }}" fifu-width="392" fifu-height="86">
@@ -304,120 +295,120 @@
 									</div>
 									{{ /articleOlder }}
 								</div>
-                        </div>
-                </div>
-                
-                <div id="comments" class="entry-comments entry-card">
-                    <h3 class="widget-title">发表评论</h3>
-                    <form id="comment-form" class="comment-form">
-                        <p class="comment-form-comment">
-                            <textarea id="comment-content" name="content" cols="45" rows="5" required placeholder="请输入评论..."></textarea>
-                        </p>
-                        
-                        <div class="comment-form-bottom-row">
+                        </div>
+                </div>
+                
+                <div id="comments" class="entry-comments entry-card">
+                    <h3 class="widget-title">发表评论</h3>
+                    <form id="comment-form" class="comment-form">
+                        <p class="comment-form-comment">
+                            <textarea id="comment-content" name="content" cols="45" rows="5" required placeholder="请输入评论..."></textarea>
+                        </p>
+                        
+                        <div class="comment-form-bottom-row">
 
-                            <p class="comment-form-contact">
-                                <label for="contact-type">联系方式:</label>
-                                <select id="contact-type" name="contact-type">
-                                    <option value="email">邮箱</option>
-                                    <option value="qq">QQ</option>
-                                    <option value="wechat">微信</option>
-                                    <option value="telegram">Telegram</option>
-                                </select>
-                                <input type="text" id="contact-value" name="contact-value" placeholder="请输入联系方式">
-                            </p>
+                            <p class="comment-form-contact">
+                                <label for="contact-type">联系方式:</label>
+                                <select id="contact-type" name="contact-type">
+                                    <option value="email">邮箱</option>
+                                    <option value="qq">QQ</option>
+                                    <option value="wechat">微信</option>
+                                    <option value="telegram">Telegram</option>
+                                </select>
+                                <input type="text" id="contact-value" name="contact-value" placeholder="请输入联系方式">
+                            </p>
 
-                            <p class="comment-form-captcha">
-                                <label for="captcha-input">验证: <span id="captcha-question" style="font-weight: bold; color: #333; margin: 0 5px;"></span> = ?</label>
-                                <input type="text" id="captcha-input" name="captcha" required>
-                                <input type="hidden" id="captcha-answer"> </p>
-                            
-                            <p class="comment-form-contact">
-                                <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
-                            </p>
+                            <p class="comment-form-captcha">
+                                <label for="captcha-input">验证: <span id="captcha-question" style="font-weight: bold; color: #333; margin: 0 5px;"></span> = ?</label>
+                                <input type="text" id="captcha-input" name="captcha" required>
+                                <input type="hidden" id="captcha-answer"> </p>
+                            
+                            <p class="form-submit">
+                                <button name="submit" type="submit" id="submit" class="submit">提交评论</button>
+                            </p>
 
-                        </div>
-                        </form>
-            
-                    <h3 class="widget-title" id="comments-title" style="margin-top: 30px;">评论列表</h3>
-                    <ul id="comment-list" class="comment-list">
-                        <li class="comment-item">正在加载评论...</li>
-                    </ul>
-                </div>
-                </article>
+                        </div>
+                        </form>
+            
+                    <h3 class="widget-title" id="comments-title" style="margin-top: 30px;">评论列表</h3>
+                    <ul id="comment-list" class="comment-list">
+                        <li class="comment-item">正在加载评论...</li>
+                    </ul>
+                </div>
+                </article>
 
-            <aside class="right-column">
-                <div class="sidebar-sticky-wrapper">
-                    <div class="widget widget-recent-posts">
-                        <h3 class="widget-title">热门文章</h3>
-                        <ul>
-                            {{#widgetRecentlyList}}
-                            <li class="recent-article-item-box">
-                                {{#firstImageUrl}}
-                                <div class="recent-article-item-image">
-                                    <a href="{{url}}">
-                                        <img src="{{firstImageUrl}}" alt="{{title}}">
-                                    </a>
-                                </div>
-                                {{/firstImageUrl}}
-                                <div class="recent-article-item-content">
-                                    <a href="{{url}}">{{title}}</a>
-                                    <span class="recent-article-item-date">{{createDate10}}</span>
-                                </div>
-                            </li>
-                            {{/widgetRecentlyList}}
-                        </ul>
-                    </div>
+            <aside class="right-column">
+                <div class="sidebar-sticky-wrapper">
+                    <div class="widget widget-recent-posts">
+                        <h3 class="widget-title">热门文章</h3>
+                        <ul>
+                            {{#widgetRecentlyList}}
+                            <li class="recent-article-item-box">
+                                {{#firstImageUrl}}
+                                <div class="recent-article-item-image">
+                                    <a href="{{url}}">
+                                        <img src="{{firstImageUrl}}" alt="{{title}}">
+                                    </a>
+                                </div>
+                                {{/firstImageUrl}}
+                                <div class="recent-article-item-content">
+                                    <a href="{{url}}">{{title}}</a>
+                                    <span class="recent-article-item-date">{{createDate10}}</span>
+                                </div>
+                            </li>
+                            {{/widgetRecentlyList}}
+                        </ul>
+                    </div>
 
-                    <div class="widget widget-categories">
-                        <h3 class="widget-title">分类目录</h3>
-                        <ul>
-                            {{#widgetCategoryList}}
-                            <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
-                            {{/widgetCategoryList}}
-                        </ul>
-                    </div>
+                    <div class="widget widget-categories">
+                        <h3 class="widget-title">分类目录</h3>
+                        <ul>
+                            {{#widgetCategoryList}}
+                            <li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
+                            {{/widgetCategoryList}}
+                        </ul>
+                    </div>
 
 <div class="widget widget-tags">
-    <h3 class="widget-title">标签</h3>
-    <div class="tag-cloud">
-        {{ #widgetTagList }}
-            <a href="{{url}}">{{name}}</a>
-        {{ /widgetTagList }}
-        {{ ^widgetTagList }}
-            <span>暂无标签</span>
-        {{ /widgetTagList }}
-    </div>
+    <h3 class="widget-title">标签</h3>
+    <div class="tag-cloud">
+        {{ #widgetTagList }}
+            <a href="{{url}}">{{name}}</a>
+        {{ /widgetTagList }}
+        {{ ^widgetTagList }}
+            <span>暂无标签</span>
+        {{ /widgetTagList }}
+    </div>
 </div>
 
-                    <div class="widget widget-comments">
-                        <h3 class="widget-title">最近评论</h3>
-                        <ul>
-                            <li>暂无评论</li> 
-                        </ul>
-                    </div>
-                </div>
-            </aside>
-        </div>
+                    <div class="widget widget-comments">
+                        <h3 class="widget-title">最近评论</h3>
+                        <ul>
+                            <li>暂无评论</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
 
-        <div class="friend-links">
-             <h3 class="widget-title">友情链接</h3>
-             <div class="links-container">
-                {{#widgetLinkList}}
-                <div class="link-item">
-                    {{#img}}
-                        <a href="{{url}}" target="_blank" title="{{name}}">
-                            <img src="{{img}}" alt="{{name}}">
-                        </a>
-                    {{/img}}
-                    {{^img}}
-                        <a href="{{url}}" target="_blank">{{name}}</a>
-                    {{/img}}
-                </div>
-                {{/widgetLinkList}}
-            </div>
-        </div>
-    </div>
+        <div class="friend-links">
+             <h3 class="widget-title">友情链接</h3>
+             <div class="links-container">
+                {{#widgetLinkList}}
+                <div class="link-item">
+                    {{#img}}
+                        <a href="{{url}}" target="_blank" title="{{name}}">
+                            <img src="{{img}}" alt="{{name}}">
+                        </a>
+                    {{/img}}
+                    {{^img}}
+                        <a href="{{url}}" target="_blank">{{name}}</a>
+                    {{/img}}
+                </div>
+                {{/widgetLinkList}}
+            </div>
+        </div>
+    </div>
 
 	<footer class="footer">
 		<div class="container">
@@ -430,334 +421,331 @@
 			</div>
 	</footer>
 
-    <div class="action action-style-0 action-color-0 action-pos-0">
-        <div class="action-item gotop j-top">
-            <i class="fal fa-arrow-up action-item-icon"></i>
-        </div>
-    </div>
-    
-    <div class="overlay" id="overlay"></div>
-    
-    <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
+    <div class="action action-style-0 action-color-0 action-pos-0">
+        <div class="action-item gotop j-top">
+            <i class="fal fa-arrow-up action-item-icon"></i>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const topButton = document.querySelector('.j-top');
-            if(topButton) {
-                topButton.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchToggle = document.getElementById('search-toggle');
-        const searchBox = document.getElementById('search-box');
-        const closeSearchBtn = document.getElementById('close-search-btn');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const topButton = document.querySelector('.j-top');
+            if(topButton) {
+                topButton.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchToggle = document.getElementById('search-toggle');
+        const searchBox = document.getElementById('search-box');
+        const closeSearchBtn = document.getElementById('close-search-btn');
 
-        if (searchToggle && searchBox) {
-            searchToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                searchBox.classList.toggle('visible');
-            });
-            
-            searchBox.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        }
+        if (searchToggle && searchBox) {
+            searchToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                searchBox.classList.toggle('visible');
+            });
+            
+            searchBox.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        }
 
-        if (closeSearchBtn) {
-            closeSearchBtn.addEventListener('click', function() {
-                searchBox.classList.remove('visible');
-            });
-        }
-        
-        document.addEventListener('click', function() {
-            if (searchBox && searchBox.classList.contains('visible')) {
-                searchBox.classList.remove('visible');
-            }
-        });
+        if (closeSearchBtn) {
+            closeSearchBtn.addEventListener('click', function() {
+                searchBox.classList.remove('visible');
+            });
+        }
+        
+        document.addEventListener('click', function() {
+            if (searchBox && searchBox.classList.contains('visible')) {
+                searchBox.classList.remove('visible');
+            }
+        });
 
-        const menuToggle = document.getElementById('mobile-menu-toggle');
-        const mainNav = document.getElementById('main-nav');
-        const body = document.querySelector('body');
-        const overlay = document.getElementById('overlay');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+        const body = document.querySelector('body');
+        const overlay = document.getElementById('overlay');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
 
-        const openMenu = function() { body.classList.add('nav-open'); };
-        const closeMenu = function() { body.classList.remove('nav-open'); };
-        
-        if (menuToggle) { menuToggle.addEventListener('click', function(event) { event.stopPropagation(); openMenu(); }); }
-        if (overlay) { overlay.addEventListener('click', closeMenu); }
-        if (closeMenuBtn) { closeMenuBtn.addEventListener('click', closeMenu); }
-        mainNav.addEventListener('click', function(event){ event.stopPropagation(); });
+        const openMenu = function() { body.classList.add('nav-open'); };
+        const closeMenu = function() { body.classList.remove('nav-open'); };
+        
+        if (menuToggle) { menuToggle.addEventListener('click', function(event) { event.stopPropagation(); openMenu(); }); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        if (closeMenuBtn) { closeMenuBtn.addEventListener('click', closeMenu); }
+        mainNav.addEventListener('click', function(event){ event.stopPropagation(); });
 
-        const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
-        submenuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                const subMenu = this.nextElementSibling;
-                if (subMenu && subMenu.classList.contains('sub-menu')) {
-                    subMenu.classList.toggle('open');
-                }
-            });
-        });
+        const submenuToggles = document.querySelectorAll('.main-nav .submenu-toggle');
+        submenuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const subMenu = this.nextElementSibling;
+                if (subMenu && subMenu.classList.contains('sub-menu')) {
+                    subMenu.classList.toggle('open');
+                }
+            });
+        });
 
-        // --- START: New Comment Logic ---
-        const articleId = '{{ &articleSingle.id }}'; // 从Mustache模板获取文章ID
-        const commentForm = document.getElementById('comment-form');
-        const commentList = document.getElementById('comment-list');
-        const commentContentInput = document.getElementById('comment-content');
-        
-        // --- START: New Captcha/Contact Elements ---
-        const contactTypeEl = document.getElementById('contact-type');
-        const contactValueEl = document.getElementById('contact-value');
-        const captchaQuestionEl = document.getElementById('captcha-question');
-        const captchaInputEl = document.getElementById('captcha-input');
-        const captchaAnswerEl = document.getElementById('captcha-answer');
-        // --- END: New Captcha/Contact Elements ---
-
-
-        // --- START: New Captcha Function ---
-        function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1; // 1-10
-            const num2 = Math.floor(Math.random() * 10) + 1; // 1-10
-            const answer = num1 + num2;
-
-            if(captchaQuestionEl) {
-                captchaQuestionEl.textContent = `${num1} + ${num2}`;
-            }
-            if(captchaAnswerEl) {
-                captchaAnswerEl.value = answer.toString();
-            }
-        }
-        // --- END: New Captcha Function ---
+        // --- START: New Comment Logic ---
+        const articleId = '{{ &articleSingle.id }}'; // 从Mustache模板获取文章ID
+        const commentForm = document.getElementById('comment-form');
+        const commentList = document.getElementById('comment-list');
+        const commentContentInput = document.getElementById('comment-content');
+        
+        // --- START: New Captcha/Contact Elements ---
+        const contactTypeEl = document.getElementById('contact-type');
+        const contactValueEl = document.getElementById('contact-value');
+        const captchaQuestionEl = document.getElementById('captcha-question');
+        const captchaInputEl = document.getElementById('captcha-input');
+        const captchaAnswerEl = document.getElementById('captcha-answer');
+        // --- END: New Captcha/Contact Elements ---
 
 
-        // 1. 渲染评论列表的函数 (文章主评论区)
-        function renderComments(comments) {
-            commentList.innerHTML = ''; // 清空列表
-            if (comments.length === 0) {
-                commentList.innerHTML = '<li class="comment-item">暂无评论</li>';
-                return;
-            }
+        // --- START: New Captcha Function ---
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1; // 1-10
+            const num2 = Math.floor(Math.random() * 10) + 1; // 1-10
+            const answer = num1 + num2;
 
-            comments.forEach(comment => {
-                const li = document.createElement('li');
-                li.className = 'comment-item';
-                // li.id = `comment-${comment.id}`; // 移除，因为服务器可能不返回ID
-
-                // --- START: Safer Rendering ---
-                const commentBody = document.createElement('div');
-                commentBody.className = 'comment-body';
-                
-                const commentContent = document.createElement('p');
-                commentContent.textContent = comment.content; // Safe
-                commentBody.appendChild(commentContent);
-
-                const commentMeta = document.createElement('div');
-                commentMeta.className = 'comment-meta';
-                
-                const commentDate = document.createElement('span');
-                commentDate.className = 'comment-date';
-                commentDate.textContent = new Date(comment.timestamp).toLocaleString();
-                commentMeta.appendChild(commentDate);
-
-                // --- START: Display Contact Info (If exists and is safe) ---
-                if (comment.contact && comment.contact.value) { // 检查服务器是否返回了（已打码的）值
-                    let typeLabel = '联系方式';
-                    switch(comment.contact.type) {
-                        case 'email': typeLabel = '邮箱'; break;
-                        case 'qq': typeLabel = 'QQ'; break;
-                        case 'wechat': typeLabel = '微信'; break;
-                        case 'telegram': typeLabel = 'Telegram'; break;
-                    }
-                    
-                    const contactSpan = document.createElement('span');
-                    contactSpan.className = 'comment-contact';
-                    
-                    // 直接显示服务器返回的、已经打好码的数据
-                    contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
-                    contactSpan.appendChild(document.createTextNode(comment.contact.value)); // Safe (already masked)
-                    
-                    commentMeta.appendChild(contactSpan);
-                }
-                // --- END: Display Contact Info ---
-                
-                li.appendChild(commentBody);
-                li.appendChild(commentMeta);
-                commentList.appendChild(li);
-                // --- END: Safer Rendering ---
-            });
-        }
-
-        // 2. 获取评论的函数 (文章主评论区)
-        async function fetchComments() {
-            try {
-                // --- START: [修改 1] 已修改为调用安全接口 ---
-                // articleId 是在 500 行定义的: const articleId = '{{ &articleSingle.id }}';
-                const response = await fetch(`/api/comments/${articleId}`); // 调用我们新建的安全GET接口
-                if (!response.ok) throw new Error('获取评论失败');
-                
-                const articleComments = await response.json(); // 直接获取已处理好的、本文的评论
-                
-                // (不再需要客户端筛选)
-                
-                renderComments(articleComments);
-                // --- END: 修改 ---
-            } catch (error) {
-                console.error('获取评论时出错:', error);
-                commentList.innerHTML = '<li class="comment-item">加载评论失败</li>';
-            }
-        }
-
-        // --- START: [修改 2] 新增函数，加载侧边栏“最近评论” ---
-        async function loadRecentComments() {
-            try {
-                // (现在这个接口是安全的，因为它返回的数据已在服务器打码)
-                const response = await fetch('/api/comments_all'); 
-                if (!response.ok) return; // 如果失败，静默处理或显示错误
-                
-                const allComments = await response.json(); // 数据已打码
-                const recentComments = allComments.slice(0, 5); // 获取最新的 5 条
-                
-                const sidebarList = document.querySelector('.widget-comments ul');
-                if (!sidebarList) return; // 确保元素存在
-                
-                if (recentComments.length === 0) {
-                    sidebarList.innerHTML = '<li>暂无评论</li>';
-                    return;
-                }
-                
-                sidebarList.innerHTML = ''; // 清空 "暂无评论" 或 "加载失败"
-                recentComments.forEach(comment => {
-                    const li = document.createElement('li');
-                    
-                    // 创建一个安全的文本节点，显示部分评论内容
-                    const contentText = document.createTextNode(comment.content.substring(0, 20) + (comment.content.length > 20 ? '...' : ''));
-                    
-                    // 创建指向该评论所在文章的链接
-                    const link = document.createElement('a');
-                    // 注意：这里需要根据您的文章 URL 结构调整。
-                    // 我们假设 articleSlug 存储的就是文章 ID，且 URL 是 /article/ID/
-                    // 如果您的 URL 是 /article/ID/link-slug/，则需要额外获取 link-slug
-                    link.href = `/article/${comment.articleSlug}/`; // 假设 articleSlug 是 ID
-                    link.title = `在文章 "${comment.articleSlug}" 上的评论`; // 提示信息
-                    
-                    link.appendChild(contentText);
-                    li.appendChild(link);
-                    sidebarList.appendChild(li);
-                });
-            } catch (e) {
-                console.error('加载最近评论时出错:', e);
-                const sidebarList = document.querySelector('.widget-comments ul');
-                if(sidebarList) sidebarList.innerHTML = '<li>评论加载失败</li>';
-            }
-        }
-        // --- END: 新增函数 ---
-
-        // 3. 处理评论表单提交
-        if (commentForm) {
-            commentForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const content = commentContentInput.value.trim();
-
-                // --- START: New Validation ---
-                const captchaAnswer = captchaAnswerEl.value;
-                const captchaInput = captchaInputEl.value.trim();
-
-                if (captchaInput !== captchaAnswer) {
-                    alert('验证码不正确!');
-                    generateCaptcha(); // 刷新验证码
-                    captchaInputEl.value = ''; // 清空输入
-                    return;
-                }
-                // --- END: New Validation ---
-
-                if (!content) {
-                    alert('评论内容不能为空');
-                    return;
-                }
-
-                // --- START: Get Contact Info ---
-                const contactType = contactTypeEl.value;
-                const contactValue = contactValueEl.value.trim();
-                // --- END: Get Contact Info ---
+            if(captchaQuestionEl) {
+                captchaQuestionEl.textContent = `${num1} + ${num2}`;
+            }
+            if(captchaAnswerEl) {
+                captchaAnswerEl.value = answer.toString();
+            }
+        }
+        // --- END: New Captcha Function ---
 
 
-                const newComment = {
-                    content: content,
-                    timestamp: Date.now(),
-                    contact: {} // 创建一个对象用于存储联系信息
-                };
+        // 1. 渲染评论列表的函数
+        function renderComments(comments) {
+            commentList.innerHTML = ''; // 清空列表
+            if (comments.length === 0) {
+                commentList.innerHTML = '<li class="comment-item">暂无评论</li>';
+                return;
+            }
 
-                // 仅当用户填写了联系方式时才添加
-                if (contactValue) {
-                    newComment.contact = {
-                        type: contactType,
-                        value: contactValue // 发送完整值到服务器
-                    };
-                }
+            comments.forEach(comment => {
+                const li = document.createElement('li');
+                li.className = 'comment-item';
+                li.id = `comment-${comment.id}`;
 
-                try {
-                    // 使用 index_plus.js 中定义的 POST 接口
-                    const response = await fetch(`/api/comments/${articleId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(newComment)
-                    });
+                // --- START: Safer Rendering ---
+                const commentBody = document.createElement('div');
+                commentBody.className = 'comment-body';
+                
+                const commentContent = document.createElement('p');
+                commentContent.textContent = comment.content; // Safe
+                commentBody.appendChild(commentContent);
 
-                    if (!response.ok) throw new Error('提交评论失败');
+                const commentMeta = document.createElement('div');
+                commentMeta.className = 'comment-meta';
+                
+                const commentDate = document.createElement('span');
+                commentDate.className = 'comment-date';
+                commentDate.textContent = new Date(comment.timestamp).toLocaleString();
+                commentMeta.appendChild(commentDate);
 
-                    const savedComment = await response.json(); // 服务器返回的可能没有ID
-                    
-                    // 刷新主评论列表以显示新评论（包含服务器打码后的联系方式）
-                    fetchComments(); 
-                    // 刷新侧边栏评论列表
-                    loadRecentComments();
+                // --- START: Display Contact Info (If exists) ---
+                if (comment.contact && comment.contact.value) {
+                    let typeLabel = '联系方式';
+                    switch(comment.contact.type) {
+                        case 'email': typeLabel = '邮箱'; break;
+                        case 'qq': typeLabel = 'QQ'; break;
+                        case 'wechat': typeLabel = '微信'; break;
+                        case 'telegram': typeLabel = 'Telegram'; break;
+                    }
+                    
+                    const contactSpan = document.createElement('span');
+                    contactSpan.className = 'comment-contact';
+                    
+                    // Create text nodes to be safe
+                    contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
+                    contactSpan.appendChild(document.createTextNode(comment.contact.value)); // Safe
+                    
+                    commentMeta.appendChild(contactSpan);
+                }
+                // --- END: Display Contact Info ---
+                
+                li.appendChild(commentBody);
+                li.appendChild(commentMeta);
+                commentList.appendChild(li);
+                // --- END: Safer Rendering ---
+            });
+        }
 
-                    // --- START: Clear inputs and regenerate captcha ---
-                    commentContentInput.value = ''; // 清空评论框
-                    contactValueEl.value = '';    // 清空联系方式
-                    captchaInputEl.value = '';    // 清空验证码
-                    generateCaptcha();            // 重新生成验证码
-                    // --- END: Clear inputs ---
+        // 2. 获取评论的函数
+        async function fetchComments() {
+            try {
+                // 根据 index_plus.js，我们只能获取所有评论
+                const response = await fetch('/api/comments_all');
+                if (!response.ok) throw new Error('获取评论失败');
+                
+                const allComments = await response.json();
+                
+                // 在客户端筛选出当前文章的评论
+                const articleComments = allComments.filter(comment => comment.articleSlug === articleId);
+                
+                renderComments(articleComments);
+            } catch (error) {
+                console.error('获取评论时出错:', error);
+                commentList.innerHTML = '<li class="comment-item">加载评论失败</li>';
+            }
+        }
 
-                } catch (error) {
-                    console.error('提交评论时出错:', error);
-                    alert('评论提交失败');
-                    generateCaptcha(); // 出错时也刷新验证码
-                }
-            });
-        }
+        // 3. 处理评论表单提交
+        if (commentForm) {
+            commentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const content = commentContentInput.value.trim();
 
-        // 4. 页面加载时立即获取评论和生成验证码
-        fetchComments();
-        generateCaptcha(); // --- ADDED: 初始生成验证码 ---
-        loadRecentComments(); // <--- [修改 3] 在这里添加这一行
-        // --- END: New Comment Logic ---
+                // --- START: New Validation ---
+                const captchaAnswer = captchaAnswerEl.value;
+                const captchaInput = captchaInputEl.value.trim();
+
+                if (captchaInput !== captchaAnswer) {
+                    alert('验证码不正确!');
+                    generateCaptcha(); // 刷新验证码
+                    captchaInputEl.value = ''; // 清空输入
+                    return;
+                }
+                // --- END: New Validation ---
+
+                if (!content) {
+                    alert('评论内容不能为空');
+                    return;
+                }
+
+                // --- START: Get Contact Info ---
+                const contactType = contactTypeEl.value;
+                const contactValue = contactValueEl.value.trim();
+                // --- END: Get Contact Info ---
 
 
-        const swiper = new Swiper('.swiper', {
-            autoHeight: true,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-    });
+                const newComment = {
+                    content: content,
+                    timestamp: Date.now(),
+                    contact: {} // 创建一个对象用于存储联系信息
+                };
+
+                // 仅当用户填写了联系方式时才添加
+                if (contactValue) {
+                    newComment.contact = {
+                        type: contactType,
+                        value: contactValue
+                    };
+                }
+
+                try {
+                    // 使用 index_plus.js 中定义的 POST 接口
+                    const response = await fetch(`/api/comments/${articleId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newComment)
+                    });
+
+                    if (!response.ok) throw new Error('提交评论失败');
+
+                    const savedComment = await response.json();
+                    
+                    // 乐观更新UI：将新评论添加到列表顶部
+                    if (commentList.querySelector('.comment-item')?.textContent === '暂无评论' || commentList.querySelector('.comment-item')?.textContent === '正在加载评论...') {
+                        commentList.innerHTML = ''; // 清空 "暂无评论"
+                    }
+
+                    // --- START: Safer Optimistic Update ---
+                    const li = document.createElement('li');
+                    li.className = 'comment-item';
+                    li.id = `comment-${savedComment.id}`;
+
+                    const commentBody = document.createElement('div');
+                    commentBody.className = 'comment-body';
+                    
+                    const commentContent = document.createElement('p');
+                    commentContent.textContent = savedComment.content; // Safe
+                    commentBody.appendChild(commentContent);
+
+                    const commentMeta = document.createElement('div');
+                    commentMeta.className = 'comment-meta';
+                    
+                    const commentDate = document.createElement('span');
+                    commentDate.className = 'comment-date';
+                    commentDate.textContent = new Date(savedComment.timestamp).toLocaleString();
+                    commentMeta.appendChild(commentDate);
+
+                    if (savedComment.contact && savedComment.contact.value) {
+                        let typeLabel = '联系方式';
+                        switch(savedComment.contact.type) {
+                            case 'email': typeLabel = '邮箱'; break;
+                            case 'qq': typeLabel = 'QQ'; break;
+                            case 'wechat': typeLabel = '微信'; break;
+                            case 'telegram': typeLabel = 'Telegram'; break;
+                        }
+                        
+                        const contactSpan = document.createElement('span');
+                        contactSpan.className = 'comment-contact';
+                        
+                        contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
+                        contactSpan.appendChild(document.createTextNode(savedComment.contact.value)); // Safe
+                        
+                        commentMeta.appendChild(contactSpan);
+                    }
+                    
+                    li.appendChild(commentBody);
+                    li.appendChild(commentMeta);
+                    commentList.prepend(li); // 添加到列表开头
+                    // --- END: Safer Optimistic Update ---
+
+
+                    // --- START: Clear inputs and regenerate captcha ---
+                    commentContentInput.value = ''; // 清空评论框
+                    contactValueEl.value = '';    // 清空联系方式
+                    captchaInputEl.value = '';    // 清空验证码
+                    generateCaptcha();            // 重新生成验证码
+                    // --- END: Clear inputs ---
+
+                } catch (error) {
+                    console.error('提交评论时出错:', error);
+                    alert('评论提交失败');
+                    generateCaptcha(); // 出错时也刷新验证码
+                }
+            });
+        }
+
+        // 4. 页面加载时立即获取评论和生成验证码
+        fetchComments();
+        generateCaptcha(); // --- ADDED: 初始生成验证码 ---
+        // --- END: New Comment Logic ---
+
+
+        const swiper = new Swiper('.swiper', {
+            autoHeight: true,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    });
 </script>
 </body>
 </html>
