@@ -8,6 +8,7 @@
     <title>{{ &title }}</title>
     <meta name="keywords" content="{{ &OPT.keywords }}" />
     <meta name="description" content="{{ &OPT.siteDescription }}" />
+
     <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
@@ -23,7 +24,7 @@
             color: #333; /* (可选) 设置鼠标悬停时链接的颜色为深灰色 */
         }
 
-        /* --- START: Comment Styles --- */
+        /* --- START: New Comment Styles --- */
         .comment-form {
             margin-top: 20px;
         }
@@ -32,7 +33,7 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            box-sizing: border-box;
+            box-sizing: border-box; /* 确保 padding 不会撑大宽度 */
             min-height: 100px;
         }
         .comment-form .form-submit {
@@ -74,25 +75,7 @@
             color: #555;
             font-style: italic;
         }
-        /* Sidebar comment contact style */
-        .widget-comments .comment-contact-sidebar {
-            font-size: 11px;
-            color: #777;
-            margin-left: 5px;
-            font-style: italic;
-            /* Ensure it doesn't break line unnecessarily */
-            display: inline;
-            white-space: nowrap;
-        }
-        /* Adjust sidebar li spacing if needed */
-        .widget-comments ul li {
-            margin-bottom: 8px; /* Add some space between items */
-            line-height: 1.4; /* Adjust line height */
-        }
-        .widget-comments ul li a {
-             margin-right: 5px; /* Add space between link and contact */
-        }
-
+        
         /* --- START: Horizontal Form Row Styles --- */
         .comment-form p {
              margin: 10px 0;
@@ -101,31 +84,33 @@
             margin-right: 5px;
             font-size: 14px;
             color: #555;
-            vertical-align: middle;
+            vertical-align: middle; /* 帮助标签与输入框对齐 */
         }
 
         .comment-form-bottom-row {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: flex-start;
+            flex-wrap: wrap; /* 允许在小屏幕上换行 */
+            align-items: center; /* 垂直居中对齐 */
+            justify-content: flex-start; /* 从左侧开始排列 */
             margin-top: 10px;
         }
+        /* 移除 flex 容器内 p 元素的默认上下边距，并添加右边距 */
         .comment-form-bottom-row p {
-            margin: 5px 15px 5px 0;
+            margin: 5px 15px 5px 0; /* (上 右 下 左) 为元素之间添加右边距 */
         }
         .comment-form-bottom-row .form-submit {
-            margin-right: 0;
+            margin-right: 0; /* 最后一个元素不需要右边距 */
         }
 
+        /* 统一下拉框、输入框和按钮的高度 */
         #contact-type,
         #contact-value,
         #captcha-input,
         .comment-form-bottom-row .submit {
-            height: 36px;
+            height: 36px; /* 统一高度 */
             padding-top: 5px;
             padding-bottom: 5px;
-            box-sizing: border-box;
+            box-sizing: border-box; /* 确保 padding 不会破坏高度 */
             vertical-align: middle;
         }
         
@@ -135,33 +120,34 @@
         }
 
         #contact-value {
-            width: 150px;
+            width: 150px; /* 给一个固定宽度 */
             margin-left: 5px;
             border-radius: 4px;
             border: 1px solid #ddd;
         }
         
         #captcha-input {
-            width: 60px;
+            width: 60px; /* 验证码输入框宽度 */
             border-radius: 4px;
             border: 1px solid #ddd;
         }
         
         .comment-form-bottom-row .submit {
+            /* 调整 padding 以匹配新高度 */
             padding-left: 20px;
             padding-right: 20px;
         }
         /* --- END: Horizontal Form Row Styles --- */
         
-        /* --- END: Comment Styles --- */
-
-        /* --- START: Custom Focus Style --- */
+        /* --- END: New Comment Styles --- */
+/* --- START: Custom Focus Style --- */
+        /* 针对评论表单中的所有输入元素（文本域、下拉框、文本框） */
         .comment-form textarea:focus,
         .comment-form select:focus,
         .comment-form input[type="text"]:focus {
-            outline: none;
-            border-color: #888;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            outline: none; /* 关键：移除了浏览器默认的“粗黑”轮廓 */
+            border-color: #888; /* 将边框颜色在聚焦时变为柔和的灰色（不再“黑”） */
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); /* 添加一个非常轻微的阴影，提示聚焦状态 */
         }
         /* --- END: Custom Focus Style --- */
     </style>
@@ -518,51 +504,68 @@
             });
         });
 
-        // --- START: Comment Logic ---
-        const articleId = '{{ &articleSingle.id }}'; 
+        // --- START: New Comment Logic ---
+        const articleId = '{{ &articleSingle.id }}'; // 从Mustache模板获取文章ID
         const commentForm = document.getElementById('comment-form');
         const commentList = document.getElementById('comment-list');
         const commentContentInput = document.getElementById('comment-content');
+        
+        // --- START: New Captcha/Contact Elements ---
         const contactTypeEl = document.getElementById('contact-type');
         const contactValueEl = document.getElementById('contact-value');
         const captchaQuestionEl = document.getElementById('captcha-question');
         const captchaInputEl = document.getElementById('captcha-input');
         const captchaAnswerEl = document.getElementById('captcha-answer');
+        // --- END: New Captcha/Contact Elements ---
 
+
+        // --- START: New Captcha Function ---
         function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1; 
-            const num2 = Math.floor(Math.random() * 10) + 1; 
+            const num1 = Math.floor(Math.random() * 10) + 1; // 1-10
+            const num2 = Math.floor(Math.random() * 10) + 1; // 1-10
             const answer = num1 + num2;
-            if(captchaQuestionEl) captchaQuestionEl.textContent = `${num1} + ${num2}`;
-            if(captchaAnswerEl) captchaAnswerEl.value = answer.toString();
-        }
 
-        // 1. 渲染主评论列表
+            if(captchaQuestionEl) {
+                captchaQuestionEl.textContent = `${num1} + ${num2}`;
+            }
+            if(captchaAnswerEl) {
+                captchaAnswerEl.value = answer.toString();
+            }
+        }
+        // --- END: New Captcha Function ---
+
+
+        // 1. 渲染评论列表的函数 (文章主评论区)
         function renderComments(comments) {
-            commentList.innerHTML = ''; 
+            commentList.innerHTML = ''; // 清空列表
             if (comments.length === 0) {
                 commentList.innerHTML = '<li class="comment-item">暂无评论</li>';
                 return;
             }
+
             comments.forEach(comment => {
                 const li = document.createElement('li');
                 li.className = 'comment-item';
+                // li.id = `comment-${comment.id}`; // 移除，因为服务器可能不返回ID
 
+                // --- START: Safer Rendering ---
                 const commentBody = document.createElement('div');
                 commentBody.className = 'comment-body';
+                
                 const commentContent = document.createElement('p');
-                commentContent.textContent = comment.content; 
+                commentContent.textContent = comment.content; // Safe
                 commentBody.appendChild(commentContent);
 
                 const commentMeta = document.createElement('div');
                 commentMeta.className = 'comment-meta';
+                
                 const commentDate = document.createElement('span');
                 commentDate.className = 'comment-date';
                 commentDate.textContent = new Date(comment.timestamp).toLocaleString();
                 commentMeta.appendChild(commentDate);
 
-                // --- 直接显示服务器返回的（已打码）联系方式 ---
-                if (comment.contact && comment.contact.value) { 
+                // --- START: Display Contact Info (If exists and is safe) ---
+                if (comment.contact && comment.contact.value) { // 检查服务器是否返回了（已打码的）值
                     let typeLabel = '联系方式';
                     switch(comment.contact.type) {
                         case 'email': typeLabel = '邮箱'; break;
@@ -570,80 +573,81 @@
                         case 'wechat': typeLabel = '微信'; break;
                         case 'telegram': typeLabel = 'Telegram'; break;
                     }
+                    
                     const contactSpan = document.createElement('span');
                     contactSpan.className = 'comment-contact';
+                    
+                    // 直接显示服务器返回的、已经打好码的数据
                     contactSpan.appendChild(document.createTextNode(` [${typeLabel}]: `));
-                    contactSpan.appendChild(document.createTextNode(comment.contact.value)); // 直接使用已打码的值
+                    contactSpan.appendChild(document.createTextNode(comment.contact.value)); // Safe (already masked)
+                    
                     commentMeta.appendChild(contactSpan);
                 }
+                // --- END: Display Contact Info ---
                 
                 li.appendChild(commentBody);
                 li.appendChild(commentMeta);
                 commentList.appendChild(li);
+                // --- END: Safer Rendering ---
             });
         }
 
-        // 2. 获取主评论列表
+        // 2. 获取评论的函数 (文章主评论区)
         async function fetchComments() {
             try {
-                // --- [修改 1] 调用安全接口 ---
-                const response = await fetch(`/api/comments/${articleId}`); 
+                // --- START: [修改 1] 已修改为调用安全接口 ---
+                // articleId 是在 500 行定义的: const articleId = '{{ &articleSingle.id }}';
+                const response = await fetch(`/api/comments/${articleId}`); // 调用我们新建的安全GET接口
                 if (!response.ok) throw new Error('获取评论失败');
-                const articleComments = await response.json(); 
+                
+                const articleComments = await response.json(); // 直接获取已处理好的、本文的评论
+                
+                // (不再需要客户端筛选)
+                
                 renderComments(articleComments);
-                // --- END 修改 ---
+                // --- END: 修改 ---
             } catch (error) {
                 console.error('获取评论时出错:', error);
                 commentList.innerHTML = '<li class="comment-item">加载评论失败</li>';
             }
         }
 
-        // --- START: [修改 2] 加载侧边栏“最近评论” (已修正布局) ---
+        // --- START: [修改 2] 新增函数，加载侧边栏“最近评论” ---
         async function loadRecentComments() {
             try {
+                // (现在这个接口是安全的，因为它返回的数据已在服务器打码)
                 const response = await fetch('/api/comments_all'); 
-                if (!response.ok) return; 
+                if (!response.ok) return; // 如果失败，静默处理或显示错误
                 
                 const allComments = await response.json(); // 数据已打码
-                const recentComments = allComments.slice(0, 5); 
+                const recentComments = allComments.slice(0, 5); // 获取最新的 5 条
                 
                 const sidebarList = document.querySelector('.widget-comments ul');
-                if (!sidebarList) return; 
+                if (!sidebarList) return; // 确保元素存在
                 
                 if (recentComments.length === 0) {
                     sidebarList.innerHTML = '<li>暂无评论</li>';
                     return;
                 }
                 
-                sidebarList.innerHTML = ''; // 清空
+                sidebarList.innerHTML = ''; // 清空 "暂无评论" 或 "加载失败"
                 recentComments.forEach(comment => {
                     const li = document.createElement('li');
-                    
-                    // 为了防止 XSS，我们不直接用 innerHTML，而是创建文本节点
-                    
-                    // 1. 创建链接
-                    const link = document.createElement('a');
-                    link.href = `/article/${comment.articleSlug}/`; 
-                    link.title = `在文章 "${comment.articleSlug}" 上的评论`;
-                    link.textContent = comment.content.substring(0, 20) + (comment.content.length > 20 ? '...' : ''); 
-                    li.appendChild(link); // 将链接添加到 li
-
-                    // 2. 创建并添加联系方式 (如果存在)
-                    if (comment.contact && comment.contact.value) {
-                        let typeLabel = comment.contact.type || '联系'; // 更短的标签
-                        if (typeLabel === 'email') typeLabel = '邮';
-                        if (typeLabel === 'qq') typeLabel = 'Q';
-                        if (typeLabel === 'wechat') typeLabel = '微';
-                        if (typeLabel === 'telegram') typeLabel = 'TG';
-                        
-                        const contactSpan = document.createElement('span');
-                        contactSpan.className = 'comment-contact-sidebar'; 
-                        // 使用 textContent 插入纯文本，避免 [] 和 "" 问题
-                        contactSpan.textContent = ` (${typeLabel}:${comment.contact.value})`; 
-                        li.appendChild(contactSpan); 
-                    }
                     
-                    sidebarList.appendChild(li); 
+                    // 创建一个安全的文本节点，显示部分评论内容
+                    const contentText = document.createTextNode(comment.content.substring(0, 20) + (comment.content.length > 20 ? '...' : ''));
+                    
+                    // 创建指向该评论所在文章的链接
+                    const link = document.createElement('a');
+                    // 注意：这里需要根据您的文章 URL 结构调整。
+                    // 我们假设 articleSlug 存储的就是文章 ID，且 URL 是 /article/ID/
+                    // 如果您的 URL 是 /article/ID/link-slug/，则需要额外获取 link-slug
+                    link.href = `/article/${comment.articleSlug}/`; // 假设 articleSlug 是 ID
+                    link.title = `在文章 "${comment.articleSlug}" 上的评论`; // 提示信息
+                    
+                    link.appendChild(contentText);
+                    li.appendChild(link);
+                    sidebarList.appendChild(li);
                 });
             } catch (e) {
                 console.error('加载最近评论时出错:', e);
@@ -658,60 +662,83 @@
             commentForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const content = commentContentInput.value.trim();
+
+                // --- START: New Validation ---
                 const captchaAnswer = captchaAnswerEl.value;
                 const captchaInput = captchaInputEl.value.trim();
 
                 if (captchaInput !== captchaAnswer) {
                     alert('验证码不正确!');
-                    generateCaptcha(); 
-                    captchaInputEl.value = ''; 
+                    generateCaptcha(); // 刷新验证码
+                    captchaInputEl.value = ''; // 清空输入
                     return;
                 }
+                // --- END: New Validation ---
+
                 if (!content) {
                     alert('评论内容不能为空');
                     return;
                 }
 
+                // --- START: Get Contact Info ---
                 const contactType = contactTypeEl.value;
                 const contactValue = contactValueEl.value.trim();
+                // --- END: Get Contact Info ---
+
+
                 const newComment = {
                     content: content,
                     timestamp: Date.now(),
-                    contact: {} 
+                    contact: {} // 创建一个对象用于存储联系信息
                 };
+
+                // 仅当用户填写了联系方式时才添加
                 if (contactValue) {
-                    newComment.contact = { type: contactType, value: contactValue };
+                    newComment.contact = {
+                        type: contactType,
+                        value: contactValue // 发送完整值到服务器
+                    };
                 }
 
                 try {
+                    // 使用 index_plus.js 中定义的 POST 接口
                     const response = await fetch(`/api/comments/${articleId}`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         body: JSON.stringify(newComment)
                     });
+
                     if (!response.ok) throw new Error('提交评论失败');
 
-                    // 提交成功后，刷新两个评论列表
+                    const savedComment = await response.json(); // 服务器返回的可能没有ID
+                    
+                    // 刷新主评论列表以显示新评论（包含服务器打码后的联系方式）
                     fetchComments(); 
+                    // 刷新侧边栏评论列表
                     loadRecentComments();
 
-                    commentContentInput.value = ''; 
-                    contactValueEl.value = '';    
-                    captchaInputEl.value = '';    
-                    generateCaptcha();          
+                    // --- START: Clear inputs and regenerate captcha ---
+                    commentContentInput.value = ''; // 清空评论框
+                    contactValueEl.value = '';    // 清空联系方式
+                    captchaInputEl.value = '';    // 清空验证码
+                    generateCaptcha();            // 重新生成验证码
+                    // --- END: Clear inputs ---
+
                 } catch (error) {
                     console.error('提交评论时出错:', error);
                     alert('评论提交失败');
-                    generateCaptcha(); 
+                    generateCaptcha(); // 出错时也刷新验证码
                 }
             });
         }
 
-        // 4. 页面加载时初始化
+        // 4. 页面加载时立即获取评论和生成验证码
         fetchComments();
-        generateCaptcha(); 
-        loadRecentComments(); // <--- [修改 3] 调用侧边栏加载函数
-        // --- END: Comment Logic ---
+        generateCaptcha(); // --- ADDED: 初始生成验证码 ---
+        loadRecentComments(); // <--- [修改 3] 在这里添加这一行
+        // --- END: New Comment Logic ---
 
 
         const swiper = new Swiper('.swiper', {
