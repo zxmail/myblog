@@ -150,6 +150,7 @@
                             <div class="article-item-content">
 								<h3>
 								{{#isPinned}}<i class="fas fa-thumbtack" style="color: #f00; margin-right: 5px;" title="置顶"></i>{{/isPinned}}
+								{{#isPasswordProtected}}<i class="fas fa-lock" style="color: #888; margin-right: 5px;" title="密码保护"></i>{{/isPasswordProtected}}
 								<a href="{{url}}">{{title}}</a>
 								</h3>
                                 <p>{{contentText}}</p>
@@ -197,6 +198,12 @@
 									   title="置顶">
 									</i>
 									{{/isPinned}}
+									{{#isPasswordProtected}}
+									<i class="fas fa-lock" 
+									   style="color: #888; font-size: 0.9em; margin-right: 4px;" 
+									   title="密码保护">
+									</i>
+									{{/isPasswordProtected}}
 									{{title}}
 								</a>
 								<span class="recent-article-item-date">{{createDate10}}</span>
