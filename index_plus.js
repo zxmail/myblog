@@ -236,6 +236,28 @@ async function handleRequest({ request, env, ctx }) {
 					for (var key in data.BLOG) { await env.XYRJ_BLOG.put(key, data.BLOG[key]); }
 					return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
+				// --- START: 新增的管理员评论接口 (返回完整数据) ---
+				else if (pathname === "/admin/api/comments_all") {
+					const allKeys = await env.XYRJ_COMMENTS_KV.list();
+					let allComments = [];
+					for (const key of allKeys.keys) {
+						const comments = await env.XYRJ_COMMENTS_KV.get(key.name, { type: 'json' });
+						if (comments) {
+							comments.forEach(c => {
+								// 注意：这里没有进行脱敏 (打码)
+								allComments.push({ 
+									...c, // 返回原始评论
+									id: crypto.randomUUID(), // 为后台生成临时ID
+									articleSlug: key.name 
+								});
+							});
+						}
+					}
+					allComments.sort((a, b) => b.timestamp - a.timestamp);
+					// 返回的数据是完整的
+					return new Response(JSON.stringify(allComments), { headers: { 'Content-Type': 'application/json' } });
+				}
+                // --- END: 新增接口 ---
 				else if (pathname.startsWith("/admin/publish/")) {
 					const cache = caches.default;
         			await cache.delete(new Request(new URL("/", request.url).toString()));
