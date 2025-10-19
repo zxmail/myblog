@@ -381,10 +381,10 @@
     </div>
 </div>
 
-                    <div class="widget widget-comments">
+					<div class="widget widget-comments">
                         <h3 class="widget-title">最近评论</h3>
-                        <ul>
-                            <li>暂无评论</li>
+                        <ul id="widget-recent-comments-list">
+                            <li>正在加载...</li>
                         </ul>
                     </div>
                 </div>
@@ -524,7 +524,66 @@
             }
         }
         // --- END: New Captcha Function ---
+		function renderSidebarComments(comments) {
+            // 1. 找到侧边栏的 ul 列表
+            const sidebarList = document.getElementById('widget-recent-comments-list');
+            if (!sidebarList) return; // 如果此页面没有侧边栏模块，则退出
 
+            // 2. 清空 "正在加载..."
+            sidebarList.innerHTML = '';
+
+            // 3. 检查是否有评论
+            if (!comments || comments.length === 0) {
+                sidebarList.innerHTML = '<li>暂无评论</li>';
+                return;
+            }
+
+            // 4. 只截取最新的 5 条评论
+            const recentComments = comments.slice(0, 5);
+
+            // 5. 遍历并生成 HTML
+            recentComments.forEach(comment => {
+                const li = document.createElement('li');
+                li.style.borderBottom = '1px solid #eee'; // 添加一点分隔线
+                li.style.padding = '10px 0';
+
+                // --- 评论内容 ---
+                // 使用 textContent 来防止 XSS 攻击
+                const contentP = document.createElement('p');
+                contentP.style.marginBottom = '5px';
+                contentP.textContent = comment.content;
+                
+                // --- 评论元信息 (联系方式) ---
+                const metaSpan = document.createElement('span');
+                metaSpan.style.fontSize = '12px';
+                metaSpan.style.color = '#888';
+
+                if (comment.contact && comment.contact.value) {
+                    // 后端已经返回了打码后的值 (例如 "12*******")
+                    let typeLabel = '联系';
+                    switch(comment.contact.type) {
+                        case 'email': typeLabel = '邮箱'; break;
+                        case 'qq': typeLabel = 'QQ'; break;
+                        case 'wechat': typeLabel = '微信'; break;
+                        case 'telegram': typeLabel = 'Telegram'; break;
+                    }
+                    // 同样使用 textContent 保证安全
+                    metaSpan.textContent = `[${typeLabel}: ${comment.contact.value}]`;
+                } else {
+                    metaSpan.textContent = '[匿名]';
+                }
+
+                li.appendChild(contentP);
+                li.appendChild(metaSpan);
+                sidebarList.appendChild(li);
+            });
+            
+            // 移除最后一条评论的底部分隔线
+            if(sidebarList.lastChild) {
+                sidebarList.lastChild.style.borderBottom = 'none';
+            }
+        }
+        // --- END: 新增函数 ---
 
         // 1. 渲染评论列表的函数
         function renderComments(comments) {
@@ -584,7 +643,7 @@
         }
 
         // 2. 获取评论的函数
-        async function fetchComments() {
+			async function fetchComments() {
             try {
                 // 根据 index_plus.js，我们只能获取所有评论
                 const response = await fetch('/api/comments_all');
@@ -592,6 +651,11 @@
                 
                 const allComments = await response.json();
                 
+                // --- START: 新增的调用 ---
+                // 用所有评论去渲染侧边栏 (allComments 已经由服务器排好序并打码)
+                renderSidebarComments(allComments);
+                // --- END: 新增的调用 ---
+
                 // 在客户端筛选出当前文章的评论
                 const articleComments = allComments.filter(comment => comment.articleSlug === articleId);
                 
@@ -599,6 +663,14 @@
             } catch (error) {
                 console.error('获取评论时出错:', error);
                 commentList.innerHTML = '<li class="comment-item">加载评论失败</li>';
+                
+                // --- START: 新增的错误处理 ---
+                // 侧边栏也要显示失败
+                const sidebarList = document.getElementById('widget-recent-comments-list');
+                if (sidebarList) {
+                    sidebarList.innerHTML = '<li>加载失败</li>';
+                }
+                // --- END: 新增的错误处理 ---
             }
         }
 
