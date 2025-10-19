@@ -876,8 +876,7 @@ if (comment.contact && comment.contact.value) {
 
     // 直接拼接字符串，允许其中的 HTML 被渲染
     contactInfo = `${type}: ${value}`;
-}
-				
+}			
 				// --- 内容转义逻辑 ---
 				const safeContent = $('<div>').text(comment.content).html();
 
