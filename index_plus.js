@@ -255,32 +255,85 @@ async function handleRequest({ request, env, ctx }) {
 			xml += `</urlset>`;
 			return new Response(xml, { status: 200, headers: { 'Content-Type': 'application/xml;charset=UTF-8' }});
 		}
+
+		// --- START: [修改 1] 在这里插入新的安全GET接口 ---
+		else if (pathname.startsWith('/api/comments/') && request.method === 'GET') {
+			const articleSlug = pathname.split('/')[3]; 
+			if (!articleSlug) {
+				return new Response(JSON.stringify({ error: "Article slug is missing" }), { status: 400, headers: { 'Content-Type': 'application/json' }});
+			}
+
+			const comments = await env.XYRJ_COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
+
+			// --- 这是关键的安全处理：在服务器端进行脱敏 ---
+			const safeComments = comments.map(comment => {
+				let processedComment = {...comment}; // 创建副本以避免修改原始数据（如果需要）
+				if (processedComment.contact && processedComment.contact.value && processedComment.contact.value.length > 2) {
+					// 在服务器上直接修改数据
+					processedComment.contact.value = processedComment.contact.value.substring(0, 2) + '*'.repeat(processedComment.contact.value.length - 2);
+				}
+				// 为前端生成一个唯一的、可用于Cravatar的ID (如果您的前端需要)
+                // 注意：您粘贴的 article.html 似乎不需要ID，我们现在不生成ID
+				// processedComment.id = crypto.randomUUID(); 
+				return processedComment;
+			});
+			// --- 安全处理结束 ---
+
+			return new Response(JSON.stringify(safeComments), { 
+				status: 200, 
+				headers: { 'Content-Type': 'application/json' } 
+			});
+		}
+		// --- END: 新接口结束 ---
+
 		else if (pathname.startsWith('/api/comments/') && request.method === 'POST') {
 			const articleSlug = pathname.split('/')[3];
 			let newComment = await request.json();
 			const comments = await env.XYRJ_COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
-			newComment.id = crypto.randomUUID();
+			// newComment.id = crypto.randomUUID(); // --- [修改 2] 已注释掉
 			comments.push(newComment);
 			await env.XYRJ_COMMENTS_KV.put(articleSlug, JSON.stringify(comments));
+			// 返回保存的数据，而不是带有生成ID的数据
 			return new Response(JSON.stringify(newComment), { status: 201, headers: { 'Content-Type': 'application/json' } });
 		}
 		else if (pathname.startsWith('/api/comments/') && request.method === 'DELETE') {
+			// 后台删除接口保持不变，它依赖于 /api/comments_all 生成的临时ID
 			const [_a, _b, _c, articleSlug, commentId] = pathname.split('/');
 			let comments = await env.XYRJ_COMMENTS_KV.get(articleSlug, { type: 'json' }) || [];
-			const updatedComments = comments.filter(c => c.id !== commentId);
-			await env.XYRJ_COMMENTS_KV.put(articleSlug, JSON.stringify(updatedComments));
+			
+            let commentsWithIds = comments.map(c => ({ ...c, id: crypto.randomUUID() }));
+			const updatedComments = commentsWithIds.filter(c => c.id !== commentId);
+			const commentsToSave = updatedComments.map(({ id, ...rest }) => rest);
+
+			await env.XYRJ_COMMENTS_KV.put(articleSlug, JSON.stringify(commentsToSave));
 			return new Response('Comment deleted', { status: 200 });
 		}
 		else if (pathname === '/api/comments_all' && request.method === 'GET') {
+			// 这个接口主要供后台使用，但也可能被前端侧边栏调用
 			const allKeys = await env.XYRJ_COMMENTS_KV.list();
 			let allComments = [];
 			for (const key of allKeys.keys) {
 				const comments = await env.XYRJ_COMMENTS_KV.get(key.name, { type: 'json' });
 				if (comments) {
-					comments.forEach(c => allComments.push({ ...c, articleSlug: key.name }));
+					// --- [修改 3] 对 /api/comments_all (侧边栏和后台) 进行安全打码 ---
+					comments.forEach(c => {
+						let processedComment = {...c}; // 创建副本
+						// --- START: 在此处添加服务器端打码 ---
+						if (processedComment.contact && processedComment.contact.value && processedComment.contact.value.length > 2) {
+							processedComment.contact.value = processedComment.contact.value.substring(0, 2) + '*'.repeat(processedComment.contact.value.length - 2);
+						}
+						// --- END: 打码结束 ---
+
+						allComments.push({ 
+                            ...processedComment, 
+                            id: crypto.randomUUID(), // 为后台生成临时ID
+                            articleSlug: key.name 
+                        });
+					});
 				}
 			}
 			allComments.sort((a, b) => b.timestamp - a.timestamp);
+			// 返回的数据已经是打码后的
 			return new Response(JSON.stringify(allComments), { headers: { 'Content-Type': 'application/json' } });
 		}
 		else if (pathname === '/api/carousel' && request.method === 'GET') {
