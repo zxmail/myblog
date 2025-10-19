@@ -286,6 +286,31 @@ async function handleRequest({ request, env, ctx }) {
         			await cache.delete(new Request(new URL("/", request.url).toString()));
 					return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
+
+				// --- START: 在这里插入新路由 ---
+				else if (pathname === '/admin/api/comments_full' && request.method === 'GET') {
+					// 因为此路由在 checkPass(request) 内部，所以是安全的
+					const allKeys = await env.XYRJ_COMMENTS_KV.list();
+					let allComments = [];
+					for (const key of allKeys.keys) {
+						const comments = await env.XYRJ_COMMENTS_KV.get(key.name, { type: 'json' });
+						if (comments) {
+							comments.forEach(c => {
+								// 直接推送原始评论 'c'，不进行任何打码
+								allComments.push({ 
+									...c, 
+									id: crypto.randomUUID(), // 为后台生成临时ID
+									articleSlug: key.name 
+								});
+							});
+						}
+					}
+					allComments.sort((a, b) => b.timestamp - a.timestamp);
+					// 返回未打码的完整数据
+					return new Response(JSON.stringify(allComments), { headers: { 'Content-Type': 'application/json' } });
+				}
+				// --- END: 新路由结束 ---
+
 			}
 			else {
 				return new Response("Unauthorized", { status: 401 });
