@@ -544,11 +544,27 @@
             // 5. 遍历并生成 HTML
             recentComments.forEach(comment => {
                 const li = document.createElement('li');
-                li.style.borderBottom = '1px solid #eee'; // 添加一点分隔线
+                li.style.borderBottom = '1px solid #eee'; 
                 li.style.padding = '10px 0';
 
+                // --- START: 新增跳转链接 ---
+                // 1. 创建 <a> 标签
+                const link = document.createElement('a');
+                
+                // 2. 构造 URL。
+                // comment.articleSlug 是文章ID
+                // comment.id 是评论的唯一ID
+                // article.html 中的评论列表项 <li> ID 格式为 "comment-..."
+                // 最终 URL: /article/ARTICLE_ID/#comment-COMMENT_ID
+                link.href = `/article/${comment.articleSlug}/#comment-${comment.id}`;
+
+                // 3. 添加样式，使其看起来像普通文本
+                link.style.textDecoration = 'none';
+                link.style.color = 'inherit'; // 继承父元素的颜色
+                link.style.display = 'block'; // 使其成为块级元素以便点击
+                // --- END: 新增跳转链接 ---
+
                 // --- 评论内容 ---
-                // 使用 textContent 来防止 XSS 攻击
                 const contentP = document.createElement('p');
                 contentP.style.marginBottom = '5px';
                 contentP.textContent = comment.content;
@@ -559,7 +575,6 @@
                 metaSpan.style.color = '#888';
 
                 if (comment.contact && comment.contact.value) {
-                    // 后端已经返回了打码后的值 (例如 "12*******")
                     let typeLabel = '联系';
                     switch(comment.contact.type) {
                         case 'email': typeLabel = '邮箱'; break;
@@ -567,14 +582,20 @@
                         case 'wechat': typeLabel = '微信'; break;
                         case 'telegram': typeLabel = 'Telegram'; break;
                     }
-                    // 同样使用 textContent 保证安全
                     metaSpan.textContent = `[${typeLabel}: ${comment.contact.value}]`;
                 } else {
                     metaSpan.textContent = '[匿名]';
                 }
 
-                li.appendChild(contentP);
-                li.appendChild(metaSpan);
+                // --- 修改 Appending 逻辑 ---
+                // 将内容和元信息添加到 <a> 标签中
+                link.appendChild(contentP);
+                link.appendChild(metaSpan);
+                
+                // 将 <a> 标签添加到 <li> 中
+                li.appendChild(link);
+                
+                // 将 <li> 添加到列表中
                 sidebarList.appendChild(li);
             });
             
