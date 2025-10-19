@@ -216,12 +216,12 @@
     </div>
 </div>
 
-                <div class="widget widget-comments">
-                    <h3 class="widget-title">最近评论</h3>
-                    <ul>
-                        <li>暂无评论</li>
-                    </ul>
-                </div>
+				<div class="widget widget-comments">
+                        <h3 class="widget-title">最近评论</h3>
+                        <ul id="widget-recent-comments-list">
+                            <li>正在加载...</li>
+                        </ul>
+                    </div>
                 </aside>
         </div>
 
@@ -328,6 +328,81 @@
                 }
             });
         });
+		
+		function renderSidebarComments(comments) {
+            const sidebarList = document.getElementById('widget-recent-comments-list');
+            if (!sidebarList) return; 
+
+            sidebarList.innerHTML = '';
+
+            if (!comments || comments.length === 0) {
+                sidebarList.innerHTML = '<li>暂无评论</li>';
+                return;
+            }
+
+            const recentComments = comments.slice(0, 5);
+
+            recentComments.forEach(comment => {
+                const li = document.createElement('li');
+                li.style.borderBottom = '1px solid #eee'; 
+                li.style.padding = '10px 0';
+
+                const contentP = document.createElement('p');
+                contentP.style.marginBottom = '5px';
+                contentP.textContent = comment.content;
+                
+                const metaSpan = document.createElement('span');
+                metaSpan.style.fontSize = '12px';
+                metaSpan.style.color = '#888';
+
+                if (comment.contact && comment.contact.value) {
+                    let typeLabel = '联系';
+                    switch(comment.contact.type) {
+                        case 'email': typeLabel = '邮箱'; break;
+                        case 'qq': typeLabel = 'QQ'; break;
+                        case 'wechat': typeLabel = '微信'; break;
+                        case 'telegram': typeLabel = 'Telegram'; break;
+                    }
+                    metaSpan.textContent = `[${typeLabel}: ${comment.contact.value}]`;
+                } else {
+                    metaSpan.textContent = '[匿名]';
+                }
+
+                li.appendChild(contentP);
+                li.appendChild(metaSpan);
+                sidebarList.appendChild(li);
+            });
+            
+            if(sidebarList.lastChild) {
+                sidebarList.lastChild.style.borderBottom = 'none';
+            }
+        }
+
+        // 2. 专门用于获取侧边栏评论的函数
+        async function fetchSidebarComments() {
+            try {
+                // 调用在 index_plus.js 中定义的、返回脱敏数据的API
+                const response = await fetch('/api/comments_all');
+                if (!response.ok) throw new Error('获取评论失败');
+                
+                const allComments = await response.json();
+                
+                // 用所有评论去渲染侧边栏
+                renderSidebarComments(allComments);
+
+            } catch (error) {
+                console.error('获取侧边栏评论时出错:', error);
+                const sidebarList = document.getElementById('widget-recent-comments-list');
+                if (sidebarList) {
+                    sidebarList.innerHTML = '<li>加载失败</li>';
+                }
+            }
+        }
+
+        // 3. 页面加载时执行
+        fetchSidebarComments();
+        
+        // --- END: 新增的最近评论 JS 逻辑 ---
 
         const swiper = new Swiper('.swiper', {
             autoHeight: true,
