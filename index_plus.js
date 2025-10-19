@@ -117,6 +117,13 @@ async function handleRequest({ request, env, ctx }) {
 					
                     const id = Date.now().toString();
 					article.id = id;
+
+                    // ========== START: 新增字段类型转换 ==========
+                    article.isPinned = article.isPinned === 'true'; // 转为布尔值
+                    article.views = parseInt(article.views || 0); // 转为数字
+                    // article.password 保持为字符串
+                    // ========== END: 新增字段类型转换 ==========
+
                     article.contentHtml = article.content;
                     delete article.content;
 
@@ -128,7 +135,13 @@ async function handleRequest({ request, env, ctx }) {
                         'category[]': article['category[]'],
                         tags: article.tags,
                         contentText: (article.contentHtml || "").replace(/<[^>]+>/g, "").substring(0, 180),
-                        firstImageUrl: article.img || getFirstImageUrl(article.contentHtml)
+                        firstImageUrl: article.img || getFirstImageUrl(article.contentHtml),
+                        
+                        // ========== START: 新增Meta字段 ==========
+                        isPinned: article.isPinned, // 布尔值
+                        hasPassword: !!article.password, // 布尔值
+                        views: article.views // 数字
+                        // ========== END: 新增Meta字段 ==========
                     };
 
 					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
@@ -150,6 +163,13 @@ async function handleRequest({ request, env, ctx }) {
                             article[item.name] = item.value;
                         }
                     });
+
+                    // ========== START: 新增字段类型转换 ==========
+                    article.isPinned = article.isPinned === 'true'; // 转为布尔值
+                    article.views = parseInt(article.views || 0); // 转为数字
+                    // article.password 保持为字符串
+                    // ========== END: 新增字段类型转换 ==========
+
                     article.contentHtml = article.content;
                     delete article.content;
 
@@ -162,7 +182,13 @@ async function handleRequest({ request, env, ctx }) {
                         'category[]': article['category[]'],
                         tags: article.tags,
                         contentText: (article.contentHtml || "").replace(/<[^>]+>/g, "").substring(0, 180),
-                        firstImageUrl: article.img || getFirstImageUrl(article.contentHtml)
+                        firstImageUrl: article.img || getFirstImageUrl(article.contentHtml),
+
+                        // ========== START: 新增Meta字段 ==========
+                        isPinned: article.isPinned, // 布尔值
+                        hasPassword: !!article.password, // 布尔值
+                        views: article.views // 数字
+                        // ========== END: 新增Meta字段 ==========
                     };
 
 					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
@@ -185,7 +211,13 @@ async function handleRequest({ request, env, ctx }) {
 					const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, {type: "json"});
 					if (articleSingle) {
                         articleSingle.createDate10 = articleSingle.createDate.substring(0, 10);
+                        
+                        // ========== START: 修复内容加载BUG ==========
+                        // 将 contentHtml 转换回 content 以供 TinyMCE 编辑器使用
+                        articleSingle.content = articleSingle.contentHtml || "";
                         delete articleSingle.contentHtml;
+                        // ========== END: 修复内容加载BUG ==========
+
 						return new Response(JSON.stringify(articleSingle), { status: 200, headers: { 'Content-Type': 'application/json' }});
 					} else {
 						return new Response(JSON.stringify({ msg: `Article with ID ${id} not found.` }), { status: 404, headers: { 'Content-Type': 'application/json' }});
@@ -236,28 +268,6 @@ async function handleRequest({ request, env, ctx }) {
 					for (var key in data.BLOG) { await env.XYRJ_BLOG.put(key, data.BLOG[key]); }
 					return new Response(JSON.stringify({ "msg": "OK" }), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
-				// --- START: 新增的管理员评论接口 (返回完整数据) ---
-				else if (pathname === "/admin/api/comments_all") {
-					const allKeys = await env.XYRJ_COMMENTS_KV.list();
-					let allComments = [];
-					for (const key of allKeys.keys) {
-						const comments = await env.XYRJ_COMMENTS_KV.get(key.name, { type: 'json' });
-						if (comments) {
-							comments.forEach(c => {
-								// 注意：这里没有进行脱敏 (打码)
-								allComments.push({ 
-									...c, // 返回原始评论
-									id: crypto.randomUUID(), // 为后台生成临时ID
-									articleSlug: key.name 
-								});
-							});
-						}
-					}
-					allComments.sort((a, b) => b.timestamp - a.timestamp);
-					// 返回的数据是完整的
-					return new Response(JSON.stringify(allComments), { headers: { 'Content-Type': 'application/json' } });
-				}
-                // --- END: 新增接口 ---
 				else if (pathname.startsWith("/admin/publish/")) {
 					const cache = caches.default;
         			await cache.delete(new Request(new URL("/", request.url).toString()));
@@ -484,7 +494,7 @@ async function render(data, template_path, env) {
     }
     // ===== 修改结束 =====
     
-    let renderData = { 
+	let renderData = { 
         ...data, 
         OPT: site,
     };
@@ -519,6 +529,18 @@ async function getIndexData(request, env) {
 		page = parseInt(url.pathname.substring(6, url.pathname.lastIndexOf('/')));
 	}
 	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	
+    // ========== START: 置顶排序 ==========
+    articleIndex.sort((a, b) => {
+        // (a.isPinned === true) 置于 (b.isPinned === false/undefined) 之前
+        if (a.isPinned && !b.isPinned) return -1;
+        // (a.isPinned === false/undefined) 置于 (b.isPinned === true) 之后
+        if (!a.isPinned && b.isPinned) return 1;
+        // 如果置顶状态相同，则按创建日期倒序
+        return new Date(b.createDate) - new Date(a.createDate);
+    });
+    // ========== END: 置顶排序 ==========
+
 	let pageSize = 10;
 	let result = articleIndex.slice((page - 1) * pageSize, page * pageSize)
 	for (const item of result) {
@@ -527,7 +549,10 @@ async function getIndexData(request, env) {
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
-        item.views = Math.floor(Math.random() * 1000) + 50;
+        // ========== START: 修复浏览量 ==========
+        // 使用已保存的浏览量，如果不存在则默认为 0
+        item.views = item.views || 0;
+        // ========== END: 修复浏览量 ==========
 	}
 	let data = {};
 	data["listTitle"] = "文章列表";
@@ -544,7 +569,7 @@ async function getIndexData(request, env) {
         data["carousel_slides"] = [];
     }
 
-	let widgetRecentlyList = articleIndex.slice(0, 5);
+	let widgetRecentlyList = articleIndex.slice(0, 5); // 最近列表也将包含已排序的置顶文章
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
 	}
@@ -575,6 +600,10 @@ async function getArticleData(request, id, env) {
     const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, { type: "json" });
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
 
+    // ========== START: 确保浏览量存在 ==========
+    articleSingle.views = articleSingle.views || 0;
+    // ========== END: 确保浏览量存在 ==========
+
 	if (articleSingle.tags && typeof articleSingle.tags === 'string') {
 		// 按逗号分割，并移除可能的空字符串
 		articleSingle.tags = articleSingle.tags.split(',').filter(tag => tag.trim() !== '');
@@ -599,7 +628,17 @@ async function getArticleData(request, id, env) {
     // --- BEGIN MODIFICATION ---
     // 这是您要求修改的代码块
     let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
-	const index = articleIndex.findIndex(item => item.id === id)
+	
+    // ========== START: (BUGFIX) 置顶排序也应应用于文章页的 "上一篇/下一篇" ==========
+    // 排序逻辑必须与 getIndexData 一致
+    articleIndex.sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return new Date(b.createDate) - new Date(a.createDate);
+    });
+    // ========== END: (BUGFIX) ==========
+    
+    const index = articleIndex.findIndex(item => item.id === id)
 	
 	if (index > 0) {
 		const newerArticle = articleIndex[index - 1];
@@ -647,7 +686,7 @@ data["widgetTagList"] = Array.from(allTags).map(tag => {
 
 	data["widgetCategoryList"] = allCategories;
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
-	let widgetRecentlyList = articleIndex.slice(0, 5);
+	let widgetRecentlyList = articleIndex.slice(0, 5); // 同样会包含置顶
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
 		item.createDate10 = item.createDate.substring(0, 10);
@@ -672,6 +711,16 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 			}
 		}
 	}
+
+    // ========== START: 置顶排序 ==========
+    // 在过滤后，分页前，对结果进行排序
+    result.sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return new Date(b.createDate) - new Date(a.createDate);
+    });
+    // ========== END: 置顶排序 ==========
+
 	let pageSize = 10;
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
@@ -679,7 +728,9 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
-        item.views = Math.floor(Math.random() * 1000) + 50;
+        // ========== START: 修复浏览量 ==========
+        item.views = item.views || 0;
+        // ========== END: 修复浏览量 ==========
         item.createDate10 = item.createDate.substring(0, 10);
 	}
 	let data = {};
@@ -690,7 +741,16 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
-	let widgetRecentlyList = articleIndex.slice(0, 5);
+	
+    // 注意：这里的 widgetRecentlyList 应该从完整的 articleIndex 获取，而不是从已过滤的 result 获取
+    let fullArticleIndexForWidgets = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+    fullArticleIndexForWidgets.sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return new Date(b.createDate) - new Date(a.createDate);
+    });
+    
+    let widgetRecentlyList = fullArticleIndexForWidgets.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
         item.createDate10 = item.createDate.substring(0, 10);
