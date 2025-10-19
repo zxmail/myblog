@@ -80,6 +80,19 @@ async function handleRequest({ request, env, ctx }) {
 			}
 			return await renderHTML(request, await getCategoryOrTagsData(request, "tags", key, page, env), theme + "/index.html", 200, env, ctx);
 		}
+		// --- START: 在这里添加搜索路由 ---
+		else if (pathname.startsWith("/search/")) {
+			let key = pathname.substring(8, pathname.lastIndexOf('/'));
+			let page = 1;
+			// 搜索页也支持分页 (可选, 但结构最好一致)
+			if (pathname.substring(8, pathname.length).includes("page/")) {
+				key = pathname.substring(8, pathname.lastIndexOf('/page/'));
+				page = pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'));
+			}
+			// 我们需要一个新的函数来处理搜索逻辑, 类似于 getCategoryOrTagsData
+			return await renderHTML(request, await getSearchData(request, key, page, env), theme + "/index.html", 200, env, ctx);
+		}
+		// --- END: 搜索路由 ---
 		else if (pathname.startsWith("/admin")) {
 			if (pathname === "/admin" || pathname === "/admin/" || pathname.endsWith("/admin/index.html")) {
 				let data = {};
@@ -839,3 +852,85 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
     data["title"] = `${decodedKey} - ${siteName}`;
 	return data;
 }
+// --- START: 在这里添加新的 getSearchData 函数 ---
+async function getSearchData(request, key, page, env) {
+	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	let result = [];
+	const decodedKey = decodeURI(key).toLowerCase(); // 解码并转为小写以方便比较
+
+	for (const item of articleIndex) {
+		// 检查标题或内容摘要是否包含关键词
+		const titleMatch = (item.title || "").toLowerCase().includes(decodedKey);
+		const contentMatch = (item.contentText || "").toLowerCase().includes(decodedKey);
+		
+		if (titleMatch || contentMatch) {
+			result.push(item);
+		}
+	}
+
+    // 搜索结果同样需要排序
+    result.sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return new Date(b.createDate) - new Date(a.createDate);
+    });
+
+	let pageSize = 10;
+	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
+	for (const item of resultPage) {
+		item.url = `/article/${item.id}/${item.link}/`;
+        if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
+            item.firstCategory = item['category[]'][0];
+        }
+		item.isPasswordProtected = item.hasPassword;
+        item.views = item.views || 0;
+        item.createDate10 = item.createDate.substring(0, 10);
+	}
+
+	let data = {};
+    data["listTitle"] = `搜索: "${decodeURI(key)}"`; // 显示搜索的关键词
+	data["articleList"] = resultPage;
+
+	// 处理分页链接
+	if (page > 1) data["pageNewer"] = { "url": `/search/${key}/page/${page - 1}/`};
+	if (result.length > page * pageSize) data["pageOlder"] = { "url": `/search/${key}/page/${page + 1}/`};
+
+	// --- 侧边栏小工具 (与 getCategoryOrTagsData 保持一致) ---
+	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
+	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
+	
+    let fullArticleIndexForWidgets = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+    fullArticleIndexForWidgets.sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return new Date(b.createDate) - new Date(a.createDate);
+    });
+    
+    let widgetRecentlyList = fullArticleIndexForWidgets.slice(0, 5);
+	for (const item of widgetRecentlyList) {
+		item.url = `/article/${item.id}/${item.link}/`;
+		item.isPasswordProtected = item.hasPassword;
+        item.createDate10 = item.createDate.substring(0, 10);
+	}
+	data["widgetRecentlyList"] = widgetRecentlyList;
+
+	const allTags = new Set();
+    articleIndex.forEach(article => {
+        if (article.tags && typeof article.tags === 'string') {
+            article.tags.split(',').forEach(tag => {
+                const trimmedTag = tag.trim();
+                if (trimmedTag) {
+                    allTags.add(trimmedTag);
+                }
+            });
+        }
+    });
+    data["widgetTagList"] = Array.from(allTags).map(tag => {
+        return { name: tag, url: `/tags/${encodeURIComponent(tag)}/` };
+    });
+    
+    const siteName = await env.XYRJ_CONFIG.get('siteName') || 'cf-blog';
+    data["title"] = `搜索: "${decodeURI(key)}" - ${siteName}`;
+	return data;
+}
+// --- END: 新的 getSearchData 函数 ---
