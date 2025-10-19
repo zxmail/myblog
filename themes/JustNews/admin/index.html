@@ -863,7 +863,7 @@ tinymce.init({
 
 	// ===== START: 已修改的评论JS =====
     function loadComments() {
-		$.getJSON("/api/comments_all", function(comments) {
+		$.getJSON("/admin/api/comments_all", function(comments) {
 			var tbody = $('#comments-list').empty();
 			$.each(comments, function(i, comment) {
 				
