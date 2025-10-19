@@ -60,7 +60,7 @@ async function handleRequest({ request, env, ctx }) {
 		else if (pathname.startsWith("/article/")) {
 			const parts = pathname.split('/');
             const id = parts[2];
-			return await renderHTML(request, await getArticleData(request, id, env), theme + "/article.html", 200, env, ctx);
+			return await renderHTML(request, await getArticleData(request, id, env, ctx), theme + "/article.html", 200, env, ctx);
 		}
 		else if (pathname.startsWith("/category/")) {
 			let key = pathname.substring(10, pathname.lastIndexOf('/'));
@@ -549,6 +549,7 @@ async function getIndexData(request, env) {
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
+		item.isPasswordProtected = item.hasPassword; // 修复密码图标
         // ========== START: 修复浏览量 ==========
         // 使用已保存的浏览量，如果不存在则默认为 0
         item.views = item.views || 0;
@@ -572,6 +573,7 @@ async function getIndexData(request, env) {
 	let widgetRecentlyList = articleIndex.slice(0, 5); // 最近列表也将包含已排序的置顶文章
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+		item.isPasswordProtected = item.hasPassword; // 修复密码图标
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
 	const allTags = new Set();
@@ -595,14 +597,72 @@ async function getIndexData(request, env) {
 	return data;
 }
 
-async function getArticleData(request, id, env) {
+async function getArticleData(request, id, env, ctx) {
 	let data = {};
     const articleSingle = await env.XYRJ_BLOG.get(`article:${id}`, { type: "json" });
 	if (!articleSingle) return new Response("Article not found", { status: 404 });
 
     // ========== START: 确保浏览量存在 ==========
-    articleSingle.views = articleSingle.views || 0;
+	articleSingle.views = (articleSingle.views || 0) + 1;
     // ========== END: 确保浏览量存在 ==========
+	// --- START: 异步更新浏览量到 KV ---
+    // 3. 使用 ctx.waitUntil 异步执行保存，不阻塞响应
+    const updateViews = async () => {
+        try {
+            // 3.1. 更新单个文章 KV
+            await env.XYRJ_BLOG.put(`article:${id}`, JSON.stringify(articleSingle));
+
+            // 3.2. 更新文章索引 KV
+            let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+            const index = articleIndex.findIndex(item => item.id === id);
+            if (index > -1) {
+                // 确保 articleIndex 中的 meta 字段也更新
+                articleIndex[index].views = articleSingle.views;
+                await env.XYRJ_BLOG.put("article_index", JSON.stringify(articleIndex));
+            }
+        } catch (e) {
+            console.error("Failed to update view count:", e);
+        }
+    };
+    ctx.waitUntil(updateViews());
+    // --- END: 异步更新浏览量到 KV ---
+	// ========== START: PASSWORD CHECK LOGIC (THE FIX) ==========
+    
+    // 1. Check if the article itself has a password set
+    const hasPassword = articleSingle.password && articleSingle.password.trim() !== "";
+    let isEncrypted = false; // Default to not encrypted
+
+    if (hasPassword) {
+        // 2. If it has a password, assume it's encrypted until proven otherwise
+        isEncrypted = true; 
+        
+        // 3. Check the cookies from the user's request
+        const cookieHeader = request.headers.get("cookie") || "";
+        const cookies = cookieHeader.split(';').reduce((acc, c) => {
+            const [key, v] = c.trim().split('=');
+            if (key) acc[key.trim()] = decodeURIComponent(v);
+            return acc;
+        }, {});
+
+        const cookieName = `article_pass_${id}`;
+        const userPassword = cookies[cookieName];
+
+        // 4. Compare cookie password with the article's actual password
+        if (userPassword && userPassword === articleSingle.password) {
+            // 5. If they match, the article is NOT encrypted for this user
+            isEncrypted = false;
+        }
+    }
+
+    // 6. Set the boolean for the template
+    articleSingle.isEncrypted = isEncrypted;
+
+    // 7. If it IS encrypted (i.e., password required but not provided or wrong),
+    //    we MUST clear the content so the template doesn't render it.
+    if (isEncrypted) {
+        articleSingle.contentHtml = ""; // Clear the content
+    }
+    // ========== END: PASSWORD CHECK LOGIC (THE FIX) ==========
 
 	if (articleSingle.tags && typeof articleSingle.tags === 'string') {
 		// 按逗号分割，并移除可能的空字符串
@@ -689,6 +749,7 @@ data["widgetTagList"] = Array.from(allTags).map(tag => {
 	let widgetRecentlyList = articleIndex.slice(0, 5); // 同样会包含置顶
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+		item.isPasswordProtected = item.hasPassword; // 修复密码图标
 		item.createDate10 = item.createDate.substring(0, 10);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
@@ -728,6 +789,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
+		item.isPasswordProtected = item.hasPassword; // 修复密码图标
         // ========== START: 修复浏览量 ==========
         item.views = item.views || 0;
         // ========== END: 修复浏览量 ==========
@@ -753,6 +815,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
     let widgetRecentlyList = fullArticleIndexForWidgets.slice(0, 5);
 	for (const item of widgetRecentlyList) {
 		item.url = `/article/${item.id}/${item.link}/`;
+		item.isPasswordProtected = item.hasPassword; // 修复密码图标
         item.createDate10 = item.createDate.substring(0, 10);
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
