@@ -342,15 +342,34 @@
 
             const recentComments = comments.slice(0, 5);
 
-            recentComments.forEach(comment => {
+recentComments.forEach(comment => {
                 const li = document.createElement('li');
                 li.style.borderBottom = '1px solid #eee'; 
                 li.style.padding = '10px 0';
 
+                // --- START: 新增跳转链接 ---
+                // 1. 创建 <a> 标签
+                const link = document.createElement('a');
+                
+                // 2. 构造 URL。
+                // comment.articleSlug 是文章ID
+                // comment.id 是评论的唯一ID
+                // article.html 中的评论列表项 <li> ID 格式为 "comment-..."
+                // 最终 URL: /article/ARTICLE_ID/#comment-COMMENT_ID
+                link.href = `/article/${comment.articleSlug}/#comment-${comment.id}`;
+
+                // 3. 添加样式，使其看起来像普通文本
+                link.style.textDecoration = 'none';
+                link.style.color = 'inherit'; // 继承父元素的颜色
+                link.style.display = 'block'; // 使其成为块级元素以便点击
+                // --- END: 新增跳转链接 ---
+
+                // --- 评论内容 ---
                 const contentP = document.createElement('p');
                 contentP.style.marginBottom = '5px';
                 contentP.textContent = comment.content;
                 
+                // --- 评论元信息 (联系方式) ---
                 const metaSpan = document.createElement('span');
                 metaSpan.style.fontSize = '12px';
                 metaSpan.style.color = '#888';
@@ -368,8 +387,15 @@
                     metaSpan.textContent = '[匿名]';
                 }
 
-                li.appendChild(contentP);
-                li.appendChild(metaSpan);
+                // --- 修改 Appending 逻辑 ---
+                // 将内容和元信息添加到 <a> 标签中
+                link.appendChild(contentP);
+                link.appendChild(metaSpan);
+                
+                // 将 <a> 标签添加到 <li> 中
+                li.appendChild(link);
+                
+                // 将 <li> 添加到列表中
                 sidebarList.appendChild(li);
             });
             
