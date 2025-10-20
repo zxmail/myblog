@@ -1245,12 +1245,15 @@ ul, li {
 }
 .entry-content pre, .entry-content code {
     background: #f5f5f5;
-    border-radius: 4px;
-    font-family: 'Courier New', Courier, monospace;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap !important;     /* 关键：允许换行 */
+    overflow-wrap: break-word !important; /* 强制长单词换行 */
+    word-break: break-all !important;   /* 在任意字符间换行 */
 }
 .entry-content pre {
     padding: 15px;
-    overflow: auto;
+    overflow-x: auto; /* 优先换行，只在极端情况下才允许横向滚动 */
 }
 
 /* Article Footer */
@@ -1438,17 +1441,4 @@ ul, li {
     .entry-page-next a {
         text-align: left;
     } */
-}
-/* 修复文章内容溢出问题 */
-.article_content pre,
-.article_content code {
-    white-space: pre-wrap !important;     /* 允许文本在保留空白符的同时自动换行 */
-    overflow-wrap: break-word !important; /* 强制长单词或URL换行 */
-    word-break: break-all !important;   /* 确保在任意字符间都能换行，防止溢出 */
-}
-
-/* 顺便确保图片也不会撑开页面 */
-.article_content img {
-    max-width: 100% !important;
-    height: auto !important;
 }
