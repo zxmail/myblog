@@ -371,24 +371,60 @@
 		const usernameInput = document.getElementById('admin-username');
         const logoutButton = document.getElementById('logout-button');
         const adminContainer = document.getElementById('admin-container');
-
-        loginForm.addEventListener('submit', function(event) {
+// --- START: 已修改为异步验证的登录逻辑 ---
+        loginForm.addEventListener('submit', async function(event) {
             event.preventDefault(); 
-            const enteredPassword = passwordInput.value;
-            const enteredUsername = usernameInput.value; // 1. 获取用户名的值
+  
+            const enteredPassword = passwordInput.value;
+            const enteredUsername = usernameInput.value;
+			const loginButton = loginForm.querySelector('.btn-login'); // 获取登录按钮
 
-            // 2. 检查是否为空
             if (!enteredUsername || !enteredPassword) {
                 alert('用户名和密码不能为空！');
                 return;
             }
 
-			document.cookie = "password=" + enteredPassword + ";path=/";
-            document.cookie = "username=" + enteredUsername + ";path=/"; // 3. 同时设置 username cookie
-			sessionStorage.setItem('isAdminLoggedIn', 'true');
-			checkLoginStatus();
-        });
+            // 1. 禁用按钮，防止重复提交
+            const originalButtonText = loginButton.innerHTML;
+            loginButton.disabled = true;
+            loginButton.innerHTML = '登录中...';
 
+            try {
+                // 2. 向我们在 index_plus.js 中创建的 /admin/login 接口发送请求
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: enteredUsername,
+                        password: enteredPassword
+                    })
+                });
+
+                // 3. 检查后端的响应
+                if (response.ok) { // response.ok 意味着状态码是 200-299
+                    // 登录成功！Worker 验证通过
+                    document.cookie = "password=" + enteredPassword + ";path=/";
+                    document.cookie = "username=" + enteredUsername + ";path=/";
+                    sessionStorage.setItem('isAdminLoggedIn', 'true');
+                    checkLoginStatus();
+                } else {
+                    // 登录失败！ (Worker 返回 401 或其他错误)
+                    alert('用户名或密码错误！');
+                }
+
+            } catch (error) {
+                // 网络错误或请求失败
+                console.error('Login request failed:', error);
+                alert('登录请求失败，请检查网络连接。');
+            } finally {
+                // 4. 无论成功与否，都恢复按钮
+                loginButton.disabled = false;
+                loginButton.innerHTML = originalButtonText;
+            }
+        });
+        // --- END: 已修改的登录逻辑 ---
         logoutButton.addEventListener('click', function(event) {
             event.preventDefault();
             sessionStorage.removeItem('isAdminLoggedIn');
