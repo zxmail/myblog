@@ -826,8 +826,6 @@ ul, li {
         max-width: none;
     }
     .article-item-box {
-        margin-bottom: 16px;
-        padding-bottom: 16px;
         flex-direction: row;
         align-items: stretch;
     }
@@ -920,6 +918,10 @@ ul, li {
 @media screen and (max-width: 580px) {
     .article-item-content p {
         display: none;
+    }
+    .article-item-box {
+        margin-bottom: 16px;
+        padding-bottom: 16px;
     }
 }
 
