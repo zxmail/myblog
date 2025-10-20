@@ -368,23 +368,35 @@
         const loginWrapper = document.getElementById('login-wrapper');
         const loginForm = document.getElementById('login-form');
         const passwordInput = document.getElementById('admin-password');
+		const usernameInput = document.getElementById('admin-username');
         const logoutButton = document.getElementById('logout-button');
         const adminContainer = document.getElementById('admin-container');
 
         loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            const enteredPassword = passwordInput.value;
+            event.preventDefault(); 
+            const enteredPassword = passwordInput.value;
+            const enteredUsername = usernameInput.value; // 1. 获取用户名的值
+
+            // 2. 检查是否为空
+            if (!enteredUsername || !enteredPassword) {
+                alert('用户名和密码不能为空！');
+                return;
+            }
+
 			document.cookie = "password=" + enteredPassword + ";path=/";
+            document.cookie = "username=" + enteredUsername + ";path=/"; // 3. 同时设置 username cookie
 			sessionStorage.setItem('isAdminLoggedIn', 'true');
 			checkLoginStatus();
         });
 
         logoutButton.addEventListener('click', function(event) {
             event.preventDefault();
-            sessionStorage.removeItem('isAdminLoggedIn');
-            document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            passwordInput.value = '';
-            checkLoginStatus();
+            sessionStorage.removeItem('isAdminLoggedIn');
+            document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // 1. 清除 username cookie
+            passwordInput.value = '';
+            usernameInput.value = ''; // 2. 清空 username 输入框
+            checkLoginStatus();
         });
 
         function checkLoginStatus() {
