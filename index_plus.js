@@ -114,6 +114,34 @@ async function handleRequest({ request, env, ctx }) {
                 
 				return await renderHTML(request, data, theme + "/admin/index.html", 200, env, ctx);
 			}
+			// --- START: 新增的安全登录API路由 ---
+			else if (pathname === "/admin/login" && request.method === "POST") {
+				try {
+					const { username, password } = await request.json();
+					
+					// 在这里安全地比较环境变量
+					if (username === env.ADMIN_USERNAME && password === env.ADMIN_PASSWORD) {
+						// 凭据正确
+						return new Response(JSON.stringify({ status: "ok" }), { 
+							status: 200, 
+							headers: { 'Content-Type': 'application/json' }
+						});
+					} else {
+						// 凭据错误
+						return new Response(JSON.stringify({ status: "error", message: "Invalid credentials" }), { 
+							status: 401, // 401 Unauthorized
+							headers: { 'Content-Type': 'application/json' }
+						});
+					}
+				} catch (e) {
+					// 请求格式错误
+					return new Response(JSON.stringify({ status: "error", message: "Bad request" }), { 
+						status: 400, 
+						headers: { 'Content-Type': 'application/json' }
+					});
+				}
+			}
+			// --- END: 新增的登录API路由 ---
 			else if (checkPass(request, env)) {
 				if (pathname.startsWith("/admin/saveAddNew/")) {
 					let jsonA = await request.json();
