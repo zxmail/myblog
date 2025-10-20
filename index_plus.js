@@ -35,7 +35,6 @@ function getFirstImageUrl(htmlContent) {
     return match ? match[1] : '';
 }
 
-const password = "123456"; 
 const theme = "JustNews";
 const cdn = "https://myblog-1dt.pages.dev/themes";
 
@@ -115,7 +114,7 @@ async function handleRequest({ request, env, ctx }) {
                 
 				return await renderHTML(request, data, theme + "/admin/index.html", 200, env, ctx);
 			}
-			else if (checkPass(request)) {
+			else if (checkPass(request, env)) {
 				if (pathname.startsWith("/admin/saveAddNew/")) {
 					let jsonA = await request.json();
 					let article = {};
@@ -433,15 +432,21 @@ async function handleRequest({ request, env, ctx }) {
 	}
 }
 
-function checkPass(request) {
+function checkPass(request, env) {
 	const cookie = request.headers.get("cookie");
 	if (!cookie) return false;
 	const cookies = cookie.split(';').reduce((acc, c) => {
 		const [key, v] = c.trim().split('=');
-		acc[key] = decodeURIComponent(v);
+		// 添加一个检查，确保 key 不是 undefined
+		if (key) {
+			acc[key] = decodeURIComponent(v);
+		}
 		return acc;
 	}, {});
-	return cookies["password"] === password;
+
+	// 同时检查 Cookie 中的 username 和 password 
+	// 是否与你在 Cloudflare 设置的 ADMIN_USERNAME 和 ADMIN_PASSWORD 一致
+	return cookies["username"] === env.ADMIN_USERNAME && cookies["password"] === env.ADMIN_PASSWORD;
 }
 
 async function getStaticFile(request, env, ctx) {
