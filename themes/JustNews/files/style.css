@@ -572,6 +572,7 @@ ul, li {
 
 /* 9. Utility & Components (Back to Top) */
 .action {
+    z-index: 99999;
     position: fixed;
     right: 20px;
     bottom: 20%;
