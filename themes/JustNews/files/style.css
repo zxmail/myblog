@@ -1439,3 +1439,16 @@ ul, li {
         text-align: left;
     } */
 }
+/* 修复文章内容溢出问题 */
+.article_content pre,
+.article_content code {
+    white-space: pre-wrap !important;     /* 允许文本在保留空白符的同时自动换行 */
+    overflow-wrap: break-word !important; /* 强制长单词或URL换行 */
+    word-break: break-all !important;   /* 确保在任意字符间都能换行，防止溢出 */
+}
+
+/* 顺便确保图片也不会撑开页面 */
+.article_content img {
+    max-width: 100% !important;
+    height: auto !important;
+}
