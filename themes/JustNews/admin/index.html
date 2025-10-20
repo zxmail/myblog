@@ -19,20 +19,24 @@
 
 <div id="login-wrapper" style="display: none;">
     <div class="login-container">
-        <div class="login-header">
-            {{ #OPT.logo }}
-                <img src="{{ &OPT.logo }}" alt="Logo">
-            {{ /OPT.logo }}
-            {{ ^OPT.logo }}
-                {{ #OPT.siteName }}
-                    <h1>{{ &OPT.siteName }}</h1>
-                {{ /OPT.siteName }}
-                {{ ^OPT.siteName }}
-                    <h1>后台登录</h1>
-                {{ /OPT.siteName }}
-            {{ /OPT.logo }}
-        </div>
         <form class="login-form" id="login-form">
+		<a href="../" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 50px; text-decoration: none; color: inherit; margin-bottom: 15px;">
+                {{ #OPT.logo }}
+                    <img src="{{ &OPT.logo }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                {{ /OPT.logo }}
+                {{ ^OPT.logo }}
+                    {{ #OPT.siteName }}
+                        <h1 style="margin: 0; font-size: 24px;">{{ &OPT.siteName }}</h1>
+                    {{ /OPT.siteName }}
+                    {{ ^OPT.siteName }}
+                        <h1 style="margin: 0; font-size: 24px;">后台登录</h1>
+                    {{ /OPT.siteName }}
+                {{ /OPT.logo }}
+            </a>
+
+            <div class="form-group">
+                <input type="text" id="admin-username" class="form-control" placeholder="请输入用户名" required>
+            </div>
             <div class="form-group">
                 <input type="password" id="admin-password" class="form-control" placeholder="请输入密码" required>
             </div>
