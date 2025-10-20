@@ -826,6 +826,8 @@ ul, li {
         max-width: none;
     }
     .article-item-box {
+        margin-bottom: 16px;
+        padding-bottom: 16px;
         flex-direction: row;
         align-items: stretch;
     }
