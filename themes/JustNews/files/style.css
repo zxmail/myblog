@@ -581,7 +581,7 @@ ul, li {
 .action-item.gotop {
     width: 40px;
     height: 40px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(85 85 85 / 38%);
     color: #fff;
     border-radius: 50%;
     display: flex;
