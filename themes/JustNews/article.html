@@ -502,7 +502,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Bootstrap 的 'lg' 断点是 992px，侧边栏只在这个宽度以上显示
     if (window.innerWidth >= 992) {
-        var sidebar = new StickySidebar('.right-column', { // <--- 修改：目标改为 .right-column
+        window.stickySidebarInstance = new StickySidebar('.right-column', { // <--- 修改：目标改为 .right-column
             topSpacing: 75, // 顶部间距 (给顶部导航栏留出空间)
             bottomSpacing: 20, // 底部间距
             containerSelector: '.main-layout', // <--- 修改：父容器改为 .main-layout (或 .row 也可以试试)
