@@ -161,6 +161,7 @@ async function handleRequest({ request, env, ctx }) {
                     // ========== START: 新增字段类型转换 ==========
                     article.isPinned = article.isPinned === 'true'; // 转为布尔值
                     article.views = parseInt(article.views || 0); // 转为数字
+					article.allowComments = article.allowComments === 'true'; /* <--- 新增此行 */
                     // article.password 保持为字符串
                     // ========== END: 新增字段类型转换 ==========
 
@@ -181,6 +182,7 @@ async function handleRequest({ request, env, ctx }) {
                         isPinned: article.isPinned, // 布尔值
                         hasPassword: !!article.password, // 布尔值
                         views: article.views // 数字
+						allowComments: article.allowComments /* <--- 新增此行 */
                         // ========== END: 新增Meta字段 ==========
                     };
 
@@ -207,6 +209,7 @@ async function handleRequest({ request, env, ctx }) {
                     // ========== START: 新增字段类型转换 ==========
                     article.isPinned = article.isPinned === 'true'; // 转为布尔值
                     article.views = parseInt(article.views || 0); // 转为数字
+					article.allowComments = article.allowComments === 'true'; /* <--- 新增此行 */
                     // article.password 保持为字符串
                     // ========== END: 新增字段类型转换 ==========
 
@@ -228,6 +231,7 @@ async function handleRequest({ request, env, ctx }) {
                         isPinned: article.isPinned, // 布尔值
                         hasPassword: !!article.password, // 布尔值
                         views: article.views // 数字
+						allowComments: article.allowComments /* <--- 新增此行 */
                         // ========== END: 新增Meta字段 ==========
                     };
 
@@ -676,6 +680,11 @@ async function getArticleData(request, id, env, ctx) {
     // ========== START: 确保浏览量存在 ==========
 	articleSingle.views = (articleSingle.views || 0) + 1;
     // ========== END: 确保浏览量存在 ==========
+	// ========== START: 新增：确保评论开关存在（默认为true） ==========
+    if (articleSingle.allowComments === undefined) {
+        articleSingle.allowComments = true;
+    }
+    // ========== END: 新增 ==========
 	// --- START: 异步更新浏览量到 KV ---
     // 3. 使用 ctx.waitUntil 异步执行保存，不阻塞响应
     const updateViews = async () => {
