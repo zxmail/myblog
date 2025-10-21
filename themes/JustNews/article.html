@@ -176,8 +176,13 @@
         .entry-content-protected button:hover {
             background: #555;
         }
-        /* ========== END: 新增加密样式 ========== */
-
+		/* --- START: 自定义代码高亮字体大小 --- */
+		pre[class*="language-"],
+		code[class*="language-"] {
+		    font-size: 90%; !important; /* 在这里修改为您想要的字体大小, 例如 12px, 16px, 或 1em */
+		    line-height: 1.5;      /* (可选) 调整行高以适应新的字体大小 */
+		}
+		/* --- END: 自定义代码高亮字体大小 --- */
     </style>
     </head>
 <body class="m-flex"> 
