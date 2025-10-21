@@ -357,7 +357,7 @@
 								</div>
                         </div>
                 </div>
-                
+                {{#articleSingle.allowComments}}
                 <div id="comments" class="entry-comments entry-card">
                     <h3 class="widget-title">发表评论</h3>
                     <form id="comment-form" class="comment-form">
@@ -395,6 +395,7 @@
                         <li class="comment-item">正在加载评论...</li>
                     </ul>
                 </div>
+				{{/articleSingle.allowComments}}
                 </article>
 
             <aside class="right-column">
