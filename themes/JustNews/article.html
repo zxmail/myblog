@@ -400,7 +400,6 @@
                 </article>
 
             <aside class="right-column">
-                <div class="sidebar-sticky-wrapper">
 				<div class="widget widget-recent-posts">
 					<h3 class="widget-title">热门文章</h3>
 					<ul>
@@ -435,17 +434,17 @@
                         </ul>
                     </div>
 
-<div class="widget widget-tags">
-    <h3 class="widget-title">标签</h3>
-    <div class="tag-cloud">
-        {{ #widgetTagList }}
-            <a href="{{url}}">{{name}}</a>
-        {{ /widgetTagList }}
-        {{ ^widgetTagList }}
-            <span>暂无标签</span>
-        {{ /widgetTagList }}
-    </div>
-</div>
+					<div class="widget widget-tags">
+						<h3 class="widget-title">标签</h3>
+						<div class="tag-cloud">
+							{{ #widgetTagList }}
+								<a href="{{url}}">{{name}}</a>
+							{{ /widgetTagList }}
+							{{ ^widgetTagList }}
+								<span>暂无标签</span>
+							{{ /widgetTagList }}
+						</div>
+					</div>
 
 					<div class="widget widget-comments">
                         <h3 class="widget-title">最近评论</h3>
@@ -453,7 +452,6 @@
                             <li>正在加载...</li>
                         </ul>
                     </div>
-                </div>
             </aside>
         </div>
 
@@ -953,6 +951,67 @@
                 prevEl: '.swiper-button-prev',
             },
         });
+		// --- START: 新增的侧边栏固定 JS 逻辑 ---
+    $(document).ready(function() {
+        if ($(window).width() > 991) { // 只在PC端执行
+            var $sidebar = $('.right-column');
+            var $mainContent = $('.post-article'); // 文章页使用 .post-article
+            var $footer = $('.footer');
+            
+            if ($sidebar.length > 0 && $mainContent.length > 0 && $footer.length > 0) {
+                var sidebarTop = $sidebar.offset().top;
+                var sidebarHeight = $sidebar.outerHeight();
+                var headerHeight = $('.site-header').outerHeight() || 80; // 顶部菜单高度
+
+                function handleScroll() {
+                    var scrollTop = $(window).scrollTop();
+                    var mainContentHeight = $mainContent.outerHeight();
+                    var footerTop = $footer.offset().top;
+
+                    // 1. 检查侧边栏是否比主内容高
+                    if (sidebarHeight > mainContentHeight) {
+                         $sidebar.css({ 'position': 'static', 'top': '', 'left': '', 'width': '' });
+                         return;
+                    }
+                    
+                    // 2. 正常滚动 (未触顶)
+                    if (scrollTop < sidebarTop - headerHeight) {
+                        $sidebar.css({ 'position': 'static', 'top': '', 'left': '', 'width': '' });
+                    } 
+                    // 3. 固定 (触顶后)
+                    else if (scrollTop >= sidebarTop - headerHeight && scrollTop < footerTop - sidebarHeight - headerHeight) {
+                        var sidebarWidth = $sidebar.width();
+                        var sidebarLeft = $sidebar.offset().left;
+                        $sidebar.css({
+                            'position': 'fixed',
+                            'top': headerHeight + 'px',
+                            'left': sidebarLeft + 'px',
+                            'width': sidebarWidth + 'px'
+                        });
+                    } 
+                    // 4. 滚动到底部 (与页脚相遇)
+                    else {
+                        $sidebar.css({
+                            'position': 'absolute',
+                            'top': (footerTop - sidebarHeight - $sidebar.parent().offset().top) + 'px',
+                            'left': '',
+                            'width': ''
+                        });
+                    }
+                }
+
+                $(window).on('scroll', handleScroll);
+                $(window).on('resize', function() {
+                    // 窗口变化时重置样式并重新计算
+                    $sidebar.css({ 'position': 'static', 'top': '', 'left': '', 'width': '' });
+                    sidebarTop = $sidebar.offset().top;
+                    sidebarHeight = $sidebar.outerHeight();
+                    handleScroll(); // 立即执行一次以防万一
+                });
+            }
+        }
+    });
+    // --- END: 新增的侧边栏固定 JS 逻辑 ---
     });
 </script>
 </body>
