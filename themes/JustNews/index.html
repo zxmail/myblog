@@ -283,7 +283,19 @@
     
     <script src="{{ &OPT.theme_github_path }}JustNews/files/jquery.min.js"></script>
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
-
+	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    if (window.innerWidth >= 992) {
+			var sidebar = new StickySidebar('.right-column', {
+	            topSpacing: 75, 
+	            bottomSpacing: 20, 
+	            containerSelector: '.main-layout', 
+	            innerWrapperSelector: '.sidebar-sticky-wrapper' 
+	        });
+	    }
+	});
+	</script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const topButton = document.querySelector('.j-top');
