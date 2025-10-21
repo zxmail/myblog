@@ -505,7 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var sidebar = new StickySidebar('.right-column', { // <--- 修改：目标改为 .right-column
             topSpacing: 75, // 顶部间距 (给顶部导航栏留出空间)
             bottomSpacing: 20, // 底部间距
-            containerSelector: '.row', // <--- 修改：父容器改为 .main-layout (或 .row 也可以试试)
+            containerSelector: '.main-layout', // <--- 修改：父容器改为 .main-layout (或 .row 也可以试试)
             innerWrapperSelector: '.sidebar-sticky-wrapper' // <--- 修改：内部包裹改为 .sidebar-sticky-wrapper
         });
     }
