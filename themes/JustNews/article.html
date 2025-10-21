@@ -15,6 +15,7 @@
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/noto+serif.css' type='text/css' media='all' />
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
+	<link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/prism-okaidia.min.css" />
 	{{& OPT.codeBeforHead}}
     <style>
         .breadcrumb a {
@@ -488,7 +489,7 @@
     <div class="overlay" id="overlay"></div>
     
     <script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
-
+	<script src="{{ &OPT.theme_github_path }}JustNews/files/prism.combined.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const topButton = document.querySelector('.j-top');
