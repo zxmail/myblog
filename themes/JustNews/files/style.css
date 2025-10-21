@@ -94,8 +94,8 @@ ul, li {
 
 .right-column {
     margin-left: 18px;
-    width: 100%;
-    max-width: 310px;
+    width: 100%;
+    max-width: 310px;
 }
 
 /* 5. Header & Navigation */
@@ -1317,8 +1317,18 @@ ul, li {
     
     /* 移除了旧的 .entry-page 媒体查询样式 */
 }
+/* --- 智能粘性侧边栏 --- */
+@media (min-width: 991px) {
+    .right-column {
+        position: -webkit-sticky; /* 兼容 Safari 浏览器 */
+        position: sticky;
+        top: -180px; /* 让侧边栏顶部与浏览器顶部保持 80px 的距离 */
+        align-self: flex-start; /* 这是让 sticky 在 flex 布局中生效的关键 */
+    }
+}
 
 /* --- 新的文章页 - 上一篇/下一篇 样式 (背景图版 - 修正为 width: 48.5% 方法) --- */
+
 .entry-page {
     display: flex;
     justify-content: space-between;
