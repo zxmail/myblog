@@ -580,7 +580,7 @@ async function render(data, template_path, env) {
                         const icon_html = link.icon ? `<i class="${link.icon}"></i> ` : '';
                         footer_links_html += `<a href="${link.url}" target="_blank">${icon_html}${link.text}</a>`;
                         if (index < links.length - 1) {
-                            footer_links_html += '<span class="split">|</span>';
+                            footer_links_html += '<span class="split" style="margin: 0 3px;">|</span>';
                         }
                     });
                 }
@@ -615,7 +615,7 @@ async function getIndexData(request, env) {
 	let pageSize = 10;
 	let result = articleIndex.slice((page - 1) * pageSize, page * pageSize)
 	for (const item of result) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
 		item.createDate10 = item.createDate.substring(0, 10);
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
@@ -643,7 +643,7 @@ async function getIndexData(request, env) {
 
 	let widgetRecentlyList = articleIndex.slice(0, 5); // 最近列表也将包含已排序的置顶文章
 	for (const item of widgetRecentlyList) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
 		item.isPasswordProtected = item.hasPassword; // 修复密码图标
 	}
 	data["widgetRecentlyList"] = widgetRecentlyList;
@@ -742,7 +742,7 @@ async function getArticleData(request, id, env, ctx) {
 		articleSingle.tags = []; // 确保它总是一个数组
 	}
 	
-	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}/`;
+	articleSingle.url = `/article/${articleSingle.id}/${articleSingle.link}`;
 	articleSingle.content = articleSingle.contentHtml || "";
 	articleSingle.createDate10 = articleSingle.createDate.substring(0, 10);
 
@@ -775,7 +775,7 @@ async function getArticleData(request, id, env, ctx) {
 		const newerArticle = articleIndex[index - 1];
 		data["articleNewer"] = { 
 			...newerArticle, 
-			url: `/article/${newerArticle.id}/${newerArticle.link}/`,
+			url: `/article/${newerArticle.id}/${newerArticle.link}`,
 			img: newerArticle.firstImageUrl || '', // 将 firstImageUrl 别名为 img
 			createDate10: newerArticle.createDate ? newerArticle.createDate.substring(0, 10) : '' // 添加 createDate10
 		};
@@ -784,7 +784,7 @@ async function getArticleData(request, id, env, ctx) {
 		const olderArticle = articleIndex[index + 1];
 		data["articleOlder"] = { 
 			...olderArticle, 
-			url: `/article/${olderArticle.id}/${olderArticle.link}/`,
+			url: `/article/${olderArticle.id}/${olderArticle.link}`,
 			img: olderArticle.firstImageUrl || '', // 将 firstImageUrl 别名为 img
 			createDate10: olderArticle.createDate ? olderArticle.createDate.substring(0, 10) : '' // 添加 createDate10
 		};
@@ -819,7 +819,7 @@ data["widgetTagList"] = Array.from(allTags).map(tag => {
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	let widgetRecentlyList = articleIndex.slice(0, 5); // 同样会包含置顶
 	for (const item of widgetRecentlyList) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
 		item.isPasswordProtected = item.hasPassword; // 修复密码图标
 		item.createDate10 = item.createDate.substring(0, 10);
 	}
@@ -856,7 +856,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let pageSize = 10;
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
@@ -885,7 +885,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
     
     let widgetRecentlyList = fullArticleIndexForWidgets.slice(0, 5);
 	for (const item of widgetRecentlyList) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
 		item.isPasswordProtected = item.hasPassword; // 修复密码图标
         item.createDate10 = item.createDate.substring(0, 10);
 	}
@@ -936,7 +936,7 @@ async function getSearchData(request, key, page, env) {
 	let pageSize = 10;
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
         if (Array.isArray(item['category[]']) && item['category[]'].length > 0) {
             item.firstCategory = item['category[]'][0];
         }
@@ -966,7 +966,7 @@ async function getSearchData(request, key, page, env) {
     
     let widgetRecentlyList = fullArticleIndexForWidgets.slice(0, 5);
 	for (const item of widgetRecentlyList) {
-		item.url = `/article/${item.id}/${item.link}/`;
+		item.url = `/article/${item.id}/${item.link}`;
 		item.isPasswordProtected = item.hasPassword;
         item.createDate10 = item.createDate.substring(0, 10);
 	}
