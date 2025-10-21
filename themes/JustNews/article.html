@@ -781,6 +781,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // --- START: 新增的调用 ---
                 // 用所有评论去渲染侧边栏 (allComments 已经由服务器排好序并打码)
                 renderSidebarComments(allComments);
+				if (window.stickySidebarInstance) {
+                window.stickySidebarInstance.updateSticky(); // 手动更新库的状态
+            }
                 // --- END: 新增的调用 ---
 
                 // 在客户端筛选出当前文章的评论
