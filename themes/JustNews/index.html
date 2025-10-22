@@ -286,11 +286,12 @@
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 		    if (window.innerWidth >= 992) {
-		        $('.right-column').stickySidebar({
-		            topSpacing: 80,
-		            bottomSpacing: 20, // (推荐使用 20, 而不是 0)
-		            containerSelector: '.main-layout',
-					innerWrapperSelector: '.inner-wrapper-sticky'
+		       // window.stickySidebarInstance = new StickySidebar('.right-column', { 
+				var sidebar = new StickySidebar('.right-column', {
+		            topSpacing: 80, 
+		            bottomSpacing: 20, 
+		            containerSelector: '.main-layout', 
+		            innerWrapperSelector: '.sidebar-sticky-wrapper' 
 		        });
 		    }
 		});
