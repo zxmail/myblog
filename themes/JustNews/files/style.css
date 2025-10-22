@@ -1444,7 +1444,7 @@ ul, li {
 .entry-content h2:not(.no-bar),
 .entry-content h3:not(.no-bar) {
     position: relative;
-    padding-left: 8px; 
+    padding-left: 11px; 
 }
 
 /* 2. 为所有 "不带 .no-bar" 的 h2 和 h3 添加竖线 */
@@ -1457,10 +1457,10 @@ ul, li {
     /* height: 20px; */  
     /* top: 50%; 将竖条定位到标题的垂直中间 */
     /* left: 2px; */
+    /* transform: translateY(-50%); 精确居中 */
     top: 0.30em;
     bottom: 0.30em;
     left: 0;
-    transform: translateY(-50%); /* 精确居中 */
     border-radius: 5px;
     transition: .4s;
 }
