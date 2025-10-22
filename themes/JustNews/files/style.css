@@ -1435,3 +1435,25 @@ ul, li {
         text-align: left;
     } */
 }
+/* --- H2/H3 标题左侧竖线样式 (可禁用版) --- */
+
+/* 1. 为所有 "不带 .no-bar" 的 h2 和 h3 添加相对定位和内边距 */
+.entry-content h2:not(.no-bar),
+.entry-content h3:not(.no-bar) {
+    position: relative;
+    padding-left: 15px; 
+}
+
+/* 2. 为所有 "不带 .no-bar" 的 h2 和 h3 添加竖线 */
+.entry-content h2:not(.no-bar):before,
+.entry-content h3:not(.no-bar):before {
+    position: absolute;
+    content: '';
+    width: 4px;
+    background: var(--Maincolor);/* background: #007bff;  您可以改成您喜欢的颜色 */
+    top: 10%;
+    left: 2px;
+    bottom: 10%;
+    border-radius: 5px;
+    transition: .4s;
+}
