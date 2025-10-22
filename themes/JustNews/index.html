@@ -286,7 +286,8 @@
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
 	    if (window.innerWidth >= 992) {
-			var sidebar = new StickySidebar('.right-column', {
+			window.stickySidebarInstance = new StickySidebar('.right-column', {
+			//var sidebar = new StickySidebar('.right-column', {
 	            topSpacing: 75, 
 	            bottomSpacing: 25, 
 	            containerSelector: '.main-layout', 
