@@ -1228,7 +1228,7 @@ ul, li {
 /* Article Content Typography */
 .entry-content {
     line-height: 1.8;
-    font-size: 16px;
+    font-size: 15px;
     overflow-wrap: break-word; /* 关键：允许在长单词或URL处换行 */
     word-wrap: break-word;     /* 兼容旧版浏览器 */
 }
