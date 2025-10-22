@@ -80,7 +80,7 @@ ul, li {
 .main-layout {
     display: flex;
     justify-content: center;
-  overflow: hidden; /* ⬅️ 添加这一行 */
+  /* overflow: hidden;  添加这一行 */
 }
 
 .main-content {
