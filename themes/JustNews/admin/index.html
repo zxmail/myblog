@@ -466,7 +466,7 @@ tinymce.init({
     selector: '#content',
     language: 'zh_CN',
     height: 640,
-	content_css: '../files/style.css', // ⬅️ 新增：为了在编辑器中预览竖线
+	content_css: '{{ &OPT.theme_github_path }}JustNews/files/style.css', // ⬅️ 新增：为了在编辑器中预览竖线
     plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code codesample fullscreen insertdatetime media nonbreaking save table directionality emoticons template paste',
 	toolbar: 'insertfile undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons | codesample | code',
 });
