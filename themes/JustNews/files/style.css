@@ -21,6 +21,9 @@
 
 /* 2. CSS Variables */
 :root {
+    --Maincolor: #409EFF !important;
+    --MaincolorHover: #409EFF !important;
+    --fontSelectedColor: #3390ff !important;
     --theme-bd: #617eaf;
     --theme-color: #206be7;
     --theme-hover: #1162e8;
