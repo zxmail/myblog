@@ -12,6 +12,20 @@
 }
 /* ... 其他登录框样式 ... */
 
+:root {
+    --Maincolor: #409EFF !important;
+    --MaincolorHover: #409EFF !important;
+    --fontSelectedColor: #3390ff !important;
+    --theme-bd: #617eaf;
+    --theme-color: #206be7;
+    --theme-hover: #1162e8;
+    --theme-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, Helvetica, Arial, PingFang SC, Hirgino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN, sans-serif;
+    --text-color: #333;
+    --text-color-light: #777;
+    --bg-color: #f5f5ff5;
+    --widget-bg: #fff;
+    --border-color: #fff;
+}
 
 /* --- 新增：后台左右布局样式 --- */
 body {
@@ -89,3 +103,4 @@ body {
     min-width: 50px;
     text-align: center;
 }
+
