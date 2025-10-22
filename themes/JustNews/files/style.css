@@ -91,10 +91,11 @@ ul, li {
 .left-column {
     width: 100%;
     max-width: 870px;
-  margin-right: 18px;
+
 }
 
 .right-column {
+  margin-left: 18px;
     width: 100%;
     max-width: 310px;
 }
