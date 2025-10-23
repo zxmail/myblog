@@ -83,7 +83,7 @@ ul, li {
 .main-layout {
     display: flex;
     justify-content: center;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .main-content {
