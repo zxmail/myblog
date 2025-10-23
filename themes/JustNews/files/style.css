@@ -92,9 +92,12 @@ ul, li {
 }
 
 .left-column {
-    width: 100%;
-    max-width: 870px;
-
+    margin-left: 18px;
+    /* width: 100%; */ /* <-- 删除 */
+    /* max-width: 310px; */ /* <-- 删除 */
+    flex-grow: 0; /* <-- 新增：不允许增长 */
+    flex-shrink: 0; /* <-- 新增：不允许收缩 */
+    flex-basis: 310px; /* <-- 新增：固定宽度为 310px */
 }
 
 .right-column {
