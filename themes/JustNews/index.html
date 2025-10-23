@@ -284,23 +284,6 @@
     
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
-	<script>	
-		App.initStickySidebar = function() {
-			const sidebarElement = document.querySelector('#desktop-sidebar-wrapper');
-			if (sidebarElement) {
-				if (this.state.desktopSidebar) {
-					this.state.desktopSidebar.destroy();
-				}
-				this.state.desktopSidebar = new StickySidebar('#desktop-sidebar-wrapper', {
-					topSpacing: 80,
-					bottomSpacing: 20,
-					containerSelector: '.main-layout',
-					innerWrapperSelector: '.sidebar-inner-wrapper'
-				});
-			}
-		};		
-	</script>
-	
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const topButton = document.querySelector('.j-top');
@@ -506,6 +489,25 @@ recentComments.forEach(comment => {
                 prevEl: '.swiper-button-prev',
             },
         });
+// --- START: 在这里添加粘性侧边栏的定义和调用 ---
+        var App = App || { state: {} }; 
+        App.initStickySidebar = function() {
+            const sidebarElement = document.querySelector('#desktop-sidebar-wrapper');
+            if (sidebarElement) {
+                // 确保 this.state 存在
+                if (this.state && this.state.desktopSidebar) { 
+                    this.state.desktopSidebar.destroy();
+                }
+                this.state.desktopSidebar = new StickySidebar('#desktop-sidebar-wrapper', {
+                    topSpacing: 80,
+                    bottomSpacing: 20,
+                    containerSelector: '.main-layout',
+                    innerWrapperSelector: '.sidebar-inner-wrapper'
+                });
+            }
+        };
+        App.initStickySidebar();
+        // --- END: 粘性侧边栏逻辑 ---
     });
 </script>
 </body>
