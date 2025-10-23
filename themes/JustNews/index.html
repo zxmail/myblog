@@ -286,14 +286,33 @@
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
+		    // 1. 仅在桌面端执行
 		    if (window.innerWidth >= 992) {
-				//window.stickySidebarInstance = new StickySidebar('.right-column', { 
-			   	var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
-		            topSpacing: 80, 
-		            bottomSpacing: 20, 
-		            containerSelector: '.main-layout', 
-		            innerWrapperSelector: '.sidebar-inner-wrapper' 
-		        });
+				
+		    	// --- START: 按您的要求新增的条件判断 ---
+				
+		    	// 2. 获取左侧栏和右侧栏元素
+		        var leftColumn = document.querySelector('.left-column');
+		        var rightSidebar = document.querySelector('#desktop-sidebar-wrapper');
+
+		        // 3. 确保元素存在
+		        if (leftColumn && rightSidebar) {
+		            var leftHeight = leftColumn.offsetHeight; // 获取左侧高度
+		            var rightHeight = rightSidebar.offsetHeight; // 获取右侧高度
+
+		            // 4. 只有当右侧栏高度 *小于* 左侧栏高度时，才启用粘性定位
+		            if (rightHeight < leftHeight) {
+		                var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
+		                    topSpacing: 80, 
+		                    bottomSpacing: 20, 
+		                    containerSelector: '.main-layout', 
+		                    innerWrapperSelector: '.sidebar-inner-wrapper' 
+		                });
+		            }
+		            // 5. 如果右侧栏更高，则不执行任何操作，它将保持正常的文档流，避免卡顿。
+		        }
+				
+		    	// --- END: 新增的条件判断 ---
 		    }
 		});
 	</script>
