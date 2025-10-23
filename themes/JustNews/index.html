@@ -16,6 +16,11 @@
 	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="/atom.xml">
 	<link rel="shortcut icon" href="{{& OPT.theme_github_path}}JustNews/files/logo2.png" type="image/x-icon">
 	{{& OPT.codeBeforHead}}
+<style>
+	#wrap {
+    padding: 80px 0 100px 0;
+}
+</style>
 </head>
 <body class="m-flex">
 	<header class="site-header">
@@ -291,7 +296,7 @@
 			   	var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
 		            topSpacing: 80, 
 		            bottomSpacing: 20, 
-		            containerSelector: '.main-layout', 
+		            containerSelector: '#wrap', 
 		            innerWrapperSelector: '.sidebar-sticky-wrapper' 
 		        });
 		    }
