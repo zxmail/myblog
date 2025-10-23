@@ -92,18 +92,19 @@ ul, li {
 }
 
 .left-column {
+    flex: 1; /* <-- 新增：允许它占据剩余空间 */
+    min-width: 0; /* <-- 新增：允许它在需要时收缩 */
+    width: 100%;
+    max-width: 870px;
+}
+
+.right-column {
     margin-left: 18px;
     /* width: 100%; */ /* <-- 删除 */
     /* max-width: 310px; */ /* <-- 删除 */
     flex-grow: 0; /* <-- 新增：不允许增长 */
     flex-shrink: 0; /* <-- 新增：不允许收缩 */
     flex-basis: 310px; /* <-- 新增：固定宽度为 310px */
-}
-
-.right-column {
-  margin-left: 18px;
-    width: 100%;
-    max-width: 310px;
 }
 
 /* 5. Header & Navigation */
