@@ -178,70 +178,69 @@
             </div>
 
             <div class="right-column">
-				<aside class="right-column">
-					<div class="widget widget-recent-posts">
-						<h3 class="widget-title">热门文章</h3>
-						<ul>
-							{{#widgetRecentlyList}}
-							<li class="recent-article-item-box">
-								{{#firstImageUrl}}
-								<div class="recent-article-item-image">
-									<a href="{{url}}">
-										<img src="{{firstImageUrl}}" alt="{{title}}">
-									</a>
+				<aside id="desktop-sidebar-wrapper">
+						<div class="sidebar-inner-wrapper">
+								<div class="widget widget-recent-posts">
+									<h3 class="widget-title">热门文章</h3>
+									<ul>
+										{{#widgetRecentlyList}}
+										<li class="recent-article-item-box">
+											{{#firstImageUrl}}
+											<div class="recent-article-item-image">
+												<a href="{{url}}">
+													<img src="{{firstImageUrl}}" alt="{{title}}">
+												</a>
+											</div>
+											{{/firstImageUrl}}
+											<div class="recent-article-item-content">
+												<a href="{{url}}">
+													{{#isPinned}}
+													<i class="fas fa-thumbtack" 
+													   style="color: #f00; font-size: 0.9em; margin-right: 4px;" 
+													   title="置顶">
+													</i>
+													{{/isPinned}}
+													{{#isPasswordProtected}}
+													<i class="fas fa-lock" 
+													   style="color: #888; font-size: 0.9em; margin-right: 4px;" 
+													   title="密码保护">
+													</i>
+													{{/isPasswordProtected}}
+													{{title}}
+												</a>
+												<span class="recent-article-item-date">{{createDate10}}</span>
+											</div>
+										</li>
+										{{/widgetRecentlyList}}
+									</ul>
 								</div>
-								{{/firstImageUrl}}
-								<div class="recent-article-item-content">
-									<a href="{{url}}">
-										{{#isPinned}}
-										<i class="fas fa-thumbtack" 
-										   style="color: #f00; font-size: 0.9em; margin-right: 4px;" 
-										   title="置顶">
-										</i>
-										{{/isPinned}}
-										{{#isPasswordProtected}}
-										<i class="fas fa-lock" 
-										   style="color: #888; font-size: 0.9em; margin-right: 4px;" 
-										   title="密码保护">
-										</i>
-										{{/isPasswordProtected}}
-										{{title}}
-									</a>
-									<span class="recent-article-item-date">{{createDate10}}</span>
+								<div class="widget widget-categories">
+									<h3 class="widget-title">分类目录</h3>
+									<ul>
+										{{#widgetCategoryList}}
+										<li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
+										{{/widgetCategoryList}}
+									</ul>
 								</div>
-							</li>
-							{{/widgetRecentlyList}}
-						</ul>
-					</div>
-
-					<div class="widget widget-categories">
-						<h3 class="widget-title">分类目录</h3>
-						<ul>
-							{{#widgetCategoryList}}
-							<li><a href="/category/{{name}}/"> <i class="{{icon}}"></i> {{name}}</a></li>
-							{{/widgetCategoryList}}
-						</ul>
-					</div>
-
-	<div class="widget widget-tags">
-		<h3 class="widget-title">标签</h3>
-		<div class="tag-cloud">
-			{{ #widgetTagList }}
-				<a href="{{url}}">{{name}}</a>
-			{{ /widgetTagList }}
-			{{ ^widgetTagList }}
-				<span>暂无标签</span>
-			{{ /widgetTagList }}
-		</div>
-	</div>
-
-					<div class="widget widget-comments">
-							<h3 class="widget-title">最近评论</h3>
-							<ul id="widget-recent-comments-list">
-								<li>正在加载...</li>
-							</ul>
-						</div>
-					</aside>
+								<div class="widget widget-tags">
+									<h3 class="widget-title">标签</h3>
+									<div class="tag-cloud">
+										{{ #widgetTagList }}
+											<a href="{{url}}">{{name}}</a>
+										{{ /widgetTagList }}
+										{{ ^widgetTagList }}
+											<span>暂无标签</span>
+										{{ /widgetTagList }}
+									</div>
+								</div>
+								<div class="widget widget-comments">
+										<h3 class="widget-title">最近评论</h3>
+										<ul id="widget-recent-comments-list">
+											<li>正在加载...</li>
+										</ul>
+									</div>
+						</div>				
+			</aside>
 			</div>
 		</div>
 
@@ -285,19 +284,23 @@
     
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-		    if (window.innerWidth >= 992) {
-				//window.stickySidebarInstance = new StickySidebar('.right-column', { 
-			   	var sidebar = new StickySidebar('.right-column', {
-		            topSpacing: 80, 
-		            bottomSpacing: 245, 
-		            containerSelector: '.main-layout', 
-		            innerWrapperSelector: '.sidebar-sticky-wrapper' 
-		        });
-		    }
-		});
+	<script>	
+		App.initStickySidebar = function() {
+			const sidebarElement = document.querySelector('#desktop-sidebar-wrapper');
+			if (sidebarElement) {
+				if (this.state.desktopSidebar) {
+					this.state.desktopSidebar.destroy();
+				}
+				this.state.desktopSidebar = new StickySidebar('#desktop-sidebar-wrapper', {
+					topSpacing: 80,
+					bottomSpacing: 20,
+					containerSelector: '.main-layout',
+					innerWrapperSelector: '.sidebar-inner-wrapper'
+				});
+			}
+		};		
 	</script>
+	
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const topButton = document.querySelector('.j-top');
