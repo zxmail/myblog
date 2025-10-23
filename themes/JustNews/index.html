@@ -285,7 +285,7 @@
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function() {
+		window.addEventListener('load', function() {
 		    if (window.innerWidth >= 992) {
 				//window.stickySidebarInstance = new StickySidebar('.right-column', { 
 			   	var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
