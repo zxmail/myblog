@@ -489,32 +489,25 @@ recentComments.forEach(comment => {
                 prevEl: '.swiper-button-prev',
             },
         });
-    });
-	
-	// --- START: 将粘性侧边栏逻辑移动到这里 (DOMContentLoaded 外部) ---
-
-    // 1. 确保 App 对象已定义，并有 state 属性
-    var App = App || { state: {} }; 
-    // 2. 定义初始化函数
-    App.initStickySidebar = function() {
-        const sidebarElement = document.querySelector('#desktop-sidebar-wrapper');
-        if (sidebarElement) {
-            // 确保 this.state 存在
-            if (this.state && this.state.desktopSidebar) { 
-                this.state.desktopSidebar.destroy();
+// --- START: 在这里添加粘性侧边栏的定义和调用 ---
+        var App = App || { state: {} }; 
+        App.initStickySidebar = function() {
+            const sidebarElement = document.querySelector('#desktop-sidebar-wrapper');
+            if (sidebarElement) {
+                // 确保 this.state 存在
+                if (this.state && this.state.desktopSidebar) { 
+                    this.state.desktopSidebar.destroy();
+                }
+                this.state.desktopSidebar = new StickySidebar('#desktop-sidebar-wrapper', {
+                    topSpacing: 80,
+                    bottomSpacing: 20,
+                    containerSelector: '.main-layout',
+                    innerWrapperSelector: '.sidebar-inner-wrapper'
+                });
             }
-            this.state.desktopSidebar = new StickySidebar('#desktop-sidebar-wrapper', {
-                topSpacing: 80,
-                bottomSpacing: 20,
-                containerSelector: '.main-layout',
-                innerWrapperSelector: '.sidebar-inner-wrapper'
-            });
-        }
-    };
-    // 3. 【重要】: 将调用更改为在 'load' 事件上触发
-    window.addEventListener('load', function() {
-        // 页面所有图片和资源都加载完毕后，再激活粘性侧边栏
+        };
         App.initStickySidebar();
+        // --- END: 粘性侧边栏逻辑 ---
     });
 </script>
 </body>
