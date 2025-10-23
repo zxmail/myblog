@@ -612,7 +612,7 @@ ul, li {
         justify-content: space-between;
     }
     .left-column {
-        width: calc(100% - 310px - 20px);
+        width: calc(100% - 310px - 18px);
         max-width: none;
     }
     .right-column {
