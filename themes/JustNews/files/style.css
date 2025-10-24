@@ -1242,7 +1242,7 @@ ul, li {
 .entry-content ul {
     list-style: disc !important; /* 使用 !important 强制覆盖全局重置 */
     margin: 0 0 1.5em 1.5em; /* 调整外边距 */
-    padding-left: 1.5em; /* 调整内边距，让黑点显示出来 */
+    padding-left: 0.1em; /* 调整内边距，让黑点显示出来 */
 }
 .entry-content ol {
     list-style: decimal !important; /* 使用 !important 强制覆盖全局重置 */
