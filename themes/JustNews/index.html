@@ -283,24 +283,12 @@
     <div class="overlay" id="overlay"></div>
     
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
-	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
+	<script src="{{ &OPT.theme_github_path }}JustNews/files/custom-sticky.js"></script>
 <script>
-		window.addEventListener('load', function() {
-            // 在使用前先定义 sidebarElement，获取 DOM 元素
-            const sidebarElement = document.getElementById('desktop-sidebar-wrapper'); 
-            // 现在 if 语句可以正确检查 sidebarElement 是否存在（即是否为 null）
-			if (window.innerWidth >= 992 && sidebarElement) {
-				// 检查旧实例（如果存在）
-				if (this.state && this.state.desktopSidebar && typeof this.state.desktopSidebar.destroy === 'function') {
-					this.state.desktopSidebar.destroy();
-				}
-				window.stickySidebarInstance = new StickySidebar('#desktop-sidebar-wrapper', { 
-			   	//var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
-		            topSpacing: 80, 
-		            bottomSpacing: 20, 
-		            containerSelector: '.main-layout', 
-		            innerWrapperSelector: '.sidebar-inner-wrapper' 
-		        });
+window.addEventListener('load', function() {
+		    if (window.innerWidth >= 992) {
+                // 初始化我们新的自定义脚本
+				window.stickySidebarInstance = new StickySidebar('#desktop-sidebar-wrapper', 80); 
 		    }
 		});
 	</script>
