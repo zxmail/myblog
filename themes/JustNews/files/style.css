@@ -1239,6 +1239,21 @@ ul, li {
 .entry-content p {
     margin-bottom: 1.2em;
 }
+.entry-content ul {
+    list-style: disc !important; /* 使用 !important 强制覆盖全局重置 */
+    margin: 0 0 1.5em 1.5em; /* 调整外边距 */
+    padding-left: 1.5em; /* 调整内边距，让黑点显示出来 */
+}
+.entry-content ol {
+    list-style: decimal !important; /* 使用 !important 强制覆盖全局重置 */
+    margin: 0 0 1.5em 1.5em; /* 调整外边距 */
+    padding-left: 1.5em; /* 调整内边距，让数字显示出来 */
+}
+.entry-content ul li,
+.entry-content ol li {
+    list-style: inherit !important; /* 列表项(li)继承父级(ul/ol)的样式 */
+    margin-bottom: 0.5em; /* 列表项之间的间距 */
+}
 .entry-content img {
     border-radius: 9px;
     box-shadow: 0 2px 5px rgba(0,0,0,.1);
