@@ -468,6 +468,11 @@ ul, li {
     margin-bottom: 20px;
     box-sizing: border-box;
 }
+/* --- START: 新增规则以修复侧边栏抖动 --- */
+.sidebar-inner-wrapper .widget:last-child {
+    margin-bottom: 0;
+}
+/* --- END: 新增规则 --- */
 
 .widget-title {
     font-size: 16px;
