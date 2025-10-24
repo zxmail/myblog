@@ -184,6 +184,21 @@
 		    line-height: 1.5;      /* (可选) 调整行高以适应新的字体大小 */
 		}
 		/* --- END: 自定义代码高亮字体大小 --- */
+		/* --- START: 修复列表（项目符号/编号）样式 --- */
+        .entry-content ul {
+            list-style: disc;
+            margin-left: 25px;
+			padding-left: 15px;
+        }
+        .entry-content ol {
+            list-style: decimal;
+            margin-left: 25px;
+			padding-left: 15px;
+        }
+        .entry-content li {
+            margin-bottom: 8px;
+        }
+		/* --- END: 修复列表样式 --- */
     </style>
     </head>
 <body class="m-flex"> 
