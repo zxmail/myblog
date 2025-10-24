@@ -461,6 +461,7 @@ ul, li {
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .widget-title {
