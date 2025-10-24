@@ -8,7 +8,7 @@
     <title>{{ &title }}</title>
     <meta name="keywords" content="{{ &OPT.siteKeywords }}" />
     <meta name="description" content="{{ &OPT.siteDescription }}" />
-	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
+
     <link rel="stylesheet" href="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.css"/>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/fonts/fontawesome5pro-all.min.css'>
     <link rel='stylesheet' href='{{ &OPT.theme_github_path }}JustNews/files/style.css'>
@@ -177,7 +177,8 @@
                 </nav>
             </div>
 
-            <div class="right-column" id="desktop-sidebar-wrapper">
+            <div class="right-column">
+				<aside id="desktop-sidebar-wrapper">
 						<div class="sidebar-inner-wrapper">
 								<div class="widget widget-recent-posts">
 									<h3 class="widget-title">热门文章</h3>
@@ -239,6 +240,7 @@
 										</ul>
 									</div>
 						</div>				
+			</aside>
 			</div>
 		</div>
 
@@ -281,12 +283,21 @@
     <div class="overlay" id="overlay"></div>
     
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/swiper.min.js"></script>
-	<script src="{{ &OPT.theme_github_path }}JustNews/files/custom-sticky.js"></script>
+	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
 	<script>
-window.addEventListener('load', function() {
-		    if (window.innerWidth >= 992) {
-                // 初始化我们新的自定义脚本
-				window.stickySidebarInstance = new StickySidebar('#desktop-sidebar-wrapper', 80); 
+		window.addEventListener('load', function() {
+			if (window.innerWidth >= 992 && sidebarElement) {
+				// 检查旧实例（如果存在）
+				if (this.state && this.state.desktopSidebar && typeof this.state.desktopSidebar.destroy === 'function') {
+					this.state.desktopSidebar.destroy();
+				}
+				window.stickySidebarInstance = new StickySidebar('#desktop-sidebar-wrapper', { 
+			   	//var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
+		            topSpacing: 80, 
+		            bottomSpacing: 20, 
+		            containerSelector: '.main-layout', 
+		            innerWrapperSelector: '.sidebar-inner-wrapper' 
+		        });
 		    }
 		});
 	</script>
