@@ -35,6 +35,8 @@ body {
 .admin-container {
     display: flex;
     min-height: 100vh;
+    max-width: 1600px; /* <-- 在这里添加 */
+    margin: 0 auto;    /* <-- 在这里添加 */
 }
 
 .admin-sidebar {
@@ -130,4 +132,5 @@ body {
     border-radius: 5px;
     transition: .4s;
 }
+
 
