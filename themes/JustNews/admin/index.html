@@ -606,6 +606,7 @@ tinymce.init({
 		$('#password').val('');
 		$('#allowComments').val('true');
 		$('#views').val('0');
+		$('#isHidden').val('false');
 		// ========== END: 重置新增字段 ==========
 	}
 
@@ -668,6 +669,8 @@ tinymce.init({
 					$('#allowComments').val(articleJson.allowComments === false ? 'false' : 'true');
 					$('#password').val(articleJson.password || '');
 					$('#views').val(articleJson.views || 0);
+					// 加载文章状态，将布尔值转为 'true'/'false' 字符串
+					$('#isHidden').val(articleJson.isHidden ? 'true' : 'false');
 					// ========== END: 加载新增字段的值 ==========
 					
 					$('#labelNew').text("编辑文章: " + articleJson.id);
