@@ -286,6 +286,7 @@
 	<script src="{{ &OPT.theme_github_path }}JustNews/files/sticky-sidebar.min.js"></script>
 	<script>
 		window.addEventListener('load', function() {
+			if (window.innerWidth >= 992) {
 				window.stickySidebarInstance = new StickySidebar('#desktop-sidebar-wrapper', { 
 			   	//var sidebar = new StickySidebar('#desktop-sidebar-wrapper', {
 		            topSpacing: 80, 
@@ -293,6 +294,7 @@
 		            containerSelector: '.main-layout', 
 		            innerWrapperSelector: '.sidebar-inner-wrapper' 
 		        });
+			}
 		});
 	</script>
     <script>
