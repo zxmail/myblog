@@ -92,6 +92,7 @@ ul, li {
 }
 
 .left-column {
+    margin-right: 18px;
     /* width: 100%; */ /* <-- 修改：注释掉或删除此行 */
     max-width: 870px;
     flex: 1; /* <-- 添加此行 */
@@ -99,7 +100,6 @@ ul, li {
 }
 
 .right-column {
-    margin-left: 18px;
     /* width: 100%; */ /* <-- 修改：注释掉或删除此行 */
     width: 310px; /* <-- 添加此行 */
     flex-shrink: 0; /* <-- 添加此行 */
