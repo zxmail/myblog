@@ -1157,6 +1157,7 @@ ul, li {
 
 /* Replace original article selector */
 .post-article {
+    margin-right: 18px;
     flex: 1;
     min-width: 0;
 }
