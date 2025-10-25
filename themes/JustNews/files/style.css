@@ -1359,7 +1359,7 @@ ul, li {
 }
 .entry-tag a:hover {
     background: var(--MaincolorHover) !important;
-    color: #fff;
+    color: #fff !important;
 }
 
 /* Comments Section */
@@ -1407,7 +1407,7 @@ ul, li {
     min-width: 250px; /* 最小宽度，防止在 flex 中被过度压缩 (可保留) */
     position: relative; /* 关键：为内部绝对定位提供锚点 */
     height: 80px; /* 您可以根据需要调整此高度 */
-    border-radius: 5px;
+    border-radius: 3px;
     overflow: hidden; /* 确保背景图不会溢出圆角 */
     background-color: #f0f0f0; /* 图片加载前/失败时的占位背景色 */
     background-size: cover; /* 关键：使背景图覆盖整个容器 */
@@ -1456,6 +1456,7 @@ ul, li {
 /* 文章标题 */
 .entry-page-prev a span,
 .entry-page-next a span {
+	color: #ffffff !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
