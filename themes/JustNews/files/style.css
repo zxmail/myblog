@@ -386,7 +386,7 @@ ul, li {
 }
 
 .image-category a {
-    color: #fff;
+    color: #fff !important;
     display: inline;
     width: auto;    /* 修正宽度 */
     height: auto;   /* 修正高度 */
@@ -939,7 +939,7 @@ ul, li {
         display: none;
     }
     .image-category a {
-    color: #fff;
+    color: #fff !important;
     display: inline;
     width: auto;    /* 修正宽度 */
     height: auto;   /* 修正高度 */
@@ -1185,7 +1185,7 @@ ul, li {
 
 .widget .tag-cloud a:hover {
     background-color: var(--MaincolorHover) !important;
-    color: #fff;
+    color: #fff !important;
     animation: marquee-text 1s linear infinite alternate;
 }
 
