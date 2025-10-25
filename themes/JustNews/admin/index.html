@@ -636,11 +636,13 @@ tinymce.init({
 							statusBadges += '<span class="label label-default" style="margin-right: 5px;">隐藏</span>';
 						}
 						// --- END: 新增的状态徽章逻辑 ---
+
 						tableContent += `<tr id="article-row-${Info.id}">
 							<td>${Info.id}</td>
 							<td>${Info.title}</td>
 							<td>${Info.createDate ? Info.createDate.replace("T"," ") : ''}</td>
                             <td>${Info['category[]'] ? Info['category[]'].join(', ') : ''}</td>
+							<td>${statusBadges}</td>
 							<td>
 								<button class="btn btn-primary btn-xs" onclick="editArticle('${Info.id}')">编辑</button>
 								<button class="btn btn-danger btn-xs" onclick="deleteArticle('${Info.id}')">删除</button>
