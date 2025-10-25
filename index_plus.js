@@ -161,6 +161,7 @@ async function handleRequest({ request, env, ctx }) {
                     // ========== START: 新增字段类型转换 ==========
                     article.isPinned = article.isPinned === 'true'; // 转为布尔值
                     article.views = parseInt(article.views || 0); // 转为数字
+					article.isHidden = article.isHidden === 'true'; // 转为布尔值
                     // article.password 保持为字符串
                     // ========== END: 新增字段类型转换 ==========
 
@@ -180,7 +181,8 @@ async function handleRequest({ request, env, ctx }) {
                         // ========== START: 新增Meta字段 ==========
                         isPinned: article.isPinned, // 布尔值
                         hasPassword: !!article.password, // 布尔值
-                        views: article.views // 数字
+                        views: article.views, // 数字
+						isHidden: article.isHidden // 布尔值
                         // ========== END: 新增Meta字段 ==========
                     };
 
@@ -207,6 +209,7 @@ async function handleRequest({ request, env, ctx }) {
                     // ========== START: 新增字段类型转换 ==========
                     article.isPinned = article.isPinned === 'true'; // 转为布尔值
                     article.views = parseInt(article.views || 0); // 转为数字
+					article.isHidden = article.isHidden === 'true'; // 转为布尔值
                     // article.password 保持为字符串
                     // ========== END: 新增字段类型转换 ==========
 
@@ -227,7 +230,8 @@ async function handleRequest({ request, env, ctx }) {
                         // ========== START: 新增Meta字段 ==========
                         isPinned: article.isPinned, // 布尔值
                         hasPassword: !!article.password, // 布尔值
-                        views: article.views // 数字
+                        views: article.views, // 数字
+						isHidden: article.isHidden // 布尔值
                         // ========== END: 新增Meta字段 ==========
                     };
 
@@ -600,6 +604,8 @@ async function getIndexData(request, env) {
 		page = parseInt(url.pathname.substring(6, url.pathname.lastIndexOf('/')));
 	}
 	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	// 过滤掉隐藏的文章
+	articleIndex = articleIndex.filter(item => !item.isHidden);
 	
     // ========== START: 置顶排序 ==========
     articleIndex.sort((a, b) => {
@@ -759,6 +765,8 @@ async function getArticleData(request, id, env, ctx) {
     // --- BEGIN MODIFICATION ---
     // 这是您要求修改的代码块
     let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	// 过滤掉隐藏的文章
+	articleIndex = articleIndex.filter(item => !item.isHidden);
 	
     // ========== START: (BUGFIX) 置顶排序也应应用于文章页的 "上一篇/下一篇" ==========
     // 排序逻辑必须与 getIndexData 一致
@@ -830,6 +838,8 @@ data["widgetTagList"] = Array.from(allTags).map(tag => {
 
 async function getCategoryOrTagsData(request, type, key, page, env) {
 	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	// 过滤掉隐藏的文章
+	articleIndex = articleIndex.filter(item => !item.isHidden);
 	let result = [];
 	const decodedKey = decodeURI(key);
 	for (const item of articleIndex) {
@@ -877,6 +887,8 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	
     // 注意：这里的 widgetRecentlyList 应该从完整的 articleIndex 获取，而不是从已过滤的 result 获取
     let fullArticleIndexForWidgets = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	// 过滤掉隐藏的文章
+	fullArticleIndexForWidgets = fullArticleIndexForWidgets.filter(item => !item.isHidden);
     fullArticleIndexForWidgets.sort((a, b) => {
         if (a.isPinned && !b.isPinned) return -1;
         if (!a.isPinned && b.isPinned) return 1;
@@ -913,6 +925,8 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 // --- START: 在这里添加新的 getSearchData 函数 ---
 async function getSearchData(request, key, page, env) {
 	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	// 过滤掉隐藏的文章
+	articleIndex = articleIndex.filter(item => !item.isHidden);
 	let result = [];
 	const decodedKey = decodeURI(key).toLowerCase(); // 解码并转为小写以方便比较
 
@@ -958,6 +972,8 @@ async function getSearchData(request, key, page, env) {
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	
     let fullArticleIndexForWidgets = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+	// 过滤掉隐藏的文章
+	fullArticleIndexForWidgets = fullArticleIndexForWidgets.filter(item => !item.isHidden);
     fullArticleIndexForWidgets.sort((a, b) => {
         if (a.isPinned && !b.isPinned) return -1;
         if (!a.isPinned && b.isPinned) return 1;
