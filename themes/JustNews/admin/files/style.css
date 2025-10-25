@@ -6,15 +6,14 @@
     z-index: 1000;
 }
 .login-container {
+    /*width: 100%; */
+    /*max-width: 360px; */
     width: 360px; /* 1. 修改为固定宽度 */
-    flex-shrink: 0; /* 2. (关键) 添加此行，禁止flex压缩 */
     padding: 40px;
     background-color: #fff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px; text-align: center;
 }
-/* ... 其他登录框样式 ... */
-
-/* --- 新增：登录框响应式 --- */
+/* --- 新增：登录框响应式 --- 
 @media screen and (max-width: 400px) {
     .login-container { 
         width: auto !important;  
@@ -22,7 +21,7 @@
         margin-right: 20px;
         flex-shrink: 1; /* 在小屏上恢复可压缩，配合 width: auto */
     }
-}
+} */
 /* ... 其他登录框样式 ... */
 
 :root {
@@ -145,6 +144,7 @@ body {
     border-radius: 5px;
     transition: .4s;
 }
+
 
 
 
