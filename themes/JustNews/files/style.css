@@ -459,6 +459,44 @@ ul, li {
     border-radius: 5px;
 }
 
+.pages {
+	text-align: center;
+	background: #fff;
+	padding: 20px
+}
+
+.pageobj-item .current {
+	color: #fff!important
+}
+
+.fenye a,.pagedbox,.page-numbers {
+	display: inline-block;
+	padding: 7px 8px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	color: #999!important;
+	line-height: 1;
+	background-color: #f2f2f2;
+	border-radius: var(--border-hd);
+	transition: all .3s ease-out 0s;
+	font-size: 14px
+}
+
+.fenye a:hover,.page-numbers:hover {
+	background: var(--MaincolorHover)!important;
+	color: #fff!important
+}
+
+.current {
+	background: var(--Maincolor)!important;
+	color: #fff!important
+}
+
+.page-count {
+	display: inline-block;
+	margin-left: 10px
+}
+
 /* 7. Sidebar & Widgets */
 .widget {
     background-color: var(--widget-bg);
