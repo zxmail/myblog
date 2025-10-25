@@ -288,7 +288,7 @@
                     <div class="entry-head">
                         <h1 class="entry-title">
 							{{#articleSingle.isEncrypted}}
-                                <i class="fas fa-lock" style="color: #f0ad4e; margin-right: 8px;" title="已加密"></i>
+                                <i class="fas fa-lock-alt" style="color: #f0ad4e; margin-right: 8px;" title="已加密"></i>
                             {{/articleSingle.isEncrypted}}
 							{{ &articleSingle.title }}
 						</h1>
@@ -317,7 +317,7 @@
                         {{#articleSingle.isEncrypted}}
                             <div class="entry-content-protected">
                                 <form id="password-form">
-                                    <p><i class="fas fa-lock"></i> 本文已加密，请输入密码查看。</p>
+                                    <p><i class="fas fa-lock-alt"></i> 本文已加密，请输入密码查看。</p>
                                     <div>
                                         <input type="password" id="article-password-input" placeholder="请输入密码" required>
                                         <button type="submit">提交</button>
@@ -423,7 +423,7 @@
 													</i>
 													{{/isPinned}}
 													{{#isPasswordProtected}}
-													<i class="fas fa-lock" 
+													<i class="fas fa-lock-alt" 
 													   style="color: #888; font-size: 0.9em; margin-right: 4px;" 
 													   title="密码保护">
 													</i>
