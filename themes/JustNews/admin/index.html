@@ -79,6 +79,7 @@
 								<th>标题</th>
 								<th>创建日期</th>
                                 <th>分类</th>
+								<th>状态</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -620,6 +621,21 @@ tinymce.init({
 				if(data && data.length > 0) {
 					var tableContent="";
 					$.each(data,function(i, Info){
+						// --- START: 新增的状态徽章逻辑 ---
+						var statusBadges = '';
+						// 检查置顶 (Info.isPinned 可能是布尔值 true 或字符串 "true")
+						if (Info.isPinned === true || Info.isPinned === 'true') {
+							statusBadges += '<span class="label label-warning" style="margin-right: 5px;">置顶</span>';
+						}
+						// 检查加密 (Info.password 是一个有内容的字符串)
+						if (Info.password && Info.password.length > 0) {
+							statusBadges += '<span class="label label-danger" style="margin-right: 5px;">加密</span>';
+						}
+						// 检查隐藏 (Info.isHidden 可能是布尔值 true 或字符串 "true")
+						if (Info.isHidden === true || Info.isHidden === 'true') {
+							statusBadges += '<span class="label label-default" style="margin-right: 5px;">隐藏</span>';
+						}
+						// --- END: 新增的状态徽章逻辑 ---
 						tableContent += `<tr id="article-row-${Info.id}">
 							<td>${Info.id}</td>
 							<td>${Info.title}</td>
