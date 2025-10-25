@@ -271,6 +271,7 @@ async function handleRequest({ request, env, ctx }) {
 					let page = pathname.substring(15, pathname.lastIndexOf('/'));
 					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 					let pageSize = 10;
+					let total_pages = Math.ceil(articleIndex.length / pageSize);
 					let result = articleIndex.slice((page - 1) * pageSize, page * pageSize);
 					return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
@@ -619,6 +620,7 @@ async function getIndexData(request, env) {
     // ========== END: 置顶排序 ==========
 
 	let pageSize = 10;
+	let total_pages = Math.ceil(articleIndex.length / pageSize);
 	let result = articleIndex.slice((page - 1) * pageSize, page * pageSize)
 	for (const item of result) {
 		item.url = `/article/${item.id}/${item.link}`;
@@ -635,8 +637,7 @@ async function getIndexData(request, env) {
 	let data = {};
 	data["listTitle"] = "文章列表";
 	data["articleList"] = result;
-	if (page > 1) data["pageNewer"] = { "url": `/page/${page - 1}/`};
-	if (articleIndex.length > page * pageSize) data["pageOlder"] = { "url": `/page/${page + 1}/`};
+	data["page_html"] = generatePaginationHTML(page, total_pages, "/");
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
 	
@@ -864,6 +865,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
     // ========== END: 置顶排序 ==========
 
 	let pageSize = 10;
+	let total_pages = Math.ceil(result.length / pageSize);
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}`;
@@ -879,8 +881,7 @@ async function getCategoryOrTagsData(request, type, key, page, env) {
 	let data = {};
     data["listTitle"] = decodedKey;
 	data["articleList"] = resultPage;
-	if (page > 1) data["pageNewer"] = { "url": `/${type}/${key}/page/${page - 1}/`};
-	if (result.length > page * pageSize) data["pageOlder"] = { "url": `/${type}/${key}/page/${page + 1}/`};
+	data["page_html"] = generatePaginationHTML(page, total_pages, `/${type}/${key}`);
 
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
 	data["widgetLinkList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetLink") || "[]");
@@ -948,6 +949,7 @@ async function getSearchData(request, key, page, env) {
     });
 
 	let pageSize = 10;
+	let total_pages = Math.ceil(result.length / pageSize);
 	let resultPage = result.slice((page - 1) * pageSize, page * pageSize);
 	for (const item of resultPage) {
 		item.url = `/article/${item.id}/${item.link}`;
@@ -1008,3 +1010,82 @@ async function getSearchData(request, key, page, env) {
 	return data;
 }
 // --- END: 新的 getSearchData 函数 ---
+// --- START: 新增的分页HTML生成函数 ---
+function generatePaginationHTML(page, total_pages, page_base_url) {
+	let page_html = "";
+	if (total_pages > 1) {
+	  let page_base = page_base_url === "/" ? "" : page_base_url; // 处理根路径
+  
+	  // 规范化URL，确保 page_base 不以 / 结尾
+	  if (page_base.endsWith('/')) {
+		page_base = page_base.slice(0, -1);
+	  }
+  
+	  // 定义页面URL
+	  // 首页URL
+	  let first_page_url = page_base_url === "/" ? "/" : page_base + "/";
+	  // 尾页URL
+	  let last_page_url = `${page_base}/page/${total_pages}`;
+	  
+	  // 上一页URL
+	  let prev_page = Math.max(1, page - 1);
+	  let prev_page_url = prev_page === 1 ? first_page_url : `${page_base}/page/${prev_page}`;
+	  
+	  // 下一页URL
+	  let next_page = Math.min(total_pages, page + 1);
+	  let next_page_url = `${page_base}/page/${next_page}`;
+  
+	  // --- 开始构建HTML ---
+	  page_html = '<div class="pages">\n<div class="fenye">';
+	  
+	  // 首页
+	  page_html += `<a href="${first_page_url}" class="extend" title="跳转到首页">首页</a>`;
+	  
+	  // 上一页 (仅在 page > 1 时显示)
+	  if (page > 1) {
+		page_html += `<a href="${prev_page_url}">上一页</a>`;
+	  }
+  
+	  page_html += '&nbsp; &nbsp; <span class="pageobj-item">';
+	  
+	  // --- 页码逻辑 (5个数字) ---
+	  let start_page = Math.max(1, page - 2);
+	  let end_page = Math.min(total_pages, page + 2);
+  
+	  // 确保始终显示5个页码 (如果总页数足够)
+	  if (page < 3) {
+		  end_page = Math.min(total_pages, 5);
+	  }
+	  if (page > total_pages - 2) {
+		  start_page = Math.max(1, total_pages - 4);
+	  }
+	  
+	  // 循环生成页码
+	  for (let i = start_page; i <= end_page; i++) {
+		let i_page_url = i === 1 ? first_page_url : `${page_base}/page/${i}`;
+		if (i === page) {
+		  page_html += `<a href="${i_page_url}" class="current">${i}</a>`;
+		} else {
+		  page_html += `<a href="${i_page_url}">${i}</a>`;
+		}
+	  }
+	  // --- 页码逻辑结束 ---
+  
+	  page_html += '&nbsp; &nbsp; </span>\n';
+	  
+	  // 下一页 (仅在 page < total_pages 时显示)
+	  if (page < total_pages) {
+		page_html += `<a href="${next_page_url}">下一页</a>`;
+	  }
+	  
+	  // 尾页
+	  page_html += `<a href="${last_page_url}" class="extend" title="跳转到最后一页">尾页</a>`;
+	  
+	  // 页面计数
+	  page_html += `<span class="page-count pagedbox">${page}/${total_pages}</span>`;
+	  
+	  page_html += '</div>\n</div>';
+	}
+	return page_html;
+  }
+  // --- END: 新增的分页HTML生成函数 ---
