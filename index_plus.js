@@ -66,7 +66,7 @@ async function handleRequest({ request, env, ctx }) {
 			let page = 1;
 			if (pathname.substring(10, pathname.length).includes("page/")) {
 				key = pathname.substring(10, pathname.lastIndexOf('/page/'));
-				page = pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'));
+				page = parseInt(pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'))) || 1;
 			}
 			return await renderHTML(request, await getCategoryOrTagsData(request, "category", key, page, env), theme + "/index.html", 200, env, ctx);
 		}
@@ -75,7 +75,7 @@ async function handleRequest({ request, env, ctx }) {
 			let page = 1;
 			if (pathname.substring(6, pathname.length).includes("page/")) {
 				key = pathname.substring(6, pathname.lastIndexOf('/page/'));
-				page = pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'));
+				page = parseInt(pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'))) || 1;
 			}
 			return await renderHTML(request, await getCategoryOrTagsData(request, "tags", key, page, env), theme + "/index.html", 200, env, ctx);
 		}
@@ -86,7 +86,7 @@ async function handleRequest({ request, env, ctx }) {
 			// 搜索页也支持分页 (可选, 但结构最好一致)
 			if (pathname.substring(8, pathname.length).includes("page/")) {
 				key = pathname.substring(8, pathname.lastIndexOf('/page/'));
-				page = pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'));
+				page = parseInt(pathname.substring(pathname.lastIndexOf('/page/') + 6, pathname.lastIndexOf('/'))) || 1;
 			}
 			// 我们需要一个新的函数来处理搜索逻辑, 类似于 getCategoryOrTagsData
 			return await renderHTML(request, await getSearchData(request, key, page, env), theme + "/index.html", 200, env, ctx);
@@ -602,7 +602,7 @@ async function getIndexData(request, env) {
 	let url = new URL(request.url);
 	let page = 1;
 	if (url.pathname.startsWith("/page/")) {
-		page = parseInt(url.pathname.substring(6, url.pathname.lastIndexOf('/')));
+		page = parseInt(url.pathname.substring(6, url.pathname.lastIndexOf('/'))) || 1;
 	}
 	let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
 	// 过滤掉隐藏的文章
@@ -966,8 +966,7 @@ async function getSearchData(request, key, page, env) {
 	data["articleList"] = resultPage;
 
 	// 处理分页链接
-	if (page > 1) data["pageNewer"] = { "url": `/search/${key}/page/${page - 1}/`};
-	if (result.length > page * pageSize) data["pageOlder"] = { "url": `/search/${key}/page/${page + 1}/`};
+	data["page_html"] = generatePaginationHTML(page, total_pages, `/search/${key}`);
 
 	// --- 侧边栏小工具 (与 getCategoryOrTagsData 保持一致) ---
 	data["widgetCategoryList"] = JSON.parse(await env.XYRJ_CONFIG.get("WidgetCategory") || "[]");
