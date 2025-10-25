@@ -627,8 +627,8 @@ tinymce.init({
 						if (Info.isPinned === true || Info.isPinned === 'true') {
 							statusBadges += '<span class="label label-warning" style="margin-right: 5px;">置顶</span>';
 						}
-						// 检查加密 (Info.password 是一个有内容的字符串)
-						if (Info.password && Info.password.length > 0) {
+						// 检查加密 (Info.hasPassword 是一个有内容的字符串)
+						if (Info.hasPassword === true) {
 							statusBadges += '<span class="label label-danger" style="margin-right: 5px;">加密</span>';
 						}
 						// 检查隐藏 (Info.isHidden 可能是布尔值 true 或字符串 "true")
