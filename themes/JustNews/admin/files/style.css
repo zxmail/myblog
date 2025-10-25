@@ -14,7 +14,7 @@
 }
 /* --- 新增：登录框响应式 --- */
 @media screen and (max-width: 400px) {
-    .login-container {
+    #login-wrapper {
         width: auto !important;  /* 使用 !important 确保覆盖 */
         margin-left: 20px;
         margin-right: 20px;
@@ -143,6 +143,7 @@ body {
     border-radius: 5px;
     transition: .4s;
 }
+
 
 
 
