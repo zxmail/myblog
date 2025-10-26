@@ -72,6 +72,19 @@
 			<div class="tab-pane fade in active" id="list">
 				<div class="container-fluid">
 					<h3>我的文章</h3>
+					<div class="form-group" style="margin-bottom: 15px;">
+						<div class="input-group">
+							<input type="text" id="article-search-input" class="form-control" placeholder="搜索所有文章 (ID, 标题, 分类)...">
+							<span class="input-group-btn">
+								<button class="btn btn-primary" type="button" id="article-search-button">
+									<i class="fas fa-search"></i> 搜索
+								</button>
+								<button class="btn btn-default" type="button" id="article-search-clear">
+									<i class="fas fa-times"></i> 清除
+								</button>
+							</span>
+						</div>
+					</div>
 					<table class="table table-striped" id="articleList">
 						<thead>
 							<tr>
@@ -308,7 +321,16 @@
 							</button>
 						</div>
 					</div>
-
+					<div class="form-group" style="margin-bottom: 15px; margin-top: 15px;">
+						<div class="input-group">
+							<input type="text" id="comment-search-input" class="form-control" placeholder="搜索所有已加载的评论 (文章Slug, 评论内容, 联系方式)...">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" id="comment-search-clear" onclick="$('#comment-search-input').val('').trigger('keyup');">
+									<i class="fas fa-times"></i>
+								</button>
+							</span>
+						</div>
+					</div>
 					<div class="table-responsive">
 						<table class="table table-striped table-sm">
 							<thead>
@@ -464,7 +486,89 @@
         }
 		
         checkLoginStatus();
+		// --- START: 新增的文章 (服务器端) 和评论 (客户端) 搜索JS ---
+		// 1. 文章搜索 (服务器端)		
+		// 1.1 点击搜索按钮
+		$(document).on('click', '#article-search-button', function() {
+			var searchTerm = $('#article-search-input').val();
+			if (!searchTerm) {
+				alert('请输入搜索关键词');
+				return;
+			}			
+			var $btn = $(this);
+			// 禁用按钮并显示加载图标
+			$btn.prop('disabled', true).find('.fas').removeClass('fa-search').addClass('fa-spinner fa-spin');
+			
+			// 隐藏 "加载更多" 按钮
+			$('#loadmore').hide();
+			
+			$.ajax({
+				// 调用我们在 index_plus.js 中创建的新API
+				url: "/admin/api/search/articles?q=" + encodeURIComponent(searchTerm),
+				type: 'GET',
+				dataType: "json",
+				success: function(data) {
+					// 清空现有列表
+					$("#articleList tbody").empty();
+					
+					// 使用 renderArticleRows 渲染搜索结果
+					if (!renderArticleRows(data)) {
+						// 如果没有数据
+						$("#articleList tbody").append('<tr><td colspan="6" class="text-center">未找到匹配的文章</td></tr>');
+					}
+				},
+				error: function() {
+					alert('搜索请求失败，请检查网络或登录状态。');
+					$("#articleList tbody").empty().append('<tr><td colspan="6" class="text-center">搜索失败</td></tr>');
+				},
+				complete: function() {
+					// 恢复按钮
+					$btn.prop('disabled', false).find('.fas').removeClass('fa-spinner fa-spin').addClass('fa-search');
+				}
+			});
+		});
 
+		// 1.2 搜索框内按回车
+		$(document).on('keypress', '#article-search-input', function(e) {
+			if (e.which === 13) { // 13 是回车键
+				$('#article-search-button').click(); // 触发搜索按钮的点击事件
+			}
+		});
+
+		// 1.3 点击清除按钮
+		$(document).on('click', '#article-search-clear', function() {
+			// 清空输入框
+			$('#article-search-input').val('');
+			
+			// 清空表格
+			$("#articleList tbody").empty();
+			
+			// 重置分页
+			$("#page").val('1');
+			
+			// 恢复 "加载更多" 按钮
+			$('#loadmore').text("加载更多...").prop("disabled", false).show();
+			
+			// 重新加载第一页
+			$("#loadmore").click();
+		});
+
+		// 2. 评论搜索 (客户端)
+		// (评论是全部加载的，所以客户端搜索效率更高)
+		$(document).on('keyup', '#comment-search-input', function() {
+			var searchTerm = $(this).val().toLowerCase();
+			// 确保只搜索 #comments-list 内部的 tr
+			$("#comments-list tr").each(function() {
+				var rowText = $(this).text().toLowerCase();
+				if (rowText.indexOf(searchTerm) === -1) {
+					$(this).hide();
+				} else {
+					$(this).show();
+				}
+			});
+		});
+
+		// --- END: 新增的搜索JS ---
 		var isDataLoaded = false;
 		function loadInitialData() {
 			if (isDataLoaded) return;
@@ -610,7 +714,41 @@ tinymce.init({
 		$('#isHidden').val('false');
 		// ========== END: 重置新增字段 ==========
 	}
+		// --- START: 新增的行渲染函数 ---
+	function renderArticleRows(data) {
+		if(!data || data.length === 0) {
+			return false; // 表示没有数据
+		}
+		
+		var tableContent="";
+		$.each(data,function(i, Info){
+			var statusBadges = '';
+			if (Info.isPinned === true || Info.isPinned === 'true') {
+				statusBadges += '<span class="label label-warning" style="margin-right: 5px;">置顶</span>';
+			}
+			if (Info.hasPassword === true) {
+				statusBadges += '<span class="label label-danger" style="margin-right: 5px;">加密</span>';
+			}
+			if (Info.isHidden === true || Info.isHidden === 'true') {
+				statusBadges += '<span class="label label-default" style="margin-right: 5px;">隐藏</span>';
+			}
 
+			tableContent += `<tr id="article-row-${Info.id}">
+				<td>${Info.id}</td>
+				<td>${Info.title}</td>
+				<td>${Info.createDate ? Info.createDate.replace("T"," ") : ''}</td>
+				<td>${Info['category[]'] ? Info['category[]'].join(', ') : ''}</td>
+				<td>${statusBadges}</td>
+				<td>
+					<button class="btn btn-primary btn-xs" onclick="editArticle('${Info.id}')">编辑</button>
+					<button class="btn btn-danger btn-xs" onclick="deleteArticle('${Info.id}')">删除</button>
+				</td>
+			</tr>`;
+		});
+		$("#articleList tbody").append(tableContent);
+		return true; // 表示有数据
+	}
+	// --- END: 新增的行渲染函数 ---
 	$("#loadmore").click(function(){
 		var page=$("#page").val();
 		$.ajax({
@@ -618,42 +756,16 @@ tinymce.init({
 			type:'GET',
 			dataType:"json",
 			success:function(data){
-				if(data && data.length > 0) {
-					var tableContent="";
-					$.each(data,function(i, Info){
-						// --- START: 新增的状态徽章逻辑 ---
-						var statusBadges = '';
-						// 检查置顶 (Info.isPinned 可能是布尔值 true 或字符串 "true")
-						if (Info.isPinned === true || Info.isPinned === 'true') {
-							statusBadges += '<span class="label label-warning" style="margin-right: 5px;">置顶</span>';
-						}
-						// 检查加密 (Info.hasPassword 是一个有内容的字符串)
-						if (Info.hasPassword === true) {
-							statusBadges += '<span class="label label-danger" style="margin-right: 5px;">加密</span>';
-						}
-						// 检查隐藏 (Info.isHidden 可能是布尔值 true 或字符串 "true")
-						if (Info.isHidden === true || Info.isHidden === 'true') {
-							statusBadges += '<span class="label label-default" style="margin-right: 5px;">隐藏</span>';
-						}
-						// --- END: 新增的状态徽章逻辑 ---
-
-						tableContent += `<tr id="article-row-${Info.id}">
-							<td>${Info.id}</td>
-							<td>${Info.title}</td>
-							<td>${Info.createDate ? Info.createDate.replace("T"," ") : ''}</td>
-                            <td>${Info['category[]'] ? Info['category[]'].join(', ') : ''}</td>
-							<td>${statusBadges}</td>
-							<td>
-								<button class="btn btn-primary btn-xs" onclick="editArticle('${Info.id}')">编辑</button>
-								<button class="btn btn-danger btn-xs" onclick="deleteArticle('${Info.id}')">删除</button>
-							</td>
-						</tr>`;
-					})
-					$("#articleList tbody").append(tableContent);
+				// --- START: 修改为调用 renderArticleRows ---
+				// renderArticleRows(data) 会负责渲染表格并返回 true/false
+				if(renderArticleRows(data)) {
+					// 如果渲染成功（有数据），页码+1
 					$("#page").val(++page);
 				} else {
+					// 否则，显示没有更多了
 					$("#loadmore").text("没有更多了").prop("disabled", true);
 				}
+				// --- END: 修改 ---
 			}
 		});
 	})
