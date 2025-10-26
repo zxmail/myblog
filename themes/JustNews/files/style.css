@@ -479,7 +479,7 @@ ul, li {
 	color: #999!important;
 	line-height: 1;
 	background-color: #f2f2f2;
-	border-radius: var(--border-hd);
+	border-radius: 2px;
 	transition: all .3s ease-out 0s;
 	font-size: 14px
 }
