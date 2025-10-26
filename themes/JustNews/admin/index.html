@@ -15,6 +15,48 @@
 	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/bootstrap.min.js"></script>
 	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/bootstrap-select.min.js"></script>
 	<script src="{{ &OPT.theme_github_path }}JustNews/admin/files/defaults-zh_CN.min.js"></script>
+	<style>
+		.pagination-controls {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 15px 0;
+			flex-wrap: wrap; /* 确保在小屏幕上换行 */
+		}
+		.pagination-controls .page-size-selector {
+			margin-right: 15px;
+		}
+		.pagination-controls .page-size-selector select {
+			display: inline-block;
+			width: auto;
+			margin-right: 5px;
+		}
+		.pagination-controls .page-info {
+			margin-right: 15px;
+			font-size: 14px;
+			color: #777;
+		}
+		.pagination-controls .page-buttons button {
+			margin: 0 2px;
+			border-radius: 4px;
+			border: 1px solid #ddd;
+			background-color: #fff;
+			padding: 6px 12px;
+		}
+		.pagination-controls .page-buttons button.active {
+			background-color: #337ab7;
+			color: #fff;
+			border-color: #337ab7;
+		}
+		.pagination-controls .page-buttons button:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+		.pagination-controls .page-buttons button.ellipsis {
+			border: none;
+			background: none;
+		}
+	</style>
 </head>
 <body>
 
@@ -99,8 +141,24 @@
 						<tbody>
 						</tbody>
 					</table>
-					<input type="hidden" name="page" id="page" value='1'>
-					<a id="loadmore" class="btn btn-default">加载更多...</a>
+					<div id="article-pagination-controls" class="pagination-controls">
+						<div class="page-size-selector">
+							<select id="article-rows-per-page" class="form-control" style="width: auto; display: inline-block;">
+								<option value="10">10</option> 
+								<option value="30">30</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+								<option value="200">200</option>
+							</select>
+							<label for="article-rows-per-page">条/页</label>
+						</div>
+						<div class="page-info" id="article-page-info">共 0 条数据，第 1 / 1 页</div>
+						<div class="page-buttons">
+							<button id="article-prev-page" class="btn btn-default" disabled="">« 上一页</button>
+							<span class="page-numbers" id="article-page-numbers"></span>
+							<button id="article-next-page" class="btn btn-default">下一页 »</button>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -346,6 +404,24 @@
 							<tbody id="comments-list">
 								</tbody>
 						</table>
+						<div id="comment-pagination-controls" class="pagination-controls" style="display: none;"> <div class="page-size-selector">
+								<select id="comment-rows-per-page" class="form-control" style="width: auto; display: inline-block;">
+									<option value="30">30</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+									<option value="200">200</option>
+									<option value="500">500</option>
+									<option value="999999">全部</option>
+								</select>
+								<label for="comment-rows-per-page">条/页</label>
+							</div>
+							<div class="page-info" id="comment-page-info">共 0 条数据，第 1 / 1 页</div>
+							<div class="page-buttons">
+								<button id="comment-prev-page" class="btn btn-default" disabled="">« 上一页</button>
+								<span class="page-numbers" id="comment-page-numbers"></span>
+								<button id="comment-next-page" class="btn btn-default">下一页 »</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -550,22 +626,29 @@
 			$('#loadmore').text("加载更多...").prop("disabled", false).show();
 			
 			// 重新加载第一页
-			$("#loadmore").click();
+			loadArticles(1, articlePageSize);
 		});
 
 		// 2. 评论搜索 (客户端)
 		// (评论是全部加载的，所以客户端搜索效率更高)
 		$(document).on('keyup', '#comment-search-input', function() {
 			var searchTerm = $(this).val().toLowerCase();
-			// 确保只搜索 #comments-list 内部的 tr
-			$("#comments-list tr").each(function() {
-				var rowText = $(this).text().toLowerCase();
-				if (rowText.indexOf(searchTerm) === -1) {
-					$(this).hide();
-				} else {
-					$(this).show();
-				}
-			});
+			// (修改) 过滤 allComments 数组
+			if (!searchTerm) {
+				filteredComments = allComments;
+			} else {
+				filteredComments = allComments.filter(function(comment) {
+					const rowText = [
+						comment.articleSlug,
+						comment.content,
+						comment.contact ? comment.contact.value : ''
+					].join(' ').toLowerCase();
+					return rowText.indexOf(searchTerm) !== -1;
+				});
+			}			
+			// (修改) 重新渲染第一页并更新分页
+			renderCommentsPage(1, commentPageSize);
+			updateCommentPagination();
 		});
 
 		// --- END: 新增的搜索JS ---
@@ -675,7 +758,8 @@ tinymce.init({
             }
 			
 			updateCategoryDropdown(initialCategories);
-			$("#loadmore").click();
+			// (修改) 初始化时加载第一页
+			loadArticles(currentArticlePage, articlePageSize);
 		}
 
 		function updateCategoryDropdown(categories) {
@@ -749,26 +833,82 @@ tinymce.init({
 		return true; // 表示有数据
 	}
 	// --- END: 新增的行渲染函数 ---
-	$("#loadmore").click(function(){
-		var page=$("#page").val();
+// START: 修改 - 替换 #loadmore 为文章分页逻辑
+
+	// (新增) 文章分页状态变量
+	let currentArticlePage = 1;
+	let articlePageSize = 10; // 必须匹配HTML中的默认值
+
+	// (新增) 更新文章分页控件的函数
+	function updateArticlePagination(totalItems, currentPage) {
+		const totalPages = Math.ceil(totalItems / articlePageSize);
+		currentArticlePage = currentPage; // 更新全局状态
+
+		$('#article-page-info').text(`共 ${totalItems} 条数据，第 ${currentPage} / ${totalPages || 1} 页`);
+		$('#article-prev-page').prop('disabled', currentPage === 1);
+		$('#article-next-page').prop('disabled', currentPage === totalPages || totalPages === 0);
+
+		// 创建页码按钮
+		createPaginationButtons('#article-page-numbers', currentPage, totalPages);
+	}
+
+	// (新增) 加载文章的主函数 (替换了旧的 #loadmore.click)
+	function loadArticles(page, size) {
+		var $btn = $('#article-search-button'); // 借用搜索按钮显示加载
+		$btn.prop('disabled', true).find('.fas').removeClass('fa-search').addClass('fa-spinner fa-spin');
+		
+		// (修改) 调用新的支持分页的API (见第3步)
 		$.ajax({
-			url:"/admin/getList/" + page + "/",
-			type:'GET',
-			dataType:"json",
-			success:function(data){
-				// --- START: 修改为调用 renderArticleRows ---
-				// renderArticleRows(data) 会负责渲染表格并返回 true/false
-				if(renderArticleRows(data)) {
-					// 如果渲染成功（有数据），页码+1
-					$("#page").val(++page);
+			url: `/admin/getList/?page=${page}&size=${size}`, // (修改) 使用查询参数
+			type: 'GET',
+			dataType: "json",
+			success: function(response) { // (修改) 接收新的 response 对象
+				$("#articleList tbody").empty();
+				
+				// (修改) response.data 才是文章列表
+				if(renderArticleRows(response.data)) { 
+					// (修改) 使用 response.totalItems 更新分页
+					updateArticlePagination(response.totalItems, page);
 				} else {
-					// 否则，显示没有更多了
-					$("#loadmore").text("没有更多了").prop("disabled", true);
+					$("#articleList tbody").append('<tr><td colspan="6" class="text-center">没有文章</td></tr>');
+					updateArticlePagination(0, 1);
 				}
-				// --- END: 修改 ---
+			},
+			error: function() {
+				alert('加载文章失败');
+				$("#articleList tbody").empty().append('<tr><td colspan="6" class="text-center">加载失败</td></tr>');
+			},
+			complete: function() {
+				// 恢复按钮
+				$btn.prop('disabled', false).find('.fas').removeClass('fa-spinner fa-spin').addClass('fa-search');
 			}
 		});
-	})
+	}
+
+	// (新增) 文章分页控件的事件监听
+	// 1. 每页条数
+	$(document).on('change', '#article-rows-per-page', function() {
+		articlePageSize = parseInt($(this).val());
+		loadArticles(1, articlePageSize); // 回到第一页
+	});
+	// 2. 上一页
+	$(document).on('click', '#article-prev-page', function() {
+		if (currentArticlePage > 1) {
+			loadArticles(currentArticlePage - 1, articlePageSize);
+		}
+	});
+	// 3. 下一页
+	$(document).on('click', '#article-next-page', function() {
+		loadArticles(currentArticlePage + 1, articlePageSize);
+	});
+	// 4. 点击页码 (动态绑定)
+	$(document).on('click', '#article-page-numbers button', function() {
+		if ($(this).hasClass('ellipsis')) return;
+		const page = parseInt($(this).data('page'));
+		loadArticles(page, articlePageSize);
+	});
+
+	// END: 修改 - 替换 #loadmore
 
 	function editArticle(id) {
 		$.ajax({
@@ -1130,39 +1270,105 @@ tinymce.init({
 
 
 	// ===== START: 已修改的评论JS =====
+	// (新增) 评论分页状态变量
+	let allComments = []; // 存储从API获取的所有评论
+	let filteredComments = []; // 存储搜索/过滤后的评论
+	let currentCommentPage = 1;
+	let commentPageSize = 30; // 匹配HTML默认值
+
+	// (新增) 渲染指定页的评论
+	function renderCommentsPage(page, size) {
+		currentCommentPage = page;
+		commentPageSize = parseInt(size);
+
+		const tbody = $('#comments-list').empty();
+		const start = (page - 1) * size;
+		const end = start + size;
+		const pageComments = filteredComments.slice(start, end); // (修改) 从
+		
+		$.each(pageComments, function(i, comment) {
+			// (这是您原有的渲染逻辑，保持不变)
+			let contactInfo = '---'; 
+			if (comment.contact && comment.contact.value) {
+				const type = comment.contact.type || '未知';
+				const value = comment.contact.value;
+				contactInfo = `${type}: ${value}`;
+			}			
+			const safeContent = $('<div>').text(comment.content).html();
+			var row = `
+				<tr id="comment-${comment.id}">
+					<td><input type="checkbox" class="comment-checkbox" data-slug="${comment.articleSlug}" data-id="${comment.id}"></td>
+					<td>${comment.articleSlug}</td>
+					<td style="max-width: 300px; word-break: break-all;">${safeContent}</td>
+					<td>${contactInfo}</td>
+					<td>${new Date(comment.timestamp).toLocaleString()}</td>
+					<td><button class="btn btn-danger btn-sm" onclick="deleteComment('${comment.articleSlug}', '${comment.id}')">删除</button></td>
+				</tr>
+			`;
+			tbody.append(row);
+		});
+		
+		// 重置全选框
+		$('#select-all-comments').prop('checked', false);
+	}
+
+	// (新增) 更新评论分页控件
+	function updateCommentPagination() {
+		const totalItems = filteredComments.length;
+		const totalPages = Math.ceil(totalItems / commentPageSize);
+		
+		$('#comment-page-info').text(`共 ${totalItems} 条数据，第 ${currentCommentPage} / ${totalPages || 1} 页`);
+		$('#comment-prev-page').prop('disabled', currentCommentPage === 1);
+		$('#comment-next-page').prop('disabled', currentCommentPage === totalPages || totalPages === 0);
+
+		createPaginationButtons('#comment-page-numbers', currentCommentPage, totalPages);
+		
+		// (新增) 显示分页控件
+		$('#comment-pagination-controls').show();
+	}
 function loadComments() {
+// (修改) 如果已加载，则不再重复获取
+		if (allComments.length > 0) {
+			return;
+		}
+
 		$.getJSON("/admin/api/comments_full", function(comments) {
-			var tbody = $('#comments-list').empty();
-			$.each(comments, function(i, comment) {
-				
-				// --- 联系方式处理逻辑 ---
-let contactInfo = '---'; // 默认值
-if (comment.contact && comment.contact.value) {
-    // 直接使用原始数据，不再通过 .text() 进行HTML转义
-    const type = comment.contact.type || '未知';
-    const value = comment.contact.value;
+			allComments = comments; // (修改) 存储到全局
+			filteredComments = comments; // (修改) 默认等于全部
+			
+			// (修改) 渲染第一页并更新分页
+			renderCommentsPage(1, commentPageSize);
+			updateCommentPagination();
 
-    // 直接拼接字符串，允许其中的 HTML 被渲染
-    contactInfo = `${type}: ${value}`;
-}			
-				// --- 内容转义逻辑 ---
-				const safeContent = $('<div>').text(comment.content).html();
-
-				// --- 构建新的表格行 ---
-				var row = `
-					<tr id="comment-${comment.id}">
-						<td><input type="checkbox" class="comment-checkbox" data-slug="${comment.articleSlug}" data-id="${comment.id}"></td>
-						<td>${comment.articleSlug}</td>
-						<td style="max-width: 300px; word-break: break-all;">${safeContent}</td>
-						<td>${contactInfo}</td>
-						<td>${new Date(comment.timestamp).toLocaleString()}</td>
-						<td><button class="btn btn-danger btn-sm" onclick="deleteComment('${comment.articleSlug}', '${comment.id}')">删除</button></td>
-					</tr>
-				`;
-				tbody.append(row);
+			// (新增) 在此为评论分页控件绑定事件
+			// 1. 每页条数
+			$('#comment-rows-per-page').off('change').on('change', function() {
+				commentPageSize = parseInt($(this).val());
+				renderCommentsPage(1, commentPageSize); // 回到第一页
+				updateCommentPagination();
 			});
-			// 重置全选框
-			$('#select-all-comments').prop('checked', false);
+			// 2. 上一页
+			$('#comment-prev-page').off('click').on('click', function() {
+				if (currentCommentPage > 1) {
+					renderCommentsPage(currentCommentPage - 1, commentPageSize);
+					updateCommentPagination();
+				}
+			});
+			// 3. 下一页
+			$('#comment-next-page').off('click').on('click', function() {
+				const totalPages = Math.ceil(filteredComments.length / commentPageSize);
+				if (currentCommentPage < totalPages) {
+					renderCommentsPage(currentCommentPage + 1, commentPageSize);
+					updateCommentPagination();
+				}
+			});
+			// 4. 点击页码 (动态绑定)
+			$('#comment-pagination-controls').off('click', '.page-numbers button').on('click', '.page-numbers button', function() {
+				if ($(this).hasClass('ellipsis')) return;
+				const page = parseInt($(this).data('page'));
+				renderCommentsPage(page, commentPageSize);
+				updateCommentPagination();
+			});
 		});
     }
 
@@ -1284,6 +1490,44 @@ if (comment.contact && comment.contact.value) {
       if(e.target.hash == "#comments-manager"){ loadComments(); }
       if(e.target.hash == "#carousel-manager"){ loadCarousel(); }
     });
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      if(e.target.hash == "#comments-manager"){ loadComments(); }
+      if(e.target.hash == "#carousel-manager"){ loadCarousel(); }
+    });
+
+	// START: 新增 - 通用分页按钮生成函数
+	function createPaginationButtons(containerId, currentPage, totalPages, maxButtons = 5) {
+		const container = $(containerId);
+		container.empty();
+
+		if (totalPages <= 1) return;
+
+		let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+		let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+		if (endPage - startPage + 1 < maxButtons) {
+			startPage = Math.max(1, endPage - maxButtons + 1);
+		}
+
+		if (startPage > 1) {
+			container.append('<button data-page="1">1</button>');
+			if (startPage > 2) {
+				container.append('<button class="ellipsis" disabled>...</button>');
+			}
+		}
+
+		for (let i = startPage; i <= endPage; i++) {
+			container.append(`<button data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`);
+		}
+
+		if (endPage < totalPages) {
+			if (endPage < totalPages - 1) {
+				container.append('<button class="ellipsis" disabled>...</button>');
+			}
+			container.append(`<button data-page="${totalPages}">${totalPages}</button>`);
+		}
+	}
+	// END: 新增
 </script>
 
 </body>
