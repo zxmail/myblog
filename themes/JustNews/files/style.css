@@ -466,6 +466,10 @@ ul, li {
 	padding: 20px
 }
 
+.fenye {
+	border-top: 1px solid #eee;
+}
+
 .pageobj-item .current {
 	color: #fff!important
 }
