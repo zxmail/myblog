@@ -1024,15 +1024,15 @@ function generatePaginationHTML(page, total_pages, page_base_url) {
 	  // 首页URL
 	  let first_page_url = page_base_url === "/" ? "/" : page_base + "/";
 	  // 尾页URL
-	  let last_page_url = `${page_base}/page/${total_pages}`;
+	  let last_page_url = `${page_base}/page/${total_pages}/`;
 	  
 	  // 上一页URL
 	  let prev_page = Math.max(1, page - 1);
-	  let prev_page_url = prev_page === 1 ? first_page_url : `${page_base}/page/${prev_page}`;
+	  let prev_page_url = prev_page === 1 ? first_page_url : `${page_base}/page/${prev_page}/`;
 	  
 	  // 下一页URL
 	  let next_page = Math.min(total_pages, page + 1);
-	  let next_page_url = `${page_base}/page/${next_page}`;
+	  let next_page_url = `${page_base}/page/${next_page}/`;
   
 	  // --- 开始构建HTML ---
 	  page_html = '<div class="pages">\n<div class="fenye">';
@@ -1061,7 +1061,7 @@ function generatePaginationHTML(page, total_pages, page_base_url) {
 	  
 	  // 循环生成页码
 	  for (let i = start_page; i <= end_page; i++) {
-		let i_page_url = i === 1 ? first_page_url : `${page_base}/page/${i}`;
+		let i_page_url = i === 1 ? first_page_url : `${page_base}/page/${i}/`;
 		if (i === page) {
 		  page_html += `<a href="${i_page_url}" class="current">${i}</a>`;
 		} else {
