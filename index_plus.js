@@ -288,6 +288,34 @@ async function handleRequest({ request, env, ctx }) {
 					}
 					return new Response(JSON.stringify({ "msg": "Article not found" }), { status: 404, headers: { 'Content-Type': 'application/json' }});
 				}
+				// --- START: 新增的后台文章搜索API ---
+				else if (pathname.startsWith("/admin/api/search/articles")) {
+					const url = new URL(request.url);
+					// 从URL获取查询参数 'q'
+					const query = (url.searchParams.get('q') || '').toLowerCase();
+					
+					if (!query) {
+						// 如果查询为空，返回空数组
+						return new Response(JSON.stringify([]), { status: 200, headers: { 'Content-Type': 'application/json' }});
+					}
+
+					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
+					
+					// 在 article_index 中搜索
+					const results = articleIndex.filter(item => {
+						const title = (item.title || "").toLowerCase();
+						const id = (item.id || "").toLowerCase();
+						// 将分类数组转为字符串，以便搜索
+						const categories = (item['category[]'] || []).join(' ').toLowerCase(); 
+						
+						// 检查 ID, 标题, 或 分类 是否包含搜索词
+						return title.includes(query) || id.includes(query) || categories.includes(query);
+					});
+
+					// 搜索结果不需要分页，一次性返回所有匹配项
+					return new Response(JSON.stringify(results), { status: 200, headers: { 'Content-Type': 'application/json' }});
+				}
+				// --- END: 新增的后台文章搜索API ---
 				else if (pathname.startsWith("/admin/saveConfig/")) {
 					let receivedData = await request.json();
 					for (const item of receivedData) {
