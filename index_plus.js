@@ -268,12 +268,32 @@ async function handleRequest({ request, env, ctx }) {
 					}
 				}
 				else if (pathname.startsWith("/admin/getList/")) {
-					let page = pathname.substring(15, pathname.lastIndexOf('/'));
+					// (删除) 不再从路径获取页码
+					// let page = pathname.substring(15, pathname.lastIndexOf('/')); 
+					
+					// (新增) 从URL查询参数获取分页信息
+					const url = new URL(request.url);
+					let page = parseInt(url.searchParams.get('page') || '1');
+					let pageSize = parseInt(url.searchParams.get('size') || '10'); // (修改) 从查询参数获取 size
+					if (pageSize < 1) pageSize = 10;
+					if (page < 1) page = 1;
+
 					let articleIndex = JSON.parse(await env.XYRJ_BLOG.get("article_index") || "[]");
-					let pageSize = 10;
-					let total_pages = Math.ceil(articleIndex.length / pageSize);
+					
+					let totalItems = articleIndex.length; // (新增) 获取总条目数
+
+					// (删除) 不再需要 total_pages
+					// let total_pages = Math.ceil(articleIndex.length / pageSize); 
+					
 					let result = articleIndex.slice((page - 1) * pageSize, page * pageSize);
-					return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' }});
+					
+					// (新增) 定义新的返回结构
+					let responseData = {
+						data: result,
+						totalItems: totalItems
+					};
+					// (修改) 返回新的数据结构
+					return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' }});
 				}
 				else if (pathname.startsWith("/admin/delete/")) {
 					const parts = pathname.split('/');
